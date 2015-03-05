@@ -11,6 +11,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.api.datastore.TransactionOptions;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 import java.util.HashMap;
@@ -205,6 +206,21 @@ public class AccountEndpoint {
 	@ApiMethod(name = "Post")
 	public void Post(Transaction transaction) {
 
+		
+		PersistenceManager mgr = getPersistenceManager();
+/*
+ * It is not possible to use this per transaction:
+		TransactionOptions options = TransactionOptions.Builder.withXG(true);
+		Transaction txn = datastore.beginTransaction(options);
+		
+		so we use this <property name="datanucleus.appengine.datastoreEnableXGTransactions" value="true"/>
+		for all transactions
+*/
+		javax.jdo.Transaction tx = mgr.currentTransaction();
+		try {
+			tx.begin(); //withXG(true)
+
+
 		Account account = transaction.getAccount();
 		//Step 1: Validate
 		ValidatePost( account,  transaction);
@@ -227,9 +243,9 @@ public class AccountEndpoint {
         {
             //this is a value dated transaction, 
             //enter a valuedated diary record if a diary 
-/*
+
             ValueDatedTransaction vt = new ValueDatedTransaction();
-            vt.setAccountID ( transaction.getAccountID());
+            vt.setAccount( transaction.getAccount());
             vt.setAmount(transaction.getAmount());
             vt.setAuthorizer ( transaction.getAuthorizer());
             vt.setForcePostFlag ( transaction.getForcePostFlag());
@@ -238,12 +254,12 @@ public class AccountEndpoint {
             vt.setRecordDate ( transaction.getRecordDate());
             vt.setStatementFlag ( transaction.getStatementFlag());
             vt.setTransactionID ( transaction.getTransactionID());
-            vt.setTransactionTypeId ( transaction.getTransactionTypeId());
+            vt.setTransactionType ( transaction.getTransactionType());
             vt.setUserID ( transaction.getUserID());
             vt.setValueDate ( transaction.getValueDate());
-*/
-            //persist vt
 
+            //persist vt
+            account.addValueDatedTransaction(vt);
         }
         else
         {
@@ -252,6 +268,16 @@ public class AccountEndpoint {
 
      // Step 4 - Persist.
         updateAccount(account);
+        
+        tx.commit();
+		}
+		finally
+		{
+			if(tx.isActive())
+			{
+				tx.rollback();
+			}
+		}
 	}
 	
 
@@ -262,9 +288,6 @@ public class AccountEndpoint {
 		if(transaction == null) throw new EntityNotFoundException("transaction is null");
 
         // Step 1 - See if we can post into this account by looking at lock and limit flags.
-
-//        double AmountAvailable = account.getClearedBalance() - account.getLimit();
-//        double UnclearedEffects = account.getBookBalance() - account.getClearedBalance();
         double AmountAvailableOnUncleared = account.getBookBalance() - account.getLimit();
         double AmountAvailableAfterTxn = account.getClearedBalance() + transaction.getAmount();
 

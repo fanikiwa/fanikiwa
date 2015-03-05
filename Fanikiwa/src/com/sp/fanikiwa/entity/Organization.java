@@ -1,5 +1,7 @@
 package com.sp.fanikiwa.entity;
 
+import java.util.List;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -19,14 +21,16 @@ public class Organization  {
 @Persistent
 	private String name;
 
+@Persistent
+    private List<Customer> customers; 
 	public Organization() {
 	}
 
-	public long getOrganizationID() {
+	public Long getOrganizationID() {
 		return this.organizationID;
 	}
 
-	public void setOrganizationID(long organizationID) {
+	public void setOrganizationID(Long organizationID) {
 		this.organizationID = organizationID;
 	}
 
@@ -52,6 +56,28 @@ public class Organization  {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<Customer> getCustomers()
+	{
+		return this.customers;
+	}
+	public void setCustomers(List<Customer> customers)
+	{
+		this.customers=customers;
+	}
+	public Customer addCustomer(Customer customer)
+	{
+		getCustomers().add(customer);
+		customer.setOrganization(this);
+		return customer;
+	}
+
+	public Customer removeCustomer(Customer customer)
+	{
+		getCustomers().remove(customer);
+		customer.setOrganization(null);
+		return customer;
 	}
 
 }

@@ -33,13 +33,14 @@ public class Customer   {
 @Persistent
 	private String email;
 @Persistent
-	private int memberId;
+	private Long memberId;
 @Persistent
 	private String name;
-@Persistent
-	private int organization;
+
 @Persistent
 	private String telephone;
+@Persistent
+    private Organization organization;
 
 	public Customer() {
 	}
@@ -124,11 +125,11 @@ public class Customer   {
 		this.email = email;
 	}
 
-	public int getMemberId() {
+	public Long getMemberId() {
 		return this.memberId;
 	}
 
-	public void setMemberId(int memberId) {
+	public void setMemberId(Long memberId) {
 		this.memberId = memberId;
 	}
 
@@ -140,11 +141,11 @@ public class Customer   {
 		this.name = name;
 	}
 
-	public int getOrganization() {
+	public Organization getOrganization() {
 		return this.organization;
 	}
 
-	public void setOrganization(int organization) {
+	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
 

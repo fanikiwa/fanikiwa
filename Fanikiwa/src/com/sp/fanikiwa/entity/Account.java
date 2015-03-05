@@ -67,7 +67,8 @@ public class Account {
 	private AccountType accounttype;
 @Persistent
 	private List<Transaction> transaction;
-
+@Persistent
+private List<ValueDatedTransaction> valueDatedTransaction;
 	public Account() {
 	}
 
@@ -283,6 +284,29 @@ public class Account {
 		transaction.setAccount(null);
 
 		return transaction;
+	}
+	
+	//ValueDatedTransaction
+	public List<ValueDatedTransaction> getValueDatedTransaction() {
+		return this.valueDatedTransaction;
+	}
+
+	public void setValueDatedTransaction(List<ValueDatedTransaction> valueDatedTransaction) {
+		this.valueDatedTransaction = valueDatedTransaction;
+	}
+
+	public ValueDatedTransaction addValueDatedTransaction(ValueDatedTransaction valueDatedTransaction) {
+		getValueDatedTransaction().add(valueDatedTransaction);
+		valueDatedTransaction.setAccount(this);
+
+		return valueDatedTransaction;
+	}
+
+	public ValueDatedTransaction removeValueDatedTransaction(ValueDatedTransaction valueDatedTransaction) {
+		getValueDatedTransaction().remove(valueDatedTransaction);
+		valueDatedTransaction.setAccount(null);
+
+		return valueDatedTransaction;
 	}
 
 }

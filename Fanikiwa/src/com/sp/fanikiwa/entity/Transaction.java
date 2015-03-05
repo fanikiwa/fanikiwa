@@ -44,16 +44,16 @@ public class Transaction  {
 	private Account account;
 
 	@Persistent
-	private TransactionType transactiontype;
+	private TransactionType transactionType;
 
 	public Transaction() {
 	}
 
-	public long getTransactionID() {
+	public Long getTransactionID() {
 		return this.transactionID;
 	}
 
-	public void setTransactionID(long transactionID) {
+	public void setTransactionID(Long transactionID) {
 		this.transactionID = transactionID;
 	}
 
@@ -154,13 +154,11 @@ public class Transaction  {
 	}
 
 	public TransactionType getTransactionType() {
-		return this.transactiontype;
+		return this.transactionType;
 	}
 
-	public void setTransactionType(TransactionType transactiontype) {
-		this.transactiontype = transactiontype;
+	public void setTransactionType(TransactionType transactionType) {
+		this.transactionType = transactionType;
 	}
-
-	
 
 }

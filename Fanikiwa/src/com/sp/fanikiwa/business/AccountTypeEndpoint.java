@@ -22,11 +22,11 @@ import javax.jdo.Query;
 public class AccountTypeEndpoint {
 
 	/**
-	 * This method lists all the entities inserted in datastore.
-	 * It uses HTTP GET method and paging support.
+	 * This method lists all the entities inserted in datastore. It uses HTTP
+	 * GET method and paging support.
 	 *
 	 * @return A CollectionResponse class containing the list of all entities
-	 * persisted and a cursor to the next page.
+	 *         persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listAccountType")
@@ -57,7 +57,8 @@ public class AccountTypeEndpoint {
 			if (cursor != null)
 				cursorString = cursor.toWebSafeString();
 
-			// Tight loop for fetching all entities from datastore and accomodate
+			// Tight loop for fetching all entities from datastore and
+			// accomodate
 			// for lazy fetch.
 			for (AccountType obj : execute)
 				;
@@ -70,9 +71,11 @@ public class AccountTypeEndpoint {
 	}
 
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having primary key id. It uses HTTP GET
+	 * method.
 	 *
-	 * @param id the primary key of the java bean.
+	 * @param id
+	 *            the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getAccountType")
@@ -88,22 +91,22 @@ public class AccountTypeEndpoint {
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity already
-	 * exists in the datastore, an exception is thrown.
-	 * It uses HTTP POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity
+	 * already exists in the datastore, an exception is thrown. It uses HTTP
+	 * POST method.
 	 *
-	 * @param accounttype the entity to be inserted.
+	 * @param accounttype
+	 *            the entity to be inserted.
 	 * @return The inserted entity.
 	 */
 	@ApiMethod(name = "insertAccountType")
 	public AccountType insertAccountType(AccountType accounttype) {
 		PersistenceManager mgr = getPersistenceManager();
 		try {
-			if(accounttype.getClass() != null)
-			{
-			if (containsAccountType(accounttype)) {
-				throw new EntityExistsException("Object already exists");
-			}
+			if (accounttype.getId() != null) {
+				if (containsAccountType(accounttype)) {
+					throw new EntityExistsException("Object already exists");
+				}
 			}
 			mgr.makePersistent(accounttype);
 		} finally {
@@ -113,11 +116,12 @@ public class AccountTypeEndpoint {
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does not
-	 * exist in the datastore, an exception is thrown.
-	 * It uses HTTP PUT method.
+	 * This method is used for updating an existing entity. If the entity does
+	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
+	 * method.
 	 *
-	 * @param accounttype the entity to be updated.
+	 * @param accounttype
+	 *            the entity to be updated.
 	 * @return The updated entity.
 	 */
 	@ApiMethod(name = "updateAccountType")
@@ -135,10 +139,11 @@ public class AccountTypeEndpoint {
 	}
 
 	/**
-	 * This method removes the entity with primary key id.
-	 * It uses HTTP DELETE method.
+	 * This method removes the entity with primary key id. It uses HTTP DELETE
+	 * method.
 	 *
-	 * @param id the primary key of the entity to be deleted.
+	 * @param id
+	 *            the primary key of the entity to be deleted.
 	 */
 	@ApiMethod(name = "removeAccountType")
 	public void removeAccountType(@Named("id") Long id) {
@@ -170,5 +175,5 @@ public class AccountTypeEndpoint {
 
 	/*
 	 * Private members
-	 * */
+	 */
 }

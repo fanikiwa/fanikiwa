@@ -386,6 +386,12 @@
               "$ref" : "Transaction"
             }
           },
+          "valueDatedTransaction" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "ValueDatedTransaction"
+            }
+          },
           "coaid" : {
             "type" : "string",
             "format" : "int64"
@@ -469,19 +475,19 @@
             "format" : "int64"
           },
           "absolute" : {
-            "type" : "integer"
+            "type" : "boolean"
           },
           "amountExpression" : {
             "type" : "string"
           },
           "canSuspend" : {
-            "type" : "integer"
+            "type" : "boolean"
           },
           "chargeCommission" : {
-            "type" : "integer"
+            "type" : "boolean"
           },
           "chargeCommissionToTransaction" : {
-            "type" : "integer"
+            "type" : "boolean"
           },
           "chargeWho" : {
             "type" : "string"
@@ -490,7 +496,7 @@
             "type" : "string"
           },
           "commissionAmount" : {
-            "$ref" : "BigDecimal"
+            "type" : "number"
           },
           "commissionAmountExpression" : {
             "type" : "string"
@@ -499,13 +505,15 @@
             "type" : "string"
           },
           "commissionCrAccount" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "commissionDrAccount" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "commissionDrAnotherAccount" : {
-            "type" : "integer"
+            "type" : "boolean"
           },
           "commissionMainNarrative" : {
             "type" : "string"
@@ -514,7 +522,8 @@
             "type" : "integer"
           },
           "commissionTransactionType" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "crCommCalcMethod" : {
             "type" : "string"
@@ -523,16 +532,18 @@
             "type" : "string"
           },
           "defaultAmount" : {
-            "$ref" : "BigDecimal"
+            "type" : "number"
           },
           "defaultContraAccount" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "defaultContraNarrative" : {
             "type" : "string"
           },
           "defaultMainAccount" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "defaultMainNarrative" : {
             "type" : "string"
@@ -547,22 +558,10 @@
             "type" : "string"
           },
           "forcePost" : {
-            "type" : "integer"
+            "type" : "boolean"
           },
           "narrativeFlag" : {
             "type" : "integer"
-          },
-          "printReceipt" : {
-            "type" : "integer"
-          },
-          "printReceiptPrompt" : {
-            "type" : "integer"
-          },
-          "receiptLayout" : {
-            "type" : "string"
-          },
-          "screen" : {
-            "type" : "string"
           },
           "shortCode" : {
             "type" : "string"
@@ -571,13 +570,16 @@
             "type" : "string"
           },
           "suspenseCrAccount" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "suspenseDrAccount" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "tieredTableId" : {
-            "type" : "integer"
+            "type" : "string",
+            "format" : "int64"
           },
           "txnClass" : {
             "type" : "integer"
@@ -588,7 +590,7 @@
           "valueDateOffset" : {
             "type" : "integer"
           },
-          "transactions" : {
+          "transaction" : {
             "type" : "array",
             "items" : {
               "$ref" : "Transaction"
@@ -596,12 +598,55 @@
           }
         }
       },
-      "BigDecimal" : {
-        "id" : "BigDecimal",
+      "ValueDatedTransaction" : {
+        "id" : "ValueDatedTransaction",
         "type" : "object",
         "properties" : {
-          "scale" : {
-            "type" : "integer"
+          "transactionID" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "amount" : {
+            "type" : "number"
+          },
+          "authorizer" : {
+            "type" : "string"
+          },
+          "contraReference" : {
+            "type" : "string"
+          },
+          "forcePostFlag" : {
+            "type" : "boolean"
+          },
+          "narrative" : {
+            "type" : "string"
+          },
+          "postDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "recordDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "reference" : {
+            "type" : "string"
+          },
+          "statementFlag" : {
+            "type" : "string"
+          },
+          "userID" : {
+            "type" : "string"
+          },
+          "valueDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "account" : {
+            "$ref" : "Account"
+          },
+          "transactionType" : {
+            "$ref" : "TransactionType"
           }
         }
       },

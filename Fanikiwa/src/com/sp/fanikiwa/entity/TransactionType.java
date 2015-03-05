@@ -1,7 +1,7 @@
 package com.sp.fanikiwa.entity;
 
-import java.math.BigDecimal;
 import java.util.List;
+
 
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -17,51 +17,51 @@ public class TransactionType  {
         @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
         Long transactionTypeID;
 @Persistent
-	private byte absolute;
+	private boolean absolute;
 
 	@Persistent
 	private String amountExpression;
 @Persistent
-	private byte canSuspend;
+	private boolean canSuspend;
 @Persistent
-	private byte chargeCommission;
+	private boolean chargeCommission;
 @Persistent
-	private byte chargeCommissionToTransaction;
+	private boolean chargeCommissionToTransaction;
 @Persistent
 	private String chargeWho;
 @Persistent
 	private String commComputationMethod;
 @Persistent
-	private BigDecimal commissionAmount;
+	private double commissionAmount;
 
 	@Persistent
 	private String commissionAmountExpression;
 @Persistent
 	private String commissionContraNarrative;
 @Persistent
-	private int commissionCrAccount;
+	private Long commissionCrAccount;
 @Persistent
-	private int commissionDrAccount;
+	private Long commissionDrAccount;
 @Persistent
-	private byte commissionDrAnotherAccount;
+	private boolean commissionDrAnotherAccount;
 @Persistent
 	private String commissionMainNarrative;
 @Persistent
 	private short commissionNarrativeFlag;
 @Persistent
-	private int commissionTransactionType;
+	private Long commissionTransactionType;
 @Persistent
 	private String crCommCalcMethod;
 @Persistent
 	private String debitCredit;
 @Persistent
-	private BigDecimal defaultAmount;
+	private double defaultAmount;
 @Persistent
-	private int defaultContraAccount;
+	private Long defaultContraAccount;
 @Persistent
 	private String defaultContraNarrative;
 @Persistent
-	private int defaultMainAccount;
+	private Long defaultMainAccount;
 @Persistent
 	private String defaultMainNarrative;
 @Persistent
@@ -71,54 +71,46 @@ public class TransactionType  {
 @Persistent
 	private String drCommCalcMethod;
 @Persistent
-	private byte forcePost;
+	private boolean forcePost;
 @Persistent
 	private short narrativeFlag;
-@Persistent
-	private byte printReceipt;
-@Persistent
-	private byte printReceiptPrompt;
 
-	@Persistent
-	private String receiptLayout;
-
-	@Persistent
-	private String screen;
 @Persistent
 	private String shortCode;
 @Persistent
 	private String statFlag;
 @Persistent
-	private int suspenseCrAccount;
+	private Long suspenseCrAccount;
 @Persistent
-	private int suspenseDrAccount;
+	private Long suspenseDrAccount;
 @Persistent
-	private int tieredTableId;
+	private Long tieredTableId;
 @Persistent
 	private short txnClass;
 @Persistent
 	private short txnTypeView;
 @Persistent
 	private short valueDateOffset;
+
 @Persistent
-	private List<Transaction> transactions;
+    private List<Transaction> transaction;
 
 	public TransactionType() {
 	}
 
-	public long getTransactionTypeID() {
+	public Long getTransactionTypeID() {
 		return this.transactionTypeID;
 	}
 
-	public void setTransactionTypeID(long transactionTypeID) {
+	public void setTransactionTypeID(Long transactionTypeID) {
 		this.transactionTypeID = transactionTypeID;
 	}
 
-	public byte getAbsolute() {
+	public boolean getAbsolute() {
 		return this.absolute;
 	}
 
-	public void setAbsolute(byte absolute) {
+	public void setAbsolute(boolean absolute) {
 		this.absolute = absolute;
 	}
 
@@ -130,27 +122,27 @@ public class TransactionType  {
 		this.amountExpression = amountExpression;
 	}
 
-	public byte getCanSuspend() {
+	public boolean getCanSuspend() {
 		return this.canSuspend;
 	}
 
-	public void setCanSuspend(byte canSuspend) {
+	public void setCanSuspend(boolean canSuspend) {
 		this.canSuspend = canSuspend;
 	}
 
-	public byte getChargeCommission() {
+	public boolean getChargeCommission() {
 		return this.chargeCommission;
 	}
 
-	public void setChargeCommission(byte chargeCommission) {
+	public void setChargeCommission(boolean chargeCommission) {
 		this.chargeCommission = chargeCommission;
 	}
 
-	public byte getChargeCommissionToTransaction() {
+	public boolean getChargeCommissionToTransaction() {
 		return this.chargeCommissionToTransaction;
 	}
 
-	public void setChargeCommissionToTransaction(byte chargeCommissionToTransaction) {
+	public void setChargeCommissionToTransaction(boolean chargeCommissionToTransaction) {
 		this.chargeCommissionToTransaction = chargeCommissionToTransaction;
 	}
 
@@ -170,11 +162,11 @@ public class TransactionType  {
 		this.commComputationMethod = commComputationMethod;
 	}
 
-	public BigDecimal getCommissionAmount() {
+	public double getCommissionAmount() {
 		return this.commissionAmount;
 	}
 
-	public void setCommissionAmount(BigDecimal commissionAmount) {
+	public void setCommissionAmount(double commissionAmount) {
 		this.commissionAmount = commissionAmount;
 	}
 
@@ -194,27 +186,27 @@ public class TransactionType  {
 		this.commissionContraNarrative = commissionContraNarrative;
 	}
 
-	public int getCommissionCrAccount() {
+	public Long getCommissionCrAccount() {
 		return this.commissionCrAccount;
 	}
 
-	public void setCommissionCrAccount(int commissionCrAccount) {
+	public void setCommissionCrAccount(Long commissionCrAccount) {
 		this.commissionCrAccount = commissionCrAccount;
 	}
 
-	public int getCommissionDrAccount() {
+	public Long getCommissionDrAccount() {
 		return this.commissionDrAccount;
 	}
 
-	public void setCommissionDrAccount(int commissionDrAccount) {
+	public void setCommissionDrAccount(Long commissionDrAccount) {
 		this.commissionDrAccount = commissionDrAccount;
 	}
 
-	public byte getCommissionDrAnotherAccount() {
+	public boolean getCommissionDrAnotherAccount() {
 		return this.commissionDrAnotherAccount;
 	}
 
-	public void setCommissionDrAnotherAccount(byte commissionDrAnotherAccount) {
+	public void setCommissionDrAnotherAccount(boolean commissionDrAnotherAccount) {
 		this.commissionDrAnotherAccount = commissionDrAnotherAccount;
 	}
 
@@ -234,11 +226,11 @@ public class TransactionType  {
 		this.commissionNarrativeFlag = commissionNarrativeFlag;
 	}
 
-	public int getCommissionTransactionType() {
+	public Long getCommissionTransactionType() {
 		return this.commissionTransactionType;
 	}
 
-	public void setCommissionTransactionType(int commissionTransactionType) {
+	public void setCommissionTransactionType(Long commissionTransactionType) {
 		this.commissionTransactionType = commissionTransactionType;
 	}
 
@@ -258,19 +250,19 @@ public class TransactionType  {
 		this.debitCredit = debitCredit;
 	}
 
-	public BigDecimal getDefaultAmount() {
+	public double getDefaultAmount() {
 		return this.defaultAmount;
 	}
 
-	public void setDefaultAmount(BigDecimal defaultAmount) {
+	public void setDefaultAmount(double defaultAmount) {
 		this.defaultAmount = defaultAmount;
 	}
 
-	public int getDefaultContraAccount() {
+	public Long getDefaultContraAccount() {
 		return this.defaultContraAccount;
 	}
 
-	public void setDefaultContraAccount(int defaultContraAccount) {
+	public void setDefaultContraAccount(Long defaultContraAccount) {
 		this.defaultContraAccount = defaultContraAccount;
 	}
 
@@ -282,11 +274,11 @@ public class TransactionType  {
 		this.defaultContraNarrative = defaultContraNarrative;
 	}
 
-	public int getDefaultMainAccount() {
+	public Long getDefaultMainAccount() {
 		return this.defaultMainAccount;
 	}
 
-	public void setDefaultMainAccount(int defaultMainAccount) {
+	public void setDefaultMainAccount(Long defaultMainAccount) {
 		this.defaultMainAccount = defaultMainAccount;
 	}
 
@@ -322,11 +314,11 @@ public class TransactionType  {
 		this.drCommCalcMethod = drCommCalcMethod;
 	}
 
-	public byte getForcePost() {
+	public boolean getForcePost() {
 		return this.forcePost;
 	}
 
-	public void setForcePost(byte forcePost) {
+	public void setForcePost(boolean forcePost) {
 		this.forcePost = forcePost;
 	}
 
@@ -336,38 +328,6 @@ public class TransactionType  {
 
 	public void setNarrativeFlag(short narrativeFlag) {
 		this.narrativeFlag = narrativeFlag;
-	}
-
-	public byte getPrintReceipt() {
-		return this.printReceipt;
-	}
-
-	public void setPrintReceipt(byte printReceipt) {
-		this.printReceipt = printReceipt;
-	}
-
-	public byte getPrintReceiptPrompt() {
-		return this.printReceiptPrompt;
-	}
-
-	public void setPrintReceiptPrompt(byte printReceiptPrompt) {
-		this.printReceiptPrompt = printReceiptPrompt;
-	}
-
-	public String getReceiptLayout() {
-		return this.receiptLayout;
-	}
-
-	public void setReceiptLayout(String receiptLayout) {
-		this.receiptLayout = receiptLayout;
-	}
-
-	public String getScreen() {
-		return this.screen;
-	}
-
-	public void setScreen(String screen) {
-		this.screen = screen;
 	}
 
 	public String getShortCode() {
@@ -386,27 +346,27 @@ public class TransactionType  {
 		this.statFlag = statFlag;
 	}
 
-	public int getSuspenseCrAccount() {
+	public Long getSuspenseCrAccount() {
 		return this.suspenseCrAccount;
 	}
 
-	public void setSuspenseCrAccount(int suspenseCrAccount) {
+	public void setSuspenseCrAccount(Long suspenseCrAccount) {
 		this.suspenseCrAccount = suspenseCrAccount;
 	}
 
-	public int getSuspenseDrAccount() {
+	public Long getSuspenseDrAccount() {
 		return this.suspenseDrAccount;
 	}
 
-	public void setSuspenseDrAccount(int suspenseDrAccount) {
+	public void setSuspenseDrAccount(Long suspenseDrAccount) {
 		this.suspenseDrAccount = suspenseDrAccount;
 	}
 
-	public int getTieredTableId() {
+	public Long getTieredTableId() {
 		return this.tieredTableId;
 	}
 
-	public void setTieredTableId(int tieredTableId) {
+	public void setTieredTableId(Long tieredTableId) {
 		this.tieredTableId = tieredTableId;
 	}
 
@@ -434,26 +394,14 @@ public class TransactionType  {
 		this.valueDateOffset = valueDateOffset;
 	}
 
-	public List<Transaction> getTransactions() {
-		return this.transactions;
+	public List<Transaction> getTransaction() {
+		return this.transaction;
 	}
 
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+	public void setTransaction(List<Transaction> transaction) {
+		this.transaction = transaction;
 	}
 
-	public Transaction addTransaction(Transaction transaction) {
-		getTransactions().add(transaction);
-		transaction.setTransactionType(this);
 
-		return transaction;
-	}
-
-	public Transaction removeTransaction(Transaction transaction) {
-		getTransactions().remove(transaction);
-		transaction.setTransactionType(null);
-
-		return transaction;
-	}
 
 }
