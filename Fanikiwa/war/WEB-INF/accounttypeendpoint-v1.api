@@ -27,30 +27,14 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "accounttypeendpoint.updateAccountType" : {
-      "path" : "accounttype",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.business.AccountTypeEndpoint.updateAccountType",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "accounttypeendpoint.removeAccountType" : {
+    "accounttypeendpoint.getAccountType" : {
       "path" : "accounttype/{id}",
-      "httpMethod" : "DELETE",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.business.AccountTypeEndpoint.removeAccountType",
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountTypeEndpoint.getAccountType",
       "request" : {
         "parameters" : {
           "id" : {
@@ -61,7 +45,7 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "accounttypeendpoint.listAccountType" : {
@@ -71,7 +55,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.business.AccountTypeEndpoint.listAccountType",
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountTypeEndpoint.listAccountType",
       "request" : {
         "parameters" : {
           "cursor" : {
@@ -96,7 +80,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.business.AccountTypeEndpoint.insertAccountType",
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountTypeEndpoint.insertAccountType",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -105,14 +89,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "accounttypeendpoint.getAccountType" : {
+    "accounttypeendpoint.removeAccountType" : {
       "path" : "accounttype/{id}",
-      "httpMethod" : "GET",
+      "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.business.AccountTypeEndpoint.getAccountType",
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountTypeEndpoint.removeAccountType",
       "request" : {
         "parameters" : {
           "id" : {
@@ -121,6 +105,22 @@
           }
         },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "accounttypeendpoint.updateAccountType" : {
+      "path" : "accounttype",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountTypeEndpoint.updateAccountType",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -162,22 +162,17 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.business.AccountTypeEndpoint.updateAccountType" : {
-        "request" : {
-          "$ref" : "AccountType"
-        },
+      "com.sp.fanikiwa.api.AccountTypeEndpoint.getAccountType" : {
         "response" : {
           "$ref" : "AccountType"
         }
       },
-      "com.sp.fanikiwa.business.AccountTypeEndpoint.removeAccountType" : {
-      },
-      "com.sp.fanikiwa.business.AccountTypeEndpoint.listAccountType" : {
+      "com.sp.fanikiwa.api.AccountTypeEndpoint.listAccountType" : {
         "response" : {
           "$ref" : "CollectionResponse_AccountType"
         }
       },
-      "com.sp.fanikiwa.business.AccountTypeEndpoint.insertAccountType" : {
+      "com.sp.fanikiwa.api.AccountTypeEndpoint.insertAccountType" : {
         "request" : {
           "$ref" : "AccountType"
         },
@@ -185,7 +180,12 @@
           "$ref" : "AccountType"
         }
       },
-      "com.sp.fanikiwa.business.AccountTypeEndpoint.getAccountType" : {
+      "com.sp.fanikiwa.api.AccountTypeEndpoint.removeAccountType" : {
+      },
+      "com.sp.fanikiwa.api.AccountTypeEndpoint.updateAccountType" : {
+        "request" : {
+          "$ref" : "AccountType"
+        },
         "response" : {
           "$ref" : "AccountType"
         }

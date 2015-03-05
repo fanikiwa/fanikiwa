@@ -32,3 +32,5 @@
 /TransactionType.class
 /Userprofile.class
 /ValueDatedTransaction.class
+/CustomerEndpoint.class
+/OrganizationEndpoint.class

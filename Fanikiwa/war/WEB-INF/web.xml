@@ -15,7 +15,7 @@
   <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
   <init-param>
    <param-name>services</param-name>
-   <param-value>com.sp.fanikiwa.business.AccountEndpoint,com.sp.fanikiwa.business.AccountTypeEndpoint</param-value>
+   <param-value>com.sp.fanikiwa.api.AccountEndpoint,com.sp.fanikiwa.api.AccountTypeEndpoint,com.sp.fanikiwa.api.CustomerEndpoint,com.sp.fanikiwa.api.OrganizationEndpoint</param-value>
   </init-param>
  </servlet>
  <servlet-mapping>

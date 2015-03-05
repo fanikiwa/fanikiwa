@@ -1,4 +1,4 @@
-package com.sp.fanikiwa.business;
+package com.sp.fanikiwa.api;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;

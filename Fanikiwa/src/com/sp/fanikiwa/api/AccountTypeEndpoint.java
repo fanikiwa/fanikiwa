@@ -1,4 +1,4 @@
-package com.sp.fanikiwa.business;
+package com.sp.fanikiwa.api;
 
 import com.sp.fanikiwa.entity.AccountType;
 import com.google.api.server.spi.config.Api;

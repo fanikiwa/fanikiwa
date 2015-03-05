@@ -1,11 +1,14 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.datanucleus.annotations.Unowned;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Customer   {
@@ -40,16 +43,17 @@ public class Customer   {
 @Persistent
 	private String telephone;
 @Persistent
+@Unowned
     private Organization organization;
 
 	public Customer() {
 	}
 
-	public long getCustomerId() {
+	public Long getCustomerId() {
 		return this.customerId;
 	}
 
-	public void setCustomerId(long customerId) {
+	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
 
