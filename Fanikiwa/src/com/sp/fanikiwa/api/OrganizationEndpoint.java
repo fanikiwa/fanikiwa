@@ -11,7 +11,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query;
-import com.sp.fanikiwa.entity.Customer;
+
 import com.sp.fanikiwa.entity.Organization;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;

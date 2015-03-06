@@ -1,22 +1,25 @@
 package com.sp.fanikiwa.api;
 
-import com.sp.fanikiwa.entity.EMF;
-import com.sp.fanikiwa.entity.TransactionType;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.cmd.Query;
 
+import static com.sp.fanikiwa.api.OfyService.ofy;
+
+import com.sp.fanikiwa.entity.TransactionType;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 @Api(name = "transactiontypeendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class TransactionTypeEndpoint {
@@ -32,42 +35,37 @@ public class TransactionTypeEndpoint {
 	@ApiMethod(name = "listTransactionType")
 	public CollectionResponse<TransactionType> listTransactionType(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("count") Integer count) {
 
-		EntityManager mgr = null;
-		Cursor cursor = null;
-		List<TransactionType> execute = null;
-
-		try {
-			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from TransactionType as TransactionType");
+			Query<TransactionType> query = ofy().load().type(TransactionType.class);
+			if (count != null)
+				query.limit(count);
 			if (cursorString != null && cursorString != "") {
-				cursor = Cursor.fromWebSafeString(cursorString);
-				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
+				query = query.startAt(Cursor.fromWebSafeString(cursorString));
 			}
 
-			if (limit != null) {
-				query.setFirstResult(0);
-				query.setMaxResults(limit);
+			List<TransactionType> records = new ArrayList<TransactionType>();
+			QueryResultIterator<TransactionType> iterator = query.iterator();
+			int num = 0;
+			while (iterator.hasNext()) {
+				records.add(iterator.next());
+				if (count != null) {
+					num++;
+					if (num == count)
+						break;
+				}
 			}
 
-			execute = (List<TransactionType>) query.getResultList();
-			cursor = JPACursorHelper.getCursor(execute);
-			if (cursor != null)
-				cursorString = cursor.toWebSafeString();
-
-			// Tight loop for fetching all entities from datastore and accomodate
-			// for lazy fetch.
-			for (TransactionType obj : execute)
-				;
-		} finally {
-			mgr.close();
+			// Find the next cursor
+			if (cursorString != null && cursorString != "") {
+				Cursor cursor = iterator.getCursor();
+				if (cursor != null) {
+					cursorString = cursor.toWebSafeString();
+				}
+			}
+			return CollectionResponse.<TransactionType> builder().setItems(records)
+					.setNextPageToken(cursorString).build();
 		}
-
-		return CollectionResponse.<TransactionType> builder().setItems(execute)
-				.setNextPageToken(cursorString).build();
-	}
 
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET method.
@@ -77,14 +75,7 @@ public class TransactionTypeEndpoint {
 	 */
 	@ApiMethod(name = "getTransactionType")
 	public TransactionType getTransactionType(@Named("id") Long id) {
-		EntityManager mgr = getEntityManager();
-		TransactionType transactiontype = null;
-		try {
-			transactiontype = mgr.find(TransactionType.class, id);
-		} finally {
-			mgr.close();
-		}
-		return transactiontype;
+		return findRecord(id);
 	}
 
 	/**
@@ -92,21 +83,20 @@ public class TransactionTypeEndpoint {
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param transactiontype the entity to be inserted.
+	 * @param TransactionType the entity to be inserted.
 	 * @return The inserted entity.
+	 * @throws ConflictException 
 	 */
 	@ApiMethod(name = "insertTransactionType")
-	public TransactionType insertTransactionType(TransactionType transactiontype) {
-		EntityManager mgr = getEntityManager();
-		try {
-			if (containsTransactionType(transactiontype)) {
-				throw new EntityExistsException("Object already exists");
+	public TransactionType insertTransactionType(
+			TransactionType transactionType) throws ConflictException {
+		if (transactionType.getTransactionTypeID() != null) {
+			if (findRecord(transactionType.getTransactionTypeID()) != null) {
+				throw new ConflictException("Object already exists");
 			}
-			mgr.persist(transactiontype);
-		} finally {
-			mgr.close();
 		}
-		return transactiontype;
+		ofy().save().entities(transactionType).now();
+		return transactionType;
 	}
 
 	/**
@@ -114,21 +104,19 @@ public class TransactionTypeEndpoint {
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param transactiontype the entity to be updated.
+	 * @param TransactionType the entity to be updated.
 	 * @return The updated entity.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "updateTransactionType")
-	public TransactionType updateTransactionType(TransactionType transactiontype) {
-		EntityManager mgr = getEntityManager();
-		try {
-			if (!containsTransactionType(transactiontype)) {
-				throw new EntityNotFoundException("Object does not exist");
-			}
-			mgr.persist(transactiontype);
-		} finally {
-			mgr.close();
+	public TransactionType updateTransactionType(
+			TransactionType transactionType) throws NotFoundException {
+		TransactionType record = findRecord(transactionType.getTransactionTypeID());
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
-		return transactiontype;
+		ofy().save().entities(transactionType).now();
+		return transactionType;
 	}
 
 	/**
@@ -136,36 +124,20 @@ public class TransactionTypeEndpoint {
 	 * It uses HTTP DELETE method.
 	 *
 	 * @param id the primary key of the entity to be deleted.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "removeTransactionType")
-	public void removeTransactionType(@Named("id") Long id) {
-		EntityManager mgr = getEntityManager();
-		try {
-			TransactionType transactiontype = mgr.find(TransactionType.class,
-					id);
-			mgr.remove(transactiontype);
-		} finally {
-			mgr.close();
+	public void removeTransactionType(@Named("id") Long id) throws NotFoundException {
+		TransactionType record = findRecord(id);
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
+		ofy().delete().entity(record).now();
 	}
+	
 
-	private boolean containsTransactionType(TransactionType transactiontype) {
-		EntityManager mgr = getEntityManager();
-		boolean contains = true;
-		try {
-			TransactionType item = mgr.find(TransactionType.class,
-					transactiontype.getTransactionTypeID());
-			if (item == null) {
-				contains = false;
-			}
-		} finally {
-			mgr.close();
-		}
-		return contains;
-	}
-
-	private static EntityManager getEntityManager() {
-		return EMF.get().createEntityManager();
+	private TransactionType findRecord(Long id) {
+		return ofy().load().type(TransactionType.class).id(id).now();
 	}
 
 }

@@ -1,22 +1,25 @@
 package com.sp.fanikiwa.api;
 
-import com.sp.fanikiwa.entity.EMF;
-import com.sp.fanikiwa.entity.Transaction;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.cmd.Query;
 
+import static com.sp.fanikiwa.api.OfyService.ofy;
+
+import com.sp.fanikiwa.entity.Transaction;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 @Api(name = "transactionendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class TransactionEndpoint {
@@ -32,42 +35,37 @@ public class TransactionEndpoint {
 	@ApiMethod(name = "listTransaction")
 	public CollectionResponse<Transaction> listTransaction(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("count") Integer count) {
 
-		EntityManager mgr = null;
-		Cursor cursor = null;
-		List<Transaction> execute = null;
-
-		try {
-			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from Transaction as Transaction");
+			Query<Transaction> query = ofy().load().type(Transaction.class);
+			if (count != null)
+				query.limit(count);
 			if (cursorString != null && cursorString != "") {
-				cursor = Cursor.fromWebSafeString(cursorString);
-				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
+				query = query.startAt(Cursor.fromWebSafeString(cursorString));
 			}
 
-			if (limit != null) {
-				query.setFirstResult(0);
-				query.setMaxResults(limit);
+			List<Transaction> records = new ArrayList<Transaction>();
+			QueryResultIterator<Transaction> iterator = query.iterator();
+			int num = 0;
+			while (iterator.hasNext()) {
+				records.add(iterator.next());
+				if (count != null) {
+					num++;
+					if (num == count)
+						break;
+				}
 			}
 
-			execute = (List<Transaction>) query.getResultList();
-			cursor = JPACursorHelper.getCursor(execute);
-			if (cursor != null)
-				cursorString = cursor.toWebSafeString();
-
-			// Tight loop for fetching all entities from datastore and accomodate
-			// for lazy fetch.
-			for (Transaction obj : execute)
-				;
-		} finally {
-			mgr.close();
+			// Find the next cursor
+			if (cursorString != null && cursorString != "") {
+				Cursor cursor = iterator.getCursor();
+				if (cursor != null) {
+					cursorString = cursor.toWebSafeString();
+				}
+			}
+			return CollectionResponse.<Transaction> builder().setItems(records)
+					.setNextPageToken(cursorString).build();
 		}
-
-		return CollectionResponse.<Transaction> builder().setItems(execute)
-				.setNextPageToken(cursorString).build();
-	}
 
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET method.
@@ -77,14 +75,7 @@ public class TransactionEndpoint {
 	 */
 	@ApiMethod(name = "getTransaction")
 	public Transaction getTransaction(@Named("id") Long id) {
-		EntityManager mgr = getEntityManager();
-		Transaction transaction = null;
-		try {
-			transaction = mgr.find(Transaction.class, id);
-		} finally {
-			mgr.close();
-		}
-		return transaction;
+		return findRecord(id);
 	}
 
 	/**
@@ -92,21 +83,20 @@ public class TransactionEndpoint {
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param transaction the entity to be inserted.
+	 * @param Transaction the entity to be inserted.
 	 * @return The inserted entity.
+	 * @throws ConflictException 
 	 */
 	@ApiMethod(name = "insertTransaction")
-	public Transaction insertTransaction(Transaction transaction) {
-		EntityManager mgr = getEntityManager();
-		try {
-			if (containsTransaction(transaction)) {
-				throw new EntityExistsException("Object already exists");
+	public Transaction insertTransaction(
+			Transaction Transaction) throws ConflictException {
+		if (Transaction.getTransactionID() != null) {
+			if (findRecord(Transaction.getTransactionID()) != null) {
+				throw new ConflictException("Object already exists");
 			}
-			mgr.persist(transaction);
-		} finally {
-			mgr.close();
 		}
-		return transaction;
+		ofy().save().entities(Transaction).now();
+		return Transaction;
 	}
 
 	/**
@@ -114,21 +104,19 @@ public class TransactionEndpoint {
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param transaction the entity to be updated.
+	 * @param Transaction the entity to be updated.
 	 * @return The updated entity.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "updateTransaction")
-	public Transaction updateTransaction(Transaction transaction) {
-		EntityManager mgr = getEntityManager();
-		try {
-			if (!containsTransaction(transaction)) {
-				throw new EntityNotFoundException("Object does not exist");
-			}
-			mgr.persist(transaction);
-		} finally {
-			mgr.close();
+	public Transaction updateTransaction(
+			Transaction Transaction) throws NotFoundException {
+		Transaction record = findRecord(Transaction.getTransactionID());
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
-		return transaction;
+		ofy().save().entities(Transaction).now();
+		return Transaction;
 	}
 
 	/**
@@ -136,35 +124,20 @@ public class TransactionEndpoint {
 	 * It uses HTTP DELETE method.
 	 *
 	 * @param id the primary key of the entity to be deleted.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "removeTransaction")
-	public void removeTransaction(@Named("id") Long id) {
-		EntityManager mgr = getEntityManager();
-		try {
-			Transaction transaction = mgr.find(Transaction.class, id);
-			mgr.remove(transaction);
-		} finally {
-			mgr.close();
+	public void removeTransaction(@Named("id") Long id) throws NotFoundException {
+		Transaction record = findRecord(id);
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
+		ofy().delete().entity(record).now();
 	}
+	
 
-	private boolean containsTransaction(Transaction transaction) {
-		EntityManager mgr = getEntityManager();
-		boolean contains = true;
-		try {
-			Transaction item = mgr.find(Transaction.class,
-					transaction.getTransactionID());
-			if (item == null) {
-				contains = false;
-			}
-		} finally {
-			mgr.close();
-		}
-		return contains;
-	}
-
-	private static EntityManager getEntityManager() {
-		return EMF.get().createEntityManager();
+	private Transaction findRecord(Long id) {
+		return ofy().load().type(Transaction.class).id(id).now();
 	}
 
 }

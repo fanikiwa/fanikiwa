@@ -1,5 +1,7 @@
 package com.sp.fanikiwa.api;
 
+import static com.sp.fanikiwa.api.OfyService.ofy;
+
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.AccountLimitStatus;
 import com.sp.fanikiwa.entity.PassFlag;
@@ -9,20 +11,20 @@ import com.sp.fanikiwa.entity.ValueDatedTransaction;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.datastore.TransactionOptions;
-import com.google.appengine.datanucleus.query.JDOCursorHelper;
+import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.VoidWork;
+import com.googlecode.objectify.Work;
+import com.googlecode.objectify.cmd.Query;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 
 @Api(name = "accountendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class AccountEndpoint {
@@ -38,189 +40,172 @@ public class AccountEndpoint {
 	@ApiMethod(name = "listAccount")
 	public CollectionResponse<Account> listAccount(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("count") Integer count) {
 
-		PersistenceManager mgr = null;
-		Cursor cursor = null;
-		List<Account> execute = null;
-
-		try {
-			mgr = getPersistenceManager();
-			Query query = mgr.newQuery(Account.class);
+			Query<Account> query = ofy().load().type(Account.class);
+			if (count != null)
+				query.limit(count);
 			if (cursorString != null && cursorString != "") {
-				cursor = Cursor.fromWebSafeString(cursorString);
-				HashMap<String, Object> extensionMap = new HashMap<String, Object>();
-				extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
-				query.setExtensions(extensionMap);
+				query = query.startAt(Cursor.fromWebSafeString(cursorString));
 			}
 
-			if (limit != null) {
-				query.setRange(0, limit);
+			List<Account> records = new ArrayList<Account>();
+			QueryResultIterator<Account> iterator = query.iterator();
+			int num = 0;
+			while (iterator.hasNext()) {
+				records.add(iterator.next());
+				if (count != null) {
+					num++;
+					if (num == count)
+						break;
+				}
 			}
 
-			execute = (List<Account>) query.execute();
-			cursor = JDOCursorHelper.getCursor(execute);
-			if (cursor != null)
-				cursorString = cursor.toWebSafeString();
-
-			// Tight loop for fetching all entities from datastore and
-			// accomodate
-			// for lazy fetch.
-			for (Account obj : execute)
-				;
-		} finally {
-			mgr.close();
+			// Find the next cursor
+			if (cursorString != null && cursorString != "") {
+				Cursor cursor = iterator.getCursor();
+				if (cursor != null) {
+					cursorString = cursor.toWebSafeString();
+				}
+			}
+			return CollectionResponse.<Account> builder().setItems(records)
+					.setNextPageToken(cursorString).build();
 		}
 
-		return CollectionResponse.<Account> builder().setItems(execute)
-				.setNextPageToken(cursorString).build();
-	}
-
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET
-	 * method.
+	 * This method gets the entity having primary key id. It uses HTTP GET method.
 	 *
-	 * @param id
-	 *            the primary key of the java bean.
+	 * @param id the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getAccount")
 	public Account getAccount(@Named("id") Long id) {
-		PersistenceManager mgr = getPersistenceManager();
-		Account account = null;
-		try {
-			account = mgr.getObjectById(Account.class, id);
-		} finally {
-			mgr.close();
-		}
-		return account;
+		return findRecord(id);
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity
-	 * already exists in the datastore, an exception is thrown. It uses HTTP
-	 * POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity already
+	 * exists in the datastore, an exception is thrown.
+	 * It uses HTTP POST method.
 	 *
-	 * @param account
-	 *            the entity to be inserted.
+	 * @param Account the entity to be inserted.
 	 * @return The inserted entity.
+	 * @throws ConflictException 
 	 */
 	@ApiMethod(name = "insertAccount")
-	public Account insertAccount(Account account) {
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-			if(account.getAccountID() != null)
-			{
-			if (containsAccount(account)) {
-				throw new EntityExistsException("Object already exists");
+	public Account insertAccount(
+			Account Account) throws ConflictException {
+		if (Account.getAccountID() != null) {
+			if (findRecord(Account.getAccountID()) != null) {
+				throw new ConflictException("Object already exists");
 			}
-			}
-			mgr.makePersistent(account);
-		} finally {
-			mgr.close();
 		}
-		return account;
+		ofy().save().entities(Account).now();
+		return Account;
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does
-	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
-	 * method.
+	 * This method is used for updating an existing entity. If the entity does not
+	 * exist in the datastore, an exception is thrown.
+	 * It uses HTTP PUT method.
 	 *
-	 * @param account
-	 *            the entity to be updated.
+	 * @param Account the entity to be updated.
 	 * @return The updated entity.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "updateAccount")
-	public Account updateAccount(Account account) {
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-			if (!containsAccount(account)) {
-				throw new EntityNotFoundException("Object does not exist");
-			}
-			mgr.makePersistent(account);
-		} finally {
-			mgr.close();
+	public Account updateAccount(Account Account) throws NotFoundException {
+		Account record = findRecord(Account.getAccountID());
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
-		return account;
+		ofy().save().entities(Account).now();
+		return Account;
 	}
 
 	/**
-	 * This method removes the entity with primary key id. It uses HTTP DELETE
-	 * method.
+	 * This method removes the entity with primary key id.
+	 * It uses HTTP DELETE method.
 	 *
-	 * @param id
-	 *            the primary key of the entity to be deleted.
+	 * @param id the primary key of the entity to be deleted.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "removeAccount")
-	public void removeAccount(@Named("id") Long id) {
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-			Account account = mgr.getObjectById(Account.class, id);
-			mgr.deletePersistent(account);
-		} finally {
-			mgr.close();
+	public void removeAccount(@Named("id") Long id) throws NotFoundException {
+		Account record = findRecord(id);
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
+		ofy().delete().entity(record).now();
+	}
+	
+
+	private Account findRecord(Long id) {
+		return ofy().load().type(Account.class).id(id).now();
 	}
 
+
 	@ApiMethod(name = "BlockFunds")
-	public void BlockFunds(Account account, @Named("blockamount") double amount) {
+	public void BlockFunds(Account account, @Named("blockamount") double amount) throws NotFoundException {
 		// TODO Auto-generated method stub
 		this.MarkLimit(account, amount);
 	}
 
 	@ApiMethod(name = "ClearEffects")
-	public void ClearEffects(Account account, @Named("amount") double amount) {
+	public void ClearEffects(Account account, @Named("amount") double amount) throws NotFoundException {
 		// TODO Auto-generated method stub
 		account.setClearedBalance(account.getClearedBalance() + amount);
 		this.updateAccount(account);
 	}
 
 	@ApiMethod(name = "CloseAccount")
-	public void CloseAccount(Account account) {
+	public void CloseAccount(Account account) throws NotFoundException {
 		// TODO Auto-generated method stub
 		account.setClosed(true);
 		this.updateAccount(account);
 	}
 
 	@ApiMethod(name = "SetAccountLimitStatus")
-	public void SetAccountLimitStatus(Account acc, @Named("status") AccountLimitStatus status) {
+	public void SetAccountLimitStatus(Account acc, @Named("status") AccountLimitStatus status) throws NotFoundException {
 		// TODO Auto-generated method stub
 		acc.setLimitFlag(status.ordinal());
 		this.updateAccount(acc);
 	}
 
 	@ApiMethod(name = "SetAccountLockStatus")
-	public void SetAccountLockStatus(Account acc,@Named("status")  PassFlag status) {
+	public void SetAccountLockStatus(Account acc,@Named("status")  PassFlag status) throws NotFoundException {
 		// TODO Auto-generated method stub
 		acc.setPassFlag(status.ordinal());
 		this.updateAccount(acc);
 	}
 
 	@ApiMethod(name = "UnBlockFunds")
-	public void UnBlockFunds(Account account, @Named("amount") double amount) {
+	public void UnBlockFunds(Account account, @Named("amount") double amount) throws NotFoundException {
 		// TODO Auto-generated method stub
 		this.MarkLimit(account, amount - 1);
 	}
 
+
 	@ApiMethod(name = "Post")
-	public void Post(Transaction transaction) {
+	public void Post(final Transaction transaction) {
+	    ofy().transact(new VoidWork() {
+	        public void vrun() {
+	        	try {
+					postAtomic(transaction);
+				} catch (NotFoundException | ConflictException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+	    });
+	}
 
-		
-		PersistenceManager mgr = getPersistenceManager();
+
+	private void postAtomic(Transaction transaction) throws NotFoundException, ConflictException {
+
 /*
- * It is not possible to use this per transaction:
-		TransactionOptions options = TransactionOptions.Builder.withXG(true);
-		Transaction txn = datastore.beginTransaction(options);
-		
-		so we use this <property name="datanucleus.appengine.datastoreEnableXGTransactions" value="true"/>
-		for all transactions
+ *Transations
 */
-		javax.jdo.Transaction tx = mgr.currentTransaction();
-		try {
-			tx.begin(); //withXG(true)
-
-
 		Account account = transaction.getAccount();
 		//Step 1: Validate
 		ValidatePost( account,  transaction);
@@ -266,29 +251,19 @@ public class AccountEndpoint {
         }
         else
         {
-            throw new EntityNotFoundException("Back dated transactions not supported");
+            throw new NotFoundException("Back dated transaction posting not supported");
         }
 
      // Step 4 - Persist.
         updateAccount(account);
         
-        tx.commit();
-		}
-		finally
-		{
-			if(tx.isActive())
-			{
-				tx.rollback();
-			}
-		}
 	}
 	
-
-	private void ValidatePost(Account account, Transaction transaction)
+	private void ValidatePost(Account account, Transaction transaction) throws NotFoundException
 	{
 		if (account.getClosed())
-			throw new EntityNotFoundException("Account closed");
-		if(transaction == null) throw new EntityNotFoundException("transaction is null");
+			throw new NotFoundException("Account closed");
+		if(transaction == null) throw new NotFoundException("transaction is null");
 
         // Step 1 - See if we can post into this account by looking at lock and limit flags.
         double AmountAvailableOnUncleared = account.getBookBalance() - account.getLimit();
@@ -331,27 +306,11 @@ public class AccountEndpoint {
         }
 
 	}
-	private boolean containsAccount(Account account) {
-		return containsAccount(account.getAccountID());
-	}
 
-	private boolean containsAccount(long accountID) {
-		PersistenceManager mgr = getPersistenceManager();
-		boolean contains = true;
-		try {
-			mgr.getObjectById(Account.class, accountID);
-		} catch (javax.jdo.JDOObjectNotFoundException ex) {
-			contains = false;
-		} finally {
-			mgr.close();
-		}
-		return contains;
-	}
-
-	private void ValidateLimit(Account account, double amount)
+	private void ValidateLimit(Account account, double amount) throws NotFoundException
 	{
 		if (account.getClosed())
-			throw new EntityNotFoundException("Account closed");
+			throw new NotFoundException("Account closed");
 
 		// check that funds are available after limiting
 		AccountLimitStatus limistatus = AccountLimitStatus.values()[ account.getLimitFlag()];
@@ -365,7 +324,7 @@ public class AccountEndpoint {
 
 		// check 1 - Lock status
 		if ((lockstatus == PassFlag.Locked))
-			throw new EntityNotFoundException(
+			throw new NotFoundException(
 					String.format(
 							"Cannot mark limit to account [{0}].\nAccount lock status =[{1}]",
 							account.getAccountID(), lockstatus));
@@ -374,53 +333,37 @@ public class AccountEndpoint {
 		if ((limistatus == AccountLimitStatus.AllLimitsProhibited)
 				|| (limistatus == AccountLimitStatus.LimitForBlockingProhibited && limit > 0)
 				|| (limistatus == AccountLimitStatus.LimitForAdvanceProhibited && limit < 0))
-			throw new EntityNotFoundException(
+			throw new NotFoundException(
 					String.format(
 							"Cannot mark limit to account [{0}].\nMarking limits prohibited, limit status =[{1}]",
 							account.getAccountID(), limistatus));
 
 		if (limistatus == AccountLimitStatus.LimitsAllowed
 				&& AvailableBalanceAfterApplyingLimit < 0)
-			throw new EntityNotFoundException(
+			throw new NotFoundException(
 					String.format(
 							"Cannot block funds[{0}] on Acount[{1}]. There are not enough funds to block. Available balance[{2}] is below zero. ",
 							amount, account.getAccountID(),
 							AvailableBalanceAfterApplyingLimit));
 
 	}
-	private void MarkLimit(Account account, double amount)
+	private void MarkLimit(Account account, double amount) throws NotFoundException
 
 	{
 		// Step 1 - Block funds mean making funds unavailable
 		// funds are made unavailable by increasing the limit.
 
 		// Handle as ACID
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-
-			javax.jdo.Transaction tx = mgr.currentTransaction();
-			try {
-				tx.begin();
 				//validate
 				ValidateLimit( account,  amount);
 				
 				// Data access component declarations.
 				account.setLimit(account.getLimit() + amount);
+				
 				// updateAccount( account);
-				mgr.makePersistent(account);
-				tx.commit();
-			} finally {
-				if (tx.isActive()) {
-					tx.rollback();
-				}
-			}
-		} finally {
-			mgr.close();
-		}
+				updateAccount(account);
+
 	}
 
-	private static PersistenceManager getPersistenceManager() {
-		return PMF.get().getPersistenceManager();
-	}
 
 }

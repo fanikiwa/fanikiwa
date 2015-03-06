@@ -1,22 +1,25 @@
 package com.sp.fanikiwa.api;
 
-import com.sp.fanikiwa.entity.EMF;
-import com.sp.fanikiwa.entity.ValueDatedTransaction;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.datanucleus.query.JPACursorHelper;
+import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.cmd.Query;
 
+import static com.sp.fanikiwa.api.OfyService.ofy;
+
+import com.sp.fanikiwa.entity.ValueDatedTransaction;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 @Api(name = "valuedatedtransactionendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class ValueDatedTransactionEndpoint {
@@ -32,42 +35,37 @@ public class ValueDatedTransactionEndpoint {
 	@ApiMethod(name = "listValueDatedTransaction")
 	public CollectionResponse<ValueDatedTransaction> listValueDatedTransaction(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("count") Integer count) {
 
-		EntityManager mgr = null;
-		Cursor cursor = null;
-		List<ValueDatedTransaction> execute = null;
-
-		try {
-			mgr = getEntityManager();
-			Query query = mgr
-					.createQuery("select from ValueDatedTransaction as ValueDatedTransaction");
+			Query<ValueDatedTransaction> query = ofy().load().type(ValueDatedTransaction.class);
+			if (count != null)
+				query.limit(count);
 			if (cursorString != null && cursorString != "") {
-				cursor = Cursor.fromWebSafeString(cursorString);
-				query.setHint(JPACursorHelper.CURSOR_HINT, cursor);
+				query = query.startAt(Cursor.fromWebSafeString(cursorString));
 			}
 
-			if (limit != null) {
-				query.setFirstResult(0);
-				query.setMaxResults(limit);
+			List<ValueDatedTransaction> records = new ArrayList<ValueDatedTransaction>();
+			QueryResultIterator<ValueDatedTransaction> iterator = query.iterator();
+			int num = 0;
+			while (iterator.hasNext()) {
+				records.add(iterator.next());
+				if (count != null) {
+					num++;
+					if (num == count)
+						break;
+				}
 			}
 
-			execute = (List<ValueDatedTransaction>) query.getResultList();
-			cursor = JPACursorHelper.getCursor(execute);
-			if (cursor != null)
-				cursorString = cursor.toWebSafeString();
-
-			// Tight loop for fetching all entities from datastore and accomodate
-			// for lazy fetch.
-			for (ValueDatedTransaction obj : execute)
-				;
-		} finally {
-			mgr.close();
+			// Find the next cursor
+			if (cursorString != null && cursorString != "") {
+				Cursor cursor = iterator.getCursor();
+				if (cursor != null) {
+					cursorString = cursor.toWebSafeString();
+				}
+			}
+			return CollectionResponse.<ValueDatedTransaction> builder().setItems(records)
+					.setNextPageToken(cursorString).build();
 		}
-
-		return CollectionResponse.<ValueDatedTransaction> builder()
-				.setItems(execute).setNextPageToken(cursorString).build();
-	}
 
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET method.
@@ -77,14 +75,7 @@ public class ValueDatedTransactionEndpoint {
 	 */
 	@ApiMethod(name = "getValueDatedTransaction")
 	public ValueDatedTransaction getValueDatedTransaction(@Named("id") Long id) {
-		EntityManager mgr = getEntityManager();
-		ValueDatedTransaction valuedatedtransaction = null;
-		try {
-			valuedatedtransaction = mgr.find(ValueDatedTransaction.class, id);
-		} finally {
-			mgr.close();
-		}
-		return valuedatedtransaction;
+		return findRecord(id);
 	}
 
 	/**
@@ -94,19 +85,17 @@ public class ValueDatedTransactionEndpoint {
 	 *
 	 * @param valuedatedtransaction the entity to be inserted.
 	 * @return The inserted entity.
+	 * @throws ConflictException 
 	 */
 	@ApiMethod(name = "insertValueDatedTransaction")
 	public ValueDatedTransaction insertValueDatedTransaction(
-			ValueDatedTransaction valuedatedtransaction) {
-		EntityManager mgr = getEntityManager();
-		try {
-			if (containsValueDatedTransaction(valuedatedtransaction)) {
-				throw new EntityExistsException("Object already exists");
+			ValueDatedTransaction valuedatedtransaction) throws ConflictException {
+		if (valuedatedtransaction.getTransactionID() != null) {
+			if (findRecord(valuedatedtransaction.getTransactionID()) != null) {
+				throw new ConflictException("Object already exists");
 			}
-			mgr.persist(valuedatedtransaction);
-		} finally {
-			mgr.close();
 		}
+		ofy().save().entities(valuedatedtransaction).now();
 		return valuedatedtransaction;
 	}
 
@@ -117,19 +106,16 @@ public class ValueDatedTransactionEndpoint {
 	 *
 	 * @param valuedatedtransaction the entity to be updated.
 	 * @return The updated entity.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "updateValueDatedTransaction")
 	public ValueDatedTransaction updateValueDatedTransaction(
-			ValueDatedTransaction valuedatedtransaction) {
-		EntityManager mgr = getEntityManager();
-		try {
-			if (!containsValueDatedTransaction(valuedatedtransaction)) {
-				throw new EntityNotFoundException("Object does not exist");
-			}
-			mgr.persist(valuedatedtransaction);
-		} finally {
-			mgr.close();
+			ValueDatedTransaction valuedatedtransaction) throws NotFoundException {
+		ValueDatedTransaction record = findRecord(valuedatedtransaction.getTransactionID());
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
+		ofy().save().entities(valuedatedtransaction).now();
 		return valuedatedtransaction;
 	}
 
@@ -138,37 +124,20 @@ public class ValueDatedTransactionEndpoint {
 	 * It uses HTTP DELETE method.
 	 *
 	 * @param id the primary key of the entity to be deleted.
+	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "removeValueDatedTransaction")
-	public void removeValueDatedTransaction(@Named("id") Long id) {
-		EntityManager mgr = getEntityManager();
-		try {
-			ValueDatedTransaction valuedatedtransaction = mgr.find(
-					ValueDatedTransaction.class, id);
-			mgr.remove(valuedatedtransaction);
-		} finally {
-			mgr.close();
+	public void removeValueDatedTransaction(@Named("id") Long id) throws NotFoundException {
+		ValueDatedTransaction record = findRecord(id);
+		if (record == null) {
+			throw new NotFoundException("Record does not exist");
 		}
+		ofy().delete().entity(record).now();
 	}
+	
 
-	private boolean containsValueDatedTransaction(
-			ValueDatedTransaction valuedatedtransaction) {
-		EntityManager mgr = getEntityManager();
-		boolean contains = true;
-		try {
-			ValueDatedTransaction item = mgr.find(ValueDatedTransaction.class,
-					valuedatedtransaction.getTransactionID());
-			if (item == null) {
-				contains = false;
-			}
-		} finally {
-			mgr.close();
-		}
-		return contains;
-	}
-
-	private static EntityManager getEntityManager() {
-		return EMF.get().createEntityManager();
+	private ValueDatedTransaction findRecord(Long id) {
+		return ofy().load().type(ValueDatedTransaction.class).id(id).now();
 	}
 
 }

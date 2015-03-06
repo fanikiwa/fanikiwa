@@ -12,7 +12,7 @@ public class Coa {
 	 @PrimaryKey
         @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
         Long  id;
-@Persistent
+
 	private String description;
 
 	public Coa() {

@@ -41,7 +41,7 @@
             "type" : "string",
             "required" : false
           },
-          "limit" : {
+          "count" : {
             "type" : "int32",
             "required" : false
           }
