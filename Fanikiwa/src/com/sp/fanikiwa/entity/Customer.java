@@ -9,42 +9,44 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.datanucleus.annotations.Unowned;
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Load;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Customer   {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	 @Id
         Long customerId;
-@Persistent
+
 	private String address;
-@Persistent
+
 	private String billToAddress;
-@Persistent
+
 	private String billToEmail;
-@Persistent
+
 	private String billToName;
-@Persistent
+
 	private String billToTelephone;
-@Persistent
+
 	private String branch;
 
-	@Persistent
+	
 	private Date createdDate;
-@Persistent
+
 	private String customerNo;
-@Persistent
+
 	private String email;
-@Persistent
+
 	private Long memberId;
-@Persistent
+
 	private String name;
 
-@Persistent
+
 	private String telephone;
-@Persistent
-@Unowned
-    private Organization organization;
+
+	@Load Ref<Organization> organization;
 
 	public Customer() {
 	}
@@ -146,11 +148,11 @@ public class Customer   {
 	}
 
 	public Organization getOrganization() {
-		return this.organization;
+		return this.organization.get();
 	}
 
 	public void setOrganization(Organization organization) {
-		this.organization = organization;
+		this.organization = Ref.create(organization);
 	}
 
 	public String getTelephone() {

@@ -1,28 +1,22 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.List;
+import java.util.Set;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
- 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+
+@Entity
 public class Organization  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
         Long  organizationID;
-@Persistent
-	private String andress;
-@Persistent
-	private String email;
-@Persistent
-	private String name;
 
-@Persistent
-    private List<Customer> customers; 
+	private String andress;
+	private String email;
+	private String name;
+  //  private List<Key<Customer>> customers; 
+    
 	public Organization() {
 	}
 
@@ -58,26 +52,26 @@ public class Organization  {
 		this.name = name;
 	}
 
-	public List<Customer> getCustomers()
-	{
-		return this.customers;
-	}
-	public void setCustomers(List<Customer> customers)
-	{
-		this.customers=customers;
-	}
-	public Customer addCustomer(Customer customer)
-	{
-		getCustomers().add(customer);
-		customer.setOrganization(this);
-		return customer;
-	}
-
-	public Customer removeCustomer(Customer customer)
-	{
-		getCustomers().remove(customer);
-		customer.setOrganization(null);
-		return customer;
-	}
+//	public List<Customer> getCustomers()
+//	{
+//		return this.customers;
+//	}
+//	public void setCustomers(List<Customer> customers)
+//	{
+//		this.customers=customers;
+//	}
+//	public Customer addCustomer(Customer customer)
+//	{
+//		getCustomers().add(customer);
+//		customer.setOrganization(this);
+//		return customer;
+//	}
+//
+//	public Customer removeCustomer(Customer customer)
+//	{
+//		getCustomers().remove(customer);
+//		customer.setOrganization(null);
+//		return customer;
+//	}
 
 }

@@ -1,99 +1,91 @@
 package com.sp.fanikiwa.entity;
 
-import java.util.List;
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Load;
 
-
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
- 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class TransactionType  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+@Id
         Long transactionTypeID;
-@Persistent
+
 	private boolean absolute;
 
-	@Persistent
+	
 	private String amountExpression;
-@Persistent
+
 	private boolean canSuspend;
-@Persistent
+
 	private boolean chargeCommission;
-@Persistent
+
 	private boolean chargeCommissionToTransaction;
-@Persistent
+
 	private String chargeWho;
-@Persistent
+
 	private String commComputationMethod;
-@Persistent
+
 	private double commissionAmount;
 
-	@Persistent
+	
 	private String commissionAmountExpression;
-@Persistent
+
 	private String commissionContraNarrative;
-@Persistent
+
 	private Long commissionCrAccount;
-@Persistent
+
 	private Long commissionDrAccount;
-@Persistent
+
 	private boolean commissionDrAnotherAccount;
-@Persistent
+
 	private String commissionMainNarrative;
-@Persistent
+
 	private short commissionNarrativeFlag;
-@Persistent
+
 	private Long commissionTransactionType;
-@Persistent
+
 	private String crCommCalcMethod;
-@Persistent
+
 	private String debitCredit;
-@Persistent
+
 	private double defaultAmount;
-@Persistent
+
 	private Long defaultContraAccount;
-@Persistent
+
 	private String defaultContraNarrative;
-@Persistent
+
 	private Long defaultMainAccount;
-@Persistent
+
 	private String defaultMainNarrative;
-@Persistent
+
 	private String description;
-@Persistent
+
 	private short dialogFlag;
-@Persistent
+
 	private String drCommCalcMethod;
-@Persistent
+
 	private boolean forcePost;
-@Persistent
+
 	private short narrativeFlag;
 
-@Persistent
+
 	private String shortCode;
-@Persistent
+
 	private String statFlag;
-@Persistent
+
 	private Long suspenseCrAccount;
-@Persistent
+
 	private Long suspenseDrAccount;
-@Persistent
+
 	private Long tieredTableId;
-@Persistent
+
 	private short txnClass;
-@Persistent
+
 	private short txnTypeView;
-@Persistent
+
 	private short valueDateOffset;
 
-@Persistent
-    private List<Transaction> transaction;
 
 	public TransactionType() {
 	}
@@ -393,15 +385,6 @@ public class TransactionType  {
 	public void setValueDateOffset(short valueDateOffset) {
 		this.valueDateOffset = valueDateOffset;
 	}
-
-	public List<Transaction> getTransaction() {
-		return this.transaction;
-	}
-
-	public void setTransaction(List<Transaction> transaction) {
-		this.transaction = transaction;
-	}
-
 
 
 }

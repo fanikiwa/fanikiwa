@@ -164,7 +164,7 @@ public class AccountEndpoint {
 	}
 
 	@ApiMethod(name = "BlockFunds")
-	public void BlockFunds(Account account, @Named("amount") double amount) {
+	public void BlockFunds(Account account, @Named("blockamount") double amount) {
 		// TODO Auto-generated method stub
 		this.MarkLimit(account, amount);
 	}
@@ -226,7 +226,9 @@ public class AccountEndpoint {
 		ValidatePost( account,  transaction);
 		
 		// Step 2 - Insert new transaction.
-        account.addTransaction(transaction);
+        ///TODO Confirm this is legal/best practice
+        TransactionEndpoint txn = new TransactionEndpoint();
+        txn.insertTransaction(transaction);
 
         // Step 3 - Update balance and value date.
         //On Before Book Balance Changed
@@ -259,7 +261,8 @@ public class AccountEndpoint {
             vt.setValueDate ( transaction.getValueDate());
 
             //persist vt
-            account.addValueDatedTransaction(vt);
+            ValueDatedTransactionEndpoint vtxn = new ValueDatedTransactionEndpoint();
+            vtxn.insertValueDatedTransaction(vt);
         }
         else
         {

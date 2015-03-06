@@ -1,74 +1,65 @@
 package com.sp.fanikiwa.entity;
 
 
-import java.util.List;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Load;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Account {
 
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long accountID;
+	 @Id Long accountID;
            
-@Persistent
+
 	private String accountName;
 
-@Persistent
+
 	private String accountNo;
 
-@Persistent
+
 	private double accruedInt;
-@Persistent
+
 	private double bal30;
-@Persistent
+
 	private double bal60;
-@Persistent
+
 	private double bal90;
-@Persistent
+
 	private double balOver90;
-@Persistent
+
 	private double bookBalance;
-@Persistent
+
 	private String branch;
-@Persistent
+
 	private double clearedBalance;
-@Persistent
+
 	private boolean closed;
-@Persistent
-	private long COAId;
-@Persistent
-	private long customerId;
-@Persistent
+
 	private double interestRate;
-@Persistent
+
 	private double intRate30;
-@Persistent
+
 	private double intRate60;
-@Persistent
+
 	private double intRate90;
-@Persistent
+
 	private double intRateOver90;
-@Persistent
+
 	private double limit;
-@Persistent
+
 	private int limitCheckFlag;
-@Persistent
+
 	private int limitFlag;
-@Persistent
+
 	private int passFlag;
 
-@Persistent
-	private AccountType accounttype;
-@Persistent
-	private List<Transaction> transaction;
-@Persistent
-private List<ValueDatedTransaction> valueDatedTransaction;
+//Foreign Keys
+	@Index Ref<Customer> customer;
+	@Index Ref<Coa> coa;
+	@Index Ref<AccountType> accounttype;
+
 	public Account() {
 	}
 
@@ -168,22 +159,6 @@ private List<ValueDatedTransaction> valueDatedTransaction;
 		this.closed = closed;
 	}
 
-	public long getCOAId() {
-		return this.COAId;
-	}
-
-	public void setCOAId(int COAId) {
-		this.COAId = COAId;
-	}
-
-	public long getCustomerId() {
-		return this.customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
 	public double getInterestRate() {
 		return this.interestRate;
 	}
@@ -255,58 +230,30 @@ private List<ValueDatedTransaction> valueDatedTransaction;
 	public void setPassFlag(int i) {
 		this.passFlag = i;
 	}
+	
+	//Foreign Keys
 
+	public Coa getCoa() {
+		return this.coa.get();
+	}
+
+	public void setCoa(Coa coa) {
+		this.coa = Ref.create(coa);
+	}
+
+	public Customer getCustomer() {
+		return this.customer.get();
+	}
+
+	public void setCustomerId(Customer customer) {
+		this.customer = Ref.create(customer);
+	}
 	public AccountType getAccounttype() {
-		return this.accounttype;
+		return this.accounttype.get();
 	}
 
 	public void setAccounttype(AccountType accounttype) {
-		this.accounttype = accounttype;
-	}
-
-	public List<Transaction> getTransaction() {
-		return this.transaction;
-	}
-
-	public void setTransaction(List<Transaction> transaction) {
-		this.transaction = transaction;
-	}
-
-	public Transaction addTransaction(Transaction transaction) {
-		getTransaction().add(transaction);
-		transaction.setAccount(this);
-
-		return transaction;
-	}
-
-	public Transaction removeTransaction(Transaction transaction) {
-		getTransaction().remove(transaction);
-		transaction.setAccount(null);
-
-		return transaction;
-	}
-	
-	//ValueDatedTransaction
-	public List<ValueDatedTransaction> getValueDatedTransaction() {
-		return this.valueDatedTransaction;
-	}
-
-	public void setValueDatedTransaction(List<ValueDatedTransaction> valueDatedTransaction) {
-		this.valueDatedTransaction = valueDatedTransaction;
-	}
-
-	public ValueDatedTransaction addValueDatedTransaction(ValueDatedTransaction valueDatedTransaction) {
-		getValueDatedTransaction().add(valueDatedTransaction);
-		valueDatedTransaction.setAccount(this);
-
-		return valueDatedTransaction;
-	}
-
-	public ValueDatedTransaction removeValueDatedTransaction(ValueDatedTransaction valueDatedTransaction) {
-		getValueDatedTransaction().remove(valueDatedTransaction);
-		valueDatedTransaction.setAccount(null);
-
-		return valueDatedTransaction;
+		this.accounttype = Ref.create(accounttype);
 	}
 
 }

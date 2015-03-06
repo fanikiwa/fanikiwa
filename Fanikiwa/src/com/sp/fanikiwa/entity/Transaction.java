@@ -1,50 +1,48 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
- 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Load;
+
+@Entity
 public class Transaction  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  transactionID;
-@Persistent
+	 @Id
+	 Long  transactionID;
+
 	private double amount;
-@Persistent
+
 	private String authorizer;
-@Persistent
+
 	private String contraReference;
-@Persistent
+
 	private boolean forcePostFlag;
 
-	@Persistent
+	
 	private String narrative;
 
-	@Persistent
+	
 	private Date postDate;
 
-	@Persistent
+	
 	private Date recordDate;
-@Persistent
+
 	private String reference;
-@Persistent
+
 	private String statementFlag;
-@Persistent
+
 	private String userID;
 
-	@Persistent
+	
 	private Date valueDate;
 
-	@Persistent
-	private Account account;
-
-	@Persistent
-	private TransactionType transactionType;
+	//Foreign keys
+	@Index Ref<Account> account;
+	@Index Ref<TransactionType> transactionType;
 
 	public Transaction() {
 	}
@@ -146,19 +144,19 @@ public class Transaction  {
 	}
 
 	public Account getAccount() {
-		return this.account;
+		return this.account.get();
 	}
 
 	public void setAccount(Account account) {
-		this.account = account;
+		this.account = Ref.create(account);
 	}
 
 	public TransactionType getTransactionType() {
-		return this.transactionType;
+		return this.transactionType.get();
 	}
 
 	public void setTransactionType(TransactionType transactionType) {
-		this.transactionType = transactionType;
+		this.transactionType = Ref.create(transactionType);
 	}
 
 }

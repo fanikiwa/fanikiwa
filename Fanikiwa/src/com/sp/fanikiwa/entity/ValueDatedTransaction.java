@@ -1,59 +1,55 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
- 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Load;
+
+@Entity
 public class ValueDatedTransaction  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  transactionID;
-@Persistent
+	 @Id
+	 Long  transactionID;
+
 	private double amount;
-@Persistent
+
 	private String authorizer;
-@Persistent
+
 	private String contraReference;
-@Persistent
+
 	private boolean forcePostFlag;
 
-	@Persistent
+	
 	private String narrative;
 
-	@Persistent
+	
 	private Date postDate;
 
-	@Persistent
+	
 	private Date recordDate;
-@Persistent
+
 	private String reference;
-@Persistent
+
 	private String statementFlag;
-@Persistent
+
 	private String userID;
 
-	@Persistent
+	
 	private Date valueDate;
 
-	@Persistent
-	private Account account;
-
-	@Persistent
-	private TransactionType transactiontype;
+	//Foreign keys
+	@Load Ref<Account> account;
+	@Load Ref<TransactionType> transactionType;
 
 	public ValueDatedTransaction() {
 	}
 
-	public long getTransactionID() {
+	public Long getTransactionID() {
 		return this.transactionID;
 	}
 
-	public void setTransactionID(long transactionID) {
+	public void setTransactionID(Long transactionID) {
 		this.transactionID = transactionID;
 	}
 
@@ -146,21 +142,19 @@ public class ValueDatedTransaction  {
 	}
 
 	public Account getAccount() {
-		return this.account;
+		return this.account.get();
 	}
 
 	public void setAccount(Account account) {
-		this.account = account;
+		this.account = Ref.create(account);
 	}
 
 	public TransactionType getTransactionType() {
-		return this.transactiontype;
+		return this.transactionType.get();
 	}
 
-	public void setTransactionType(TransactionType transactiontype) {
-		this.transactiontype = transactiontype;
+	public void setTransactionType(TransactionType transactionType) {
+		this.transactionType = Ref.create(transactionType);
 	}
-
-	
 
 }
