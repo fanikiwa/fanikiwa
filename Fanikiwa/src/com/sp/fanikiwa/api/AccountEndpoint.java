@@ -4,6 +4,8 @@ import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.AccountLimitStatus;
+import com.sp.fanikiwa.entity.DoubleEntry;
+import com.sp.fanikiwa.entity.MultiEntry;
 import com.sp.fanikiwa.entity.PassFlag;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
@@ -21,6 +23,7 @@ import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,40 +45,42 @@ public class AccountEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-			Query<Account> query = ofy().load().type(Account.class);
-			if (count != null)
-				query.limit(count);
-			if (cursorString != null && cursorString != "") {
-				query = query.startAt(Cursor.fromWebSafeString(cursorString));
-			}
-
-			List<Account> records = new ArrayList<Account>();
-			QueryResultIterator<Account> iterator = query.iterator();
-			int num = 0;
-			while (iterator.hasNext()) {
-				records.add(iterator.next());
-				if (count != null) {
-					num++;
-					if (num == count)
-						break;
-				}
-			}
-
-			// Find the next cursor
-			if (cursorString != null && cursorString != "") {
-				Cursor cursor = iterator.getCursor();
-				if (cursor != null) {
-					cursorString = cursor.toWebSafeString();
-				}
-			}
-			return CollectionResponse.<Account> builder().setItems(records)
-					.setNextPageToken(cursorString).build();
+		Query<Account> query = ofy().load().type(Account.class);
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
 		}
 
+		List<Account> records = new ArrayList<Account>();
+		QueryResultIterator<Account> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			records.add(iterator.next());
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<Account> builder().setItems(records)
+				.setNextPageToken(cursorString).build();
+	}
+
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET method.
+	 * This method gets the entity having primary key id. It uses HTTP GET
+	 * method.
 	 *
-	 * @param id the primary key of the java bean.
+	 * @param id
+	 *            the primary key of the java bean.
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getAccount")
@@ -84,17 +89,17 @@ public class AccountEndpoint {
 	}
 
 	/**
-	 * This inserts a new entity into App Engine datastore. If the entity already
-	 * exists in the datastore, an exception is thrown.
-	 * It uses HTTP POST method.
+	 * This inserts a new entity into App Engine datastore. If the entity
+	 * already exists in the datastore, an exception is thrown. It uses HTTP
+	 * POST method.
 	 *
-	 * @param Account the entity to be inserted.
+	 * @param Account
+	 *            the entity to be inserted.
 	 * @return The inserted entity.
-	 * @throws ConflictException 
+	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertAccount")
-	public Account insertAccount(
-			Account Account) throws ConflictException {
+	public Account insertAccount(Account Account) throws ConflictException {
 		if (Account.getAccountID() != null) {
 			if (findRecord(Account.getAccountID()) != null) {
 				throw new ConflictException("Object already exists");
@@ -105,13 +110,14 @@ public class AccountEndpoint {
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does not
-	 * exist in the datastore, an exception is thrown.
-	 * It uses HTTP PUT method.
+	 * This method is used for updating an existing entity. If the entity does
+	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
+	 * method.
 	 *
-	 * @param Account the entity to be updated.
+	 * @param Account
+	 *            the entity to be updated.
 	 * @return The updated entity.
-	 * @throws NotFoundException 
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "updateAccount")
 	public Account updateAccount(Account Account) throws NotFoundException {
@@ -124,11 +130,12 @@ public class AccountEndpoint {
 	}
 
 	/**
-	 * This method removes the entity with primary key id.
-	 * It uses HTTP DELETE method.
+	 * This method removes the entity with primary key id. It uses HTTP DELETE
+	 * method.
 	 *
-	 * @param id the primary key of the entity to be deleted.
-	 * @throws NotFoundException 
+	 * @param id
+	 *            the primary key of the entity to be deleted.
+	 * @throws NotFoundException
 	 */
 	@ApiMethod(name = "removeAccount")
 	public void removeAccount(@Named("id") Long id) throws NotFoundException {
@@ -138,188 +145,216 @@ public class AccountEndpoint {
 		}
 		ofy().delete().entity(record).now();
 	}
-	
 
 	private Account findRecord(Long id) {
 		return ofy().load().type(Account.class).id(id).now();
 	}
-
-
+  
 	@ApiMethod(name = "BlockFunds")
-	public void BlockFunds(Account account, @Named("blockamount") double amount) throws NotFoundException {
-		// TODO Auto-generated method stub
-		this.MarkLimit(account, amount);
+	public void BlockFunds(Account account, @Named("blockamount") double amount)
+			throws NotFoundException {
+		Account acc = findRecord(account.getAccountID());
+		this.MarkLimit(acc, amount);
 	}
 
 	@ApiMethod(name = "ClearEffects")
-	public void ClearEffects(Account account, @Named("amount") double amount) throws NotFoundException {
-		// TODO Auto-generated method stub
-		account.setClearedBalance(account.getClearedBalance() + amount);
-		this.updateAccount(account);
+	public void ClearEffects(Account account, @Named("amount") double amount)
+			throws NotFoundException {
+		Account acc = findRecord(account.getAccountID());
+		acc.setClearedBalance(account.getClearedBalance() + amount);
+		this.updateAccount(acc);
 	}
 
 	@ApiMethod(name = "CloseAccount")
 	public void CloseAccount(Account account) throws NotFoundException {
-		// TODO Auto-generated method stub
-		account.setClosed(true);
-		this.updateAccount(account);
+		Account acc = findRecord(account.getAccountID());
+		acc.setClosed(true);
+		this.updateAccount(acc);
 	}
 
 	@ApiMethod(name = "SetAccountLimitStatus")
-	public void SetAccountLimitStatus(Account acc, @Named("status") AccountLimitStatus status) throws NotFoundException {
-		// TODO Auto-generated method stub
+	public void SetAccountLimitStatus(Account account,
+			@Named("status") AccountLimitStatus status)
+			throws NotFoundException {
+		Account acc = findRecord(account.getAccountID());
 		acc.setLimitFlag(status.ordinal());
 		this.updateAccount(acc);
 	}
 
 	@ApiMethod(name = "SetAccountLockStatus")
-	public void SetAccountLockStatus(Account acc,@Named("status")  PassFlag status) throws NotFoundException {
-		// TODO Auto-generated method stub
+	public void SetAccountLockStatus(Account account,
+			@Named("status") PassFlag status) throws NotFoundException {
+		Account acc = findRecord(account.getAccountID());
 		acc.setPassFlag(status.ordinal());
 		this.updateAccount(acc);
 	}
 
 	@ApiMethod(name = "UnBlockFunds")
-	public void UnBlockFunds(Account account, @Named("amount") double amount) throws NotFoundException {
-		// TODO Auto-generated method stub
-		this.MarkLimit(account, amount - 1);
+	public void UnBlockFunds(Account account, @Named("amount") double amount)
+			throws NotFoundException {
+		Account acc = findRecord(account.getAccountID());
+		this.MarkLimit(acc, amount * -1);
 	}
 
+	@ApiMethod(name = "BatchPost")
+	public void BatchPost(final MultiEntry multiEntry) {
+		ofy().transact(new VoidWork() {
+			public void vrun() {
+				for (Transaction transaction : multiEntry.getTransactions()) {
+					Post(transaction);
+				}
+
+			}
+		});
+	}
+
+	@ApiMethod(name = "DoubleEntryPost")
+	public void DoubleEntryPost(final DoubleEntry doubleEntry) {
+		ofy().transact(new VoidWork() {
+			public void vrun() {
+				Post(doubleEntry.getDr());
+				Post(doubleEntry.getCr());
+			}
+		});
+	}
 
 	@ApiMethod(name = "Post")
 	public void Post(final Transaction transaction) {
-	    ofy().transact(new VoidWork() {
-	        public void vrun() {
-	        	try {
+		ofy().transact(new VoidWork() {
+			public void vrun() {
+				try {
 					postAtomic(transaction);
 				} catch (NotFoundException | ConflictException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	        }
-	    });
+			}
+		});
 	}
 
+	private void postAtomic(Transaction transaction) throws NotFoundException,
+			ConflictException {
 
-	private void postAtomic(Transaction transaction) throws NotFoundException, ConflictException {
+		Account account = findRecord(transaction.getAccount().getAccountID());
+		// Step 1: Validate
+		ValidatePost(account, transaction);
 
-/*
- *Transations
-*/
-		Account account = transaction.getAccount();
-		//Step 1: Validate
-		ValidatePost( account,  transaction);
-		
 		// Step 2 - Insert new transaction.
-        ///TODO Confirm this is legal/best practice
-        TransactionEndpoint txn = new TransactionEndpoint();
-        txn.insertTransaction(transaction);
+		// /TODO Confirm this is legal/best practice
+		TransactionEndpoint txn = new TransactionEndpoint();
+		txn.insertTransaction(transaction);
 
-        // Step 3 - Update balance and value date.
-        //On Before Book Balance Changed
-        account.setBookBalance( account.getBookBalance()+ transaction.getAmount());
+		// Step 3 - Update balance and value date.
+		// On Before Book Balance Changed
+		account.setBookBalance(account.getBookBalance()
+				+ transaction.getAmount());
 
-        //If postdate == valuedate clear the funds immediately
-        if (transaction.getValueDate() == transaction.getPostDate())
-        {
-            //On Before Cleared Balance Changed
-            //StaticPostingComponent.ClearEffects(Account account, decimal amount)
-            account.setClearedBalance( account.getClearedBalance()+ transaction.getAmount());
-        }
-        else if (transaction.getValueDate().after(transaction.getPostDate()))
-        {
-            //this is a value dated transaction, 
-            //enter a valuedated diary record if a diary 
+		// If postdate == valuedate clear the funds immediately
+		if (transaction.getValueDate() == transaction.getPostDate()) {
+			// On Before Cleared Balance Changed
+			// StaticPostingComponent.ClearEffects(Account account, decimal
+			// amount)
+			account.setClearedBalance(account.getClearedBalance()
+					+ transaction.getAmount());
+		} else if (transaction.getValueDate().after(transaction.getPostDate())) {
+			// this is a value dated transaction,
+			// enter a valuedated diary record if a diary
 
-            ValueDatedTransaction vt = new ValueDatedTransaction();
-            vt.setAccount( transaction.getAccount());
-            vt.setAmount(transaction.getAmount());
-            vt.setAuthorizer ( transaction.getAuthorizer());
-            vt.setForcePostFlag ( transaction.getForcePostFlag());
-            vt.setNarrative ( transaction.getNarrative());
-            vt.setPostDate ( transaction.getPostDate());
-            vt.setRecordDate ( transaction.getRecordDate());
-            vt.setStatementFlag ( transaction.getStatementFlag());
-            vt.setTransactionID ( transaction.getTransactionID());
-            vt.setTransactionType ( transaction.getTransactionType());
-            vt.setUserID ( transaction.getUserID());
-            vt.setValueDate ( transaction.getValueDate());
+			ValueDatedTransaction vt = new ValueDatedTransaction();
+			vt.setAccount(transaction.getAccount());
+			vt.setAmount(transaction.getAmount());
+			vt.setAuthorizer(transaction.getAuthorizer());
+			vt.setForcePostFlag(transaction.getForcePostFlag());
+			vt.setNarrative(transaction.getNarrative());
+			vt.setPostDate(transaction.getPostDate());
+			vt.setRecordDate(transaction.getRecordDate());
+			vt.setStatementFlag(transaction.getStatementFlag());
+			vt.setTransactionID(transaction.getTransactionID());
+			vt.setTransactionType(transaction.getTransactionType());
+			vt.setUserID(transaction.getUserID());
+			vt.setValueDate(transaction.getValueDate());
 
-            //persist vt
-            ValueDatedTransactionEndpoint vtxn = new ValueDatedTransactionEndpoint();
-            vtxn.insertValueDatedTransaction(vt);
-        }
-        else
-        {
-            throw new NotFoundException("Back dated transaction posting not supported");
-        }
+			// persist vt
+			ValueDatedTransactionEndpoint vtxn = new ValueDatedTransactionEndpoint();
+			vtxn.insertValueDatedTransaction(vt);
+		} else {
+			throw new NotFoundException(
+					"Back dated transaction posting not supported");
+		}
 
-     // Step 4 - Persist.
-        updateAccount(account);
-        
+		// Step 4 - Persist.
+		updateAccount(account);
+
 	}
-	
-	private void ValidatePost(Account account, Transaction transaction) throws NotFoundException
-	{
+
+	private void ValidatePost(Account account, Transaction transaction)
+			throws NotFoundException {
 		if (account.getClosed())
 			throw new NotFoundException("Account closed");
-		if(transaction == null) throw new NotFoundException("transaction is null");
+		if (transaction == null)
+			throw new NotFoundException("transaction is null");
 
-        // Step 1 - See if we can post into this account by looking at lock and limit flags.
-        double AmountAvailableOnUncleared = account.getBookBalance() - account.getLimit();
-        double AmountAvailableAfterTxn = account.getClearedBalance() + transaction.getAmount();
+		// Step 1 - See if we can post into this account by looking at lock and
+		// limit flags.
+		double AmountAvailableOnUncleared = account.getBookBalance()
+				- account.getLimit();
+		double AmountAvailableAfterTxn = account.getClearedBalance()
+				+ transaction.getAmount();
 
-        //get account status
-        AccountLimitStatus limistatus = AccountLimitStatus.values()[ account.getLimitFlag()];
+		// get account status
+		AccountLimitStatus limistatus = AccountLimitStatus.values()[account
+				.getLimitFlag()];
 		PassFlag lockstatus = PassFlag.values()[account.getPassFlag()];
 
-		//transaction type
+		// transaction type
 		TransactionType _TransactionType = transaction.getTransactionType();
 
-        //Do account status tests only if the transaction is not a force post
-        if (!transaction.getForcePostFlag())
-        {
-            //check 1 - Lock status
-            if ((lockstatus == PassFlag.Locked)
-                || (lockstatus == PassFlag.AllPostingProhibited)
-                || (lockstatus == PassFlag.CreditPostingProhibited && _TransactionType.getDebitCredit().equals("C"))
-                || (lockstatus == PassFlag.DebitPostingProhibited && _TransactionType.getDebitCredit().equals("D"))
-                )
-            {
-            	throw new IllegalArgumentException(String.format("Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
-                    account.getAccountID(),
-                    _TransactionType.getTransactionTypeID(),
-                    lockstatus.toString()));
-            }
+		// Do account status tests only if the transaction is not a force post
+		if (!transaction.getForcePostFlag()) {
+			// check 1 - Lock status
+			if ((lockstatus == PassFlag.Locked)
+					|| (lockstatus == PassFlag.AllPostingProhibited)
+					|| (lockstatus == PassFlag.CreditPostingProhibited && _TransactionType
+							.getDebitCredit().equals("C"))
+					|| (lockstatus == PassFlag.DebitPostingProhibited && _TransactionType
+							.getDebitCredit().equals("D"))) {
+				throw new IllegalArgumentException(
+						String.format(
+								"Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
+								account.getAccountID(),
+								_TransactionType.getTransactionTypeID(),
+								lockstatus.toString()));
+			}
 
-            //check 2 - Limit status
-            if ((limistatus == AccountLimitStatus.PostingOverDrawingProhibited && AmountAvailableAfterTxn < 0)
-                || (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed && AmountAvailableOnUncleared < 0)
-                )
-            {
-            	throw new IllegalArgumentException(String.format("Account [{0}] overdraw prohibited, limit status =[{2}]",
-                    account.getAccountID(),
-                    _TransactionType.getTransactionTypeID(),
-                    limistatus.toString()// Enum.GetName(typeof(AccountStatus), limistatus))
-                    ));
-            }
-        }
+			// check 2 - Limit status
+			if ((limistatus == AccountLimitStatus.PostingOverDrawingProhibited && AmountAvailableAfterTxn < 0)
+					|| (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed && AmountAvailableOnUncleared < 0)) {
+				throw new IllegalArgumentException(
+						String.format(
+								"Account [{0}] overdraw prohibited, limit status =[{2}]",
+								account.getAccountID(),
+								_TransactionType.getTransactionTypeID(),
+								limistatus.toString()// Enum.GetName(typeof(AccountStatus),
+														// limistatus))
+						));
+			}
+		}
 
 	}
 
-	private void ValidateLimit(Account account, double amount) throws NotFoundException
-	{
+	private void ValidateLimit(Account account, double amount)
+			throws NotFoundException {
 		if (account.getClosed())
 			throw new NotFoundException("Account closed");
 
 		// check that funds are available after limiting
-		AccountLimitStatus limistatus = AccountLimitStatus.values()[ account.getLimitFlag()];
+		AccountLimitStatus limistatus = AccountLimitStatus.values()[account
+				.getLimitFlag()];
 		PassFlag lockstatus = PassFlag.values()[account.getPassFlag()];
 
 		double AmountAvailable = account.getClearedBalance()
 				- account.getLimit();
-		double AvailableBalanceAfterApplyingLimit = AmountAvailable
-				- amount;
+		double AvailableBalanceAfterApplyingLimit = AmountAvailable - amount;
 		double limit = account.getLimit() + amount;
 
 		// check 1 - Lock status
@@ -347,23 +382,24 @@ public class AccountEndpoint {
 							AvailableBalanceAfterApplyingLimit));
 
 	}
-	private void MarkLimit(Account account, double amount) throws NotFoundException
+
+	private void MarkLimit(Account account, double amount)
+			throws NotFoundException
 
 	{
 		// Step 1 - Block funds mean making funds unavailable
 		// funds are made unavailable by increasing the limit.
 
 		// Handle as ACID
-				//validate
-				ValidateLimit( account,  amount);
-				
-				// Data access component declarations.
-				account.setLimit(account.getLimit() + amount);
-				
-				// updateAccount( account);
-				updateAccount(account);
+		// validate
+		ValidateLimit(account, amount);
+
+		// Data access component declarations.
+		account.setLimit(account.getLimit() + amount);
+
+		// updateAccount( account);
+		updateAccount(account);
 
 	}
-
 
 }

@@ -1,59 +1,56 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Member   {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  memberId;
-@Persistent
+	@Id Long memberId;
+
 	private int currentAccountId;
-@Persistent
-	private int customerId;
 
-	@Persistent
-	private Date dateActivated;
-
-	@Persistent
-	private Date dateJoined;
-
-	@Persistent
+	private int customerId; 
+	
+	private Date dateActivated; 
+	
+	private Date dateJoined; 
+	
 	private Date dateOfBirth;
-@Persistent
-	private String email;
-@Persistent
-	private String gender;
-@Persistent
-	private String informBy;
-@Persistent
-	private int investmentAccountId;
-@Persistent
-	private int loanAccountId;
-@Persistent
-	private int maxRecordsToDisplay;
-@Persistent
-	private String nationalID;
-@Persistent
-	private String otherNames;
 
-	@Persistent
+	private String email;
+
+	private String gender;
+
+	private String informBy;
+
+	private int investmentAccountId;
+
+	private int loanAccountId;
+
+	private int maxRecordsToDisplay;
+
+	private String nationalID;
+
+	private String otherNames; 
+	
 	private String photo;
-@Persistent
+
 	private String pwd;
-@Persistent
+
 	private int refferedBy;
-@Persistent
+
 	private String status;
-@Persistent
+
 	private String surname;
-@Persistent
+
 	private String telephone;
 
 	public Member() {

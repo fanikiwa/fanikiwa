@@ -56,9 +56,9 @@ public class Account {
 	private int passFlag;
 
 //Foreign Keys
-	@Index Ref<Customer> customer;
-	@Index Ref<Coa> coa;
-	@Index Ref<AccountType> accounttype;
+	@Load Ref<Customer> customer;
+//	@Load Ref<Coa> coa;
+//	@Load Ref<AccountType> accounttype;
 
 	public Account() {
 	}
@@ -233,27 +233,27 @@ public class Account {
 	
 	//Foreign Keys
 
-	public Coa getCoa() {
-		return this.coa.get();
-	}
-
-	public void setCoa(Coa coa) {
-		this.coa = Ref.create(coa);
-	}
 
 	public Customer getCustomer() {
 		return this.customer.get();
 	}
 
-	public void setCustomerId(Customer customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = Ref.create(customer);
 	}
-	public AccountType getAccounttype() {
-		return this.accounttype.get();
-	}
-
-	public void setAccounttype(AccountType accounttype) {
-		this.accounttype = Ref.create(accounttype);
-	}
-
+//	public AccountType getAccounttype() {
+//		return this.accounttype.get();
+//	}
+//
+//	public void setAccounttype(AccountType accounttype) {
+//		this.accounttype = Ref.create(accounttype);
+//	}
+//
+//	public Coa getCoa() {
+//		return this.coa.get();
+//	}
+//
+//	public void setCoa(Coa coa) {
+//		this.coa = Ref.create(coa);
+//	}
 }

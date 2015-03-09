@@ -8,7 +8,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.datanucleus.annotations.Unowned;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -17,8 +16,7 @@ import com.googlecode.objectify.annotation.Load;
 @Entity
 public class Customer   {
 	
-	 @Id
-        Long customerId;
+	 @Id Long customerId;
 
 	private String address;
 

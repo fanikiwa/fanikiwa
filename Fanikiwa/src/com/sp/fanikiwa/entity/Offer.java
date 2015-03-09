@@ -2,44 +2,45 @@ package com.sp.fanikiwa.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Offer  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long id;
-@Persistent
+	@Id Long id;
+
 	private BigDecimal amount;
 
-	@Persistent
+	
 	private Date createdDate;
 
-	@Persistent
+	
 	private String description;
-@Persistent
+
 	private Date expiryDate;
-@Persistent
+
 	private double interest;
-@Persistent
+
 	private int memberId;
 
-	@Persistent
+	
 	private String offerees;
-@Persistent
+
 	private String offerType;
-@Persistent
+
 	private byte partialPay;
-@Persistent
+
 	private String publicOffer;
-@Persistent
+
 	private String status;
-@Persistent
+
 	private int term;
 
 	public Offer() {

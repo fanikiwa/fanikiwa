@@ -5,8 +5,8 @@ import com.googlecode.objectify.annotation.Id;
  
 @Entity
 public class Quote {
- @Id
- Long id;
+	
+ @Id Long id;
  String who;
  String what;
  

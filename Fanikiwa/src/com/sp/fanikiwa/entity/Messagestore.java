@@ -1,82 +1,83 @@
 package com.sp.fanikiwa.entity;
 
 import java.math.BigDecimal;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Messagestore  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  id;
+	@Id Long id;
 
-	@Persistent
+	
 	private String amPm;
 
-	@Persistent
+	
 	private String dateReceived;
 
-	@Persistent
+	
 	private String dateSent;
 
-	@Persistent
+	
 	private String firstName;
-@Persistent
+
 	private byte isDeleted;
 
-	@Persistent
+	
 	private String lastName;
 
-	@Persistent
+	
 	private String messageBody;
 
-	@Persistent
+	
 	private String messageIndex;
 
-	@Persistent
+	
 	private String messageStatus;
 
-	@Persistent
+	
 	private String messageType;
-@Persistent
+
 	private BigDecimal mpesaAmount;
-@Persistent
+
 	private BigDecimal mpesaBalance;
 
-	@Persistent
+	
 	private String originatingAddress;
 
-	@Persistent
+	
 	private String originatingAddressType;
 
-	@Persistent
+	
 	private String phoneNo;
-@Persistent
+
 	private byte processed;
 
-	@Persistent
+	
 	private String SCTimestamp;
 
-	@Persistent
+	
 	private String smscAddress;
 
-	@Persistent
+	
 	private String smscAddressType;
 
-	@Persistent
+	
 	private String status;
 
-	@Persistent
+	
 	private String storage;
 
-	@Persistent
+	
 	private String timeSent;
 
-	@Persistent
+	
 	private String userDataText;
 
 	public Messagestore() {

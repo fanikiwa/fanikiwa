@@ -1,23 +1,17 @@
 package com.sp.fanikiwa.entity;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Load;
 
-import com.google.appengine.api.datastore.Key;
-
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class AccountType {
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	Long id;
+	@Id Long id;
 	
-	@Persistent
 	private String description;
-	@Persistent
 	private String shortCode;
 
 	public AccountType() {

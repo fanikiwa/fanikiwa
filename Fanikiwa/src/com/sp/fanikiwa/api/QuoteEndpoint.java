@@ -17,11 +17,11 @@ import com.sp.fanikiwa.entity.Quote;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 import javax.inject.Named;
 
-@Api(name = "quoteEndpoint", version = "v1", namespace = @ApiNamespace(ownerDomain = "api.mindstorm.com", ownerName = "api.mindstorm.com", packagePath = ""))
+@Api(name = "quoteEndpoint",version="v1", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class QuoteEndpoint {
 
 	// Make sure to add this endpoint to your web.xml file if this is a web

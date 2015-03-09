@@ -9,8 +9,7 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class Organization  {
 	
-	@Id
-        Long  organizationID;
+	@Id Long organizationID;
 
 	private String andress;
 	private String email;

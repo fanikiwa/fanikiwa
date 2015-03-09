@@ -1,29 +1,28 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Mailinggroup  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  groupId;
-
-	@Persistent
+	@Id Long groupId; 
+	
 	private Date createdOn;
-@Persistent
-	private int creator;
 
-	@Persistent
+	private int creator; 
+	
 	private Date lastModified;
-@Persistent
+
 	private int parentGroupId;
-@Persistent
+
 	private String shortCode;
 
 	public Mailinggroup() {

@@ -5,25 +5,25 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class OfferReceipient   {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long offerReceipientId;
-@Persistent
+	@Id Long offerReceipientId;
+
 	private String idType;
-@Persistent
+
 	private String mailingGroup;
 
-	@Persistent
+	
 	private String memberEmail;
-@Persistent
+
 	private int memberId;
-@Persistent
+
 	private String memberTelno;
-@Persistent
+
 	private int offerId;
 
 	public OfferReceipient() {

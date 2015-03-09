@@ -1,111 +1,108 @@
 package com.sp.fanikiwa.entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+
+import java.util.Date;  
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+ 
+@Entity
 public class STO  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  id;
-@Persistent
-	private BigDecimal amountDefaulted;
-@Persistent
-	private BigDecimal amountPaid;
-@Persistent
-	private byte chargeCommFlag;
-@Persistent
+	@Id  Long  id;
+
+	private double amountDefaulted;
+
+	private double amountPaid;
+
+	private boolean chargeCommFlag;
+
 	private short chargeWho;
-@Persistent
+
 	private short commFreqFlag;
-@Persistent
+
 	private int commissionAccount;
-@Persistent
-	private BigDecimal commissionAmount;
-@Persistent
-	private byte commissionPaidFlag;
-@Persistent
+
+	private double commissionAmount;
+
+	private boolean commissionPaidFlag;
+
 	private short commSourceFlag;
-@Persistent
+
 	private int crAccount;
 
-	@Persistent
+	
 	private Date createDate;
-@Persistent
-	private int crTxnType;
-@Persistent
-	private int drAccount;
-@Persistent
-	private int drTxnType;
-@Persistent
+
+	private Long crTxnType;
+
+	private Long drAccount;
+
+	private Long drTxnType;
+
 	private Date endDate;
-@Persistent
+
 	private String interval;
-@Persistent
+
 	private int limitFlag;
-@Persistent
+
 	private int loanId;
 
-	@Persistent
+	
 	private Date nextPayDate;
-@Persistent
-	private int noOfDefaults;
-@Persistent
-	private int noOfPayments;
-@Persistent
-	private int noOfPaymentsMade;
-@Persistent
-	private byte partialPay;
-@Persistent
-	private BigDecimal payAmount;
 
-	@Persistent
+	private int noOfDefaults;
+
+	private int noOfPayments;
+
+	private int noOfPaymentsMade;
+
+	private boolean partialPay;
+
+	private double payAmount;
+
+	
 	private Date startDate;
-@Persistent
+
 	private int STOAccType;
-@Persistent
+
 	private int STOType;
-@Persistent
-	private BigDecimal totalToPay;
+
+	private double totalToPay;
 
 	public STO() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public BigDecimal getAmountDefaulted() {
+	public double getAmountDefaulted() {
 		return this.amountDefaulted;
 	}
 
-	public void setAmountDefaulted(BigDecimal amountDefaulted) {
+	public void setAmountDefaulted(double amountDefaulted) {
 		this.amountDefaulted = amountDefaulted;
 	}
 
-	public BigDecimal getAmountPaid() {
+	public double getAmountPaid() {
 		return this.amountPaid;
 	}
 
-	public void setAmountPaid(BigDecimal amountPaid) {
+	public void setAmountPaid(double amountPaid) {
 		this.amountPaid = amountPaid;
 	}
 
-	public byte getChargeCommFlag() {
+	public boolean getChargeCommFlag() {
 		return this.chargeCommFlag;
 	}
 
-	public void setChargeCommFlag(byte chargeCommFlag) {
+	public void setChargeCommFlag(boolean chargeCommFlag) {
 		this.chargeCommFlag = chargeCommFlag;
 	}
 
@@ -133,19 +130,19 @@ public class STO  {
 		this.commissionAccount = commissionAccount;
 	}
 
-	public BigDecimal getCommissionAmount() {
+	public double getCommissionAmount() {
 		return this.commissionAmount;
 	}
 
-	public void setCommissionAmount(BigDecimal commissionAmount) {
+	public void setCommissionAmount(double commissionAmount) {
 		this.commissionAmount = commissionAmount;
 	}
 
-	public byte getCommissionPaidFlag() {
+	public boolean getCommissionPaidFlag() {
 		return this.commissionPaidFlag;
 	}
 
-	public void setCommissionPaidFlag(byte commissionPaidFlag) {
+	public void setCommissionPaidFlag(boolean commissionPaidFlag) {
 		this.commissionPaidFlag = commissionPaidFlag;
 	}
 
@@ -173,27 +170,27 @@ public class STO  {
 		this.createDate = createDate;
 	}
 
-	public int getCrTxnType() {
+	public Long getCrTxnType() {
 		return this.crTxnType;
 	}
 
-	public void setCrTxnType(int crTxnType) {
+	public void setCrTxnType(Long crTxnType) {
 		this.crTxnType = crTxnType;
 	}
 
-	public int getDrAccount() {
+	public Long getDrAccount() {
 		return this.drAccount;
 	}
 
-	public void setDrAccount(int drAccount) {
+	public void setDrAccount(Long drAccount) {
 		this.drAccount = drAccount;
 	}
 
-	public int getDrTxnType() {
+	public Long getDrTxnType() {
 		return this.drTxnType;
 	}
 
-	public void setDrTxnType(int drTxnType) {
+	public void setDrTxnType(Long drTxnType) {
 		this.drTxnType = drTxnType;
 	}
 
@@ -261,19 +258,19 @@ public class STO  {
 		this.noOfPaymentsMade = noOfPaymentsMade;
 	}
 
-	public byte getPartialPay() {
+	public boolean getPartialPay() {
 		return this.partialPay;
 	}
 
-	public void setPartialPay(byte partialPay) {
+	public void setPartialPay(boolean partialPay) {
 		this.partialPay = partialPay;
 	}
 
-	public BigDecimal getPayAmount() {
+	public double getPayAmount() {
 		return this.payAmount;
 	}
 
-	public void setPayAmount(BigDecimal payAmount) {
+	public void setPayAmount(double payAmount) {
 		this.payAmount = payAmount;
 	}
 
@@ -301,11 +298,11 @@ public class STO  {
 		this.STOType = STOType;
 	}
 
-	public BigDecimal getTotalToPay() {
+	public double getTotalToPay() {
 		return this.totalToPay;
 	}
 
-	public void setTotalToPay(BigDecimal totalToPay) {
+	public void setTotalToPay(double totalToPay) {
 		this.totalToPay = totalToPay;
 	}
 

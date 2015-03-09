@@ -11,8 +11,7 @@ import com.googlecode.objectify.annotation.Load;
 @Entity
 public class Transaction  {
 	
-	 @Id
-	 Long  transactionID;
+	 @Id Long  transactionID;
 
 	private double amount;
 
@@ -21,13 +20,10 @@ public class Transaction  {
 	private String contraReference;
 
 	private boolean forcePostFlag;
-
 	
 	private String narrative;
-
 	
 	private Date postDate;
-
 	
 	private Date recordDate;
 
@@ -36,13 +32,12 @@ public class Transaction  {
 	private String statementFlag;
 
 	private String userID;
-
 	
 	private Date valueDate;
 
 	//Foreign keys
-	@Index Ref<Account> account;
-	@Index Ref<TransactionType> transactionType;
+	@Load Ref<Account> account;
+	@Load Ref<TransactionType> transactionType;
 
 	public Transaction() {
 	}

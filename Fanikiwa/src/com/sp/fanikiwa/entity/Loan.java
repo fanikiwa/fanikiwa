@@ -2,35 +2,35 @@ package com.sp.fanikiwa.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Loan   {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  id;
-@Persistent
+	@Id Long id;
+
 	private BigDecimal amount;
 
-	@Persistent
+	
 	private Date createdDate;
-@Persistent
-	private double interest;
 
-	@Persistent
+	private double interest; 
+	
 	private Date maturityDate;
-@Persistent
+
 	private int memberId;
-@Persistent
+
 	private int offerId;
-@Persistent
+
 	private byte partialPay;
-@Persistent
+
 	private int term;
 
 	public Loan() {

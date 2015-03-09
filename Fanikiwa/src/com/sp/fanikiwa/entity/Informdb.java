@@ -1,32 +1,32 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Informdb  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  id;
-@Persistent
-	private String addressFrom;
-@Persistent
-	private String addressTo;
+	@Id Long id;
 
-	@Persistent
+	private String addressFrom;
+
+	private String addressTo; 
+	
 	private String body;
-@Persistent
+
 	private Date messageDate;
-@Persistent
+
 	private String messageType;
-@Persistent
+
 	private String status;
-@Persistent
+
 	private String subject;
 
 	public Informdb() {

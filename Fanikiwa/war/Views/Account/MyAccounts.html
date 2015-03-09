@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Famous Accounts</title>
+</head>
+<body>
+ 
+    <form action="javascript:void(0);">
+        <h2>List Accounts</h2>
+        <div><input id="listAccount" type="submit" value="List Accounts"></div>
+    </form>
+    <div id="listAccountsResult"></div>
+    
+    <form action="javascript:void(0);">
+      <h2>Insert New Account</h2>
+         <div><input id="txtAccountName" placeholder="Account Name here"></input></div>
+         <div><input id="txtCustomerId" placeholder="Customer Id here" type="number"></input></div>
+         <div><input id="txtCOAId" placeholder="COA Id here" type="number"></input></div>
+         <div><input id="txtAccountTypeId" placeholder="Account Type Id here" type="number"></input></div> 
+         <div><input id="txtBookBalance" placeholder="Book Balance here" type="number"></input></div>
+         <div><input id="txtClearedBalance" placeholder="Cleared Balance here" type="number"></input></div>
+         <div><input id="txtLimit" placeholder="Limit here" type="number"></input></div>
+         <div><input id="txtInterestRate" placeholder="Interest Rate here" type="number"></input></div>
+          <div><input id="txtAccruedInt" placeholder="Accrued Interest here" type="number"></input></div>
+         <div><input id="txtLimitFlag" placeholder="Limit Flag here" type="number"></input></div>         
+         <div><input id="insertAccount" type="submit" value="Insert Account"></div>
+    </form>
+    
+    <form action="javascript:void(0);">
+      <h2>Update Account</h2>
+         
+
+         <div><input id="updateAccount" type="submit" value="Update Account"></div>
+    </form>
+    
+    
+    <form action="javascript:void(0);">
+      <h2>Delete Account</h2>
+         <div><input id="accountID" placeholder="Account ID value"></input></div>
+         <div><input id="deleteAccount" type="submit" value="Delete Account"></div>
+    </form>
+    
+    
+    <script type="text/javascript">
+        function init() {
+                //Parameters are APIName,APIVersion,CallBack function,API Root 
+                //http://localhost:8888/_ah/api
+                gapi.client.load('accountendpoint', 'v1', null, 'https://1-dot-fanikiwaweb.appspot.com/_ah/api');
+                //gapi.client.load('accountendpoint', 'v1', null, 'http://localhost:8888/_ah/api');
+                document.getElementById('listAccount').onclick = function() {
+                    listAccounts();
+                  }
+                
+                document.getElementById('insertAccount').onclick = function() {
+                        insertAccount();
+                }
+                
+                document.getElementById('updateAccount').onclick = function() {
+                        updateAccount();
+                }
+                
+                document.getElementById('deleteAccount').onclick = function() {
+                        deleteAccount();
+                }
+        }
+        
+        //List Accounts function that will execute the listAccount call
+        function listAccounts() {
+                gapi.client.accountendpoint.listAccount().execute(function(resp) {
+                        if (!resp.code) {
+                                resp.items = resp.items || [];
+                                var result = "";
+                                for (var i=0;i<resp.items.length;i++) {
+                                        result = result+ resp.items[i].message + "..." + "<b>" + resp.items[i].author + "</b>" + "[" + resp.items[i].id + "]" + "<br/>";
+                                }
+                                document.getElementById('listAccountsResult').innerHTML = result;
+                        }
+                });
+        }
+        
+        //Insert Account function
+        function insertAccount() {
+                //Validate the entries  
+                var _AccountName = document.getElementById('txtAccountName').value;
+                var _CustomerId = document.getElementById('txtCustomerId').value;
+                var _COAId = document.getElementById('txtCOAId').value;
+                var _AccountTypeId = document.getElementById('txtAccountTypeId').value; 
+                var _BookBalance = document.getElementById('txtBookBalance').value;
+                var _ClearedBalance = document.getElementById('txtClearedBalance').value;
+                var _Limit = document.getElementById('txtLimit').value;
+                var _InterestRate = document.getElementById('txtInterestRate').value;
+                var _AccruedInt = document.getElementById('txtAccruedInt').value;
+                var _LimitFlag = document.getElementById('txtLimitFlag').value;
+                
+                //Build the Request Object
+                var requestData = {};
+                requestData.AccountName = _AccountName;
+                requestData.CustomerId = _CustomerId;
+                requestData.COAId = _COAId;
+                requestData.AccountTypeId = _AccountTypeId;
+                requestData.BookBalance = _BookBalance;
+                requestData.ClearedBalance = _ClearedBalance;
+                requestData.Limit = _Limit;
+                requestData.InterestRate = _InterestRate;
+                requestData.AccruedInt = _AccruedInt;
+                requestData.LimitFlag = _LimitFlag;
+                
+                gapi.client.accountendpoint.insertAccount(requestData).execute(function(resp) {
+                        if (!resp.code) {
+                                //Just logging to console now, you can do your check here/display message
+                                console.log(resp.id + ":" + resp.AccountName + ":" + resp.ClearedBalance);
+                        }
+                });
+        }
+        
+        //Update Account function
+        function updateAccount() {
+                //Validate the entries
+                var _ID = document.getElementById("editAccountID").value;
+                var _AuthorName = document.getElementById('editAuthorName').value;
+                var _Message = document.getElementById('editMessage').value;
+                
+                //Build the Request Object
+                var requestData = {};
+                requestData.id = _ID;
+                requestData.author = _AuthorName;
+                requestData.message = _Message;
+                gapi.client.accountendpoint.updateAccount(requestData).execute(function(resp) {
+                        if (!resp.code) {
+                                //Just logging to console now, you can do your check here/display message
+                                console.log(resp.id + ":" + resp.author + ":" + resp.message);
+                        }
+                });
+        }
+        
+        //Delete Account function
+        function deleteAccount() {
+                //Validate the entries
+                var _ID = document.getElementById('accountID').value;
+                
+                //Build the Request Object
+                var requestData = {};
+                requestData.id = _ID;
+                console.log(requestData);
+                gapi.client.accountendpoint.removeAccount(requestData).execute(function(resp) {
+                        //Just logging to console now, you can do your check here/display message
+                        console.log(resp);
+                });
+        }
+        
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+</body>
+</html>

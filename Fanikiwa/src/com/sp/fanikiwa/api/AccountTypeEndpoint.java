@@ -1,179 +1,131 @@
 package com.sp.fanikiwa.api;
 
-import com.sp.fanikiwa.entity.AccountType;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
+import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.datanucleus.query.JDOCursorHelper;
+import com.google.appengine.api.datastore.QueryResultIterator;
+import com.googlecode.objectify.cmd.Query;
 
-import java.util.HashMap;
+import static com.sp.fanikiwa.api.OfyService.ofy;
+
+import com.sp.fanikiwa.entity.AccountType;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 
 @Api(name = "accounttypeendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class AccountTypeEndpoint {
 
 	/**
-	 * This method lists all the entities inserted in datastore. It uses HTTP
-	 * GET method and paging support.
+	 * Return a collection of quotes
 	 *
-	 * @return A CollectionResponse class containing the list of all entities
-	 *         persisted and a cursor to the next page.
+	 * @param count
+	 *            The number of quotes
+	 * @return a list of Quotes
 	 */
-	@SuppressWarnings({ "unchecked", "unused" })
+
 	@ApiMethod(name = "listAccountType")
 	public CollectionResponse<AccountType> listAccountType(
 			@Nullable @Named("cursor") String cursorString,
-			@Nullable @Named("limit") Integer limit) {
+			@Nullable @Named("count") Integer count) {
 
-		PersistenceManager mgr = null;
-		Cursor cursor = null;
-		List<AccountType> execute = null;
-
-		try {
-			mgr = getPersistenceManager();
-			Query query = mgr.newQuery(AccountType.class);
-			if (cursorString != null && cursorString != "") {
-				cursor = Cursor.fromWebSafeString(cursorString);
-				HashMap<String, Object> extensionMap = new HashMap<String, Object>();
-				extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
-				query.setExtensions(extensionMap);
-			}
-
-			if (limit != null) {
-				query.setRange(0, limit);
-			}
-
-			execute = (List<AccountType>) query.execute();
-			cursor = JDOCursorHelper.getCursor(execute);
-			if (cursor != null)
-				cursorString = cursor.toWebSafeString();
-
-			// Tight loop for fetching all entities from datastore and
-			// accomodate
-			// for lazy fetch.
-			for (AccountType obj : execute)
-				;
-		} finally {
-			mgr.close();
+		Query<AccountType> query = ofy().load().type(AccountType.class);
+		if (count != null)
+			query.limit(count);
+		if (cursorString != null && cursorString != "") {
+			query = query.startAt(Cursor.fromWebSafeString(cursorString));
 		}
 
-		return CollectionResponse.<AccountType> builder().setItems(execute)
+		List<AccountType> records = new ArrayList<AccountType>();
+		QueryResultIterator<AccountType> iterator = query.iterator();
+		int num = 0;
+		while (iterator.hasNext()) {
+			records.add(iterator.next());
+			if (count != null) {
+				num++;
+				if (num == count)
+					break;
+			}
+		}
+
+		// Find the next cursor
+		if (cursorString != null && cursorString != "") {
+			Cursor cursor = iterator.getCursor();
+			if (cursor != null) {
+				cursorString = cursor.toWebSafeString();
+			}
+		}
+		return CollectionResponse.<AccountType> builder().setItems(records)
 				.setNextPageToken(cursorString).build();
 	}
 
 	/**
-	 * This method gets the entity having primary key id. It uses HTTP GET
-	 * method.
-	 *
-	 * @param id
-	 *            the primary key of the java bean.
-	 * @return The entity with primary key id.
-	 */
-	@ApiMethod(name = "getAccountType")
-	public AccountType getAccountType(@Named("id") Long id) {
-		PersistenceManager mgr = getPersistenceManager();
-		AccountType accounttype = null;
-		try {
-			accounttype = mgr.getObjectById(AccountType.class, id);
-		} finally {
-			mgr.close();
-		}
-		return accounttype;
-	}
-
-	/**
-	 * This inserts a new entity into App Engine datastore. If the entity
-	 * already exists in the datastore, an exception is thrown. It uses HTTP
-	 * POST method.
-	 *
-	 * @param accounttype
-	 *            the entity to be inserted.
-	 * @return The inserted entity.
+	 * This inserts a new <code>AccountType</code> object.
+	 * 
+	 * @param AccountType
+	 *            The object to be added.
+	 * @return The object to be added.
 	 */
 	@ApiMethod(name = "insertAccountType")
-	public AccountType insertAccountType(AccountType accounttype) {
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-			if (accounttype.getId() != null) {
-				if (containsAccountType(accounttype)) {
-					throw new EntityExistsException("Object already exists");
-				}
+	public AccountType insertAccountType(AccountType AccountType) throws ConflictException {
+		// If if is not null, then check if it exists. If yes, throw an
+		// Exception
+		// that it is already present
+		if (AccountType.getId() != null) {
+			if (findRecord(AccountType.getId()) != null) {
+				throw new ConflictException("Object already exists");
 			}
-			mgr.makePersistent(accounttype);
-		} finally {
-			mgr.close();
 		}
-		return accounttype;
+		// Since our @Id field is a Long, Objectify will generate a unique value
+		// for us
+		// when we use put
+		ofy().save().entity(AccountType).now();
+		return AccountType;
 	}
 
 	/**
-	 * This method is used for updating an existing entity. If the entity does
-	 * not exist in the datastore, an exception is thrown. It uses HTTP PUT
-	 * method.
-	 *
-	 * @param accounttype
-	 *            the entity to be updated.
-	 * @return The updated entity.
+	 * This updates an existing <code>AccountType</code> object.
+	 * 
+	 * @param AccountType
+	 *            The object to be added.
+	 * @return The object to be updated.
 	 */
 	@ApiMethod(name = "updateAccountType")
-	public AccountType updateAccountType(AccountType accounttype) {
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-			if (!containsAccountType(accounttype)) {
-				throw new EntityNotFoundException("Object does not exist");
-			}
-			mgr.makePersistent(accounttype);
-		} finally {
-			mgr.close();
+	public AccountType updateAccountType(AccountType AccountType) throws NotFoundException {
+		if (findRecord(AccountType.getId()) == null) {
+			throw new NotFoundException("AccountType Record does not exist");
 		}
-		return accounttype;
+		ofy().save().entity(AccountType).now();
+		return AccountType;
 	}
 
 	/**
-	 * This method removes the entity with primary key id. It uses HTTP DELETE
-	 * method.
-	 *
+	 * This deletes an existing <code>AccountType</code> object.
+	 * 
 	 * @param id
-	 *            the primary key of the entity to be deleted.
+	 *            The id of the object to be deleted.
 	 */
 	@ApiMethod(name = "removeAccountType")
-	public void removeAccountType(@Named("id") Long id) {
-		PersistenceManager mgr = getPersistenceManager();
-		try {
-			AccountType accounttype = mgr.getObjectById(AccountType.class, id);
-			mgr.deletePersistent(accounttype);
-		} finally {
-			mgr.close();
+	public void removeAccountType(@Named("id") Long id) throws NotFoundException {
+		AccountType record = findRecord(id);
+		if (record == null) {
+			throw new NotFoundException("AccountType Record does not exist");
 		}
+		ofy().delete().entity(record).now();
 	}
 
-	private boolean containsAccountType(AccountType accounttype) {
-		PersistenceManager mgr = getPersistenceManager();
-		boolean contains = true;
-		try {
-			mgr.getObjectById(AccountType.class, accounttype.getId());
-		} catch (javax.jdo.JDOObjectNotFoundException ex) {
-			contains = false;
-		} finally {
-			mgr.close();
-		}
-		return contains;
+	// Private method to retrieve a <code>AccountType</code> record
+	private AccountType findRecord(Long id) {
+		return ofy().load().type(AccountType.class).id(id).now();
+		// or return ofy().load().type(AccountType.class).filter("id",id).first.now();
 	}
 
-	private static PersistenceManager getPersistenceManager() {
-		return PMF.get().getPersistenceManager();
-	}
-
-	/*
-	 * Private members
-	 */
 }

@@ -8,11 +8,9 @@ import com.googlecode.objectify.annotation.Load;
 @Entity
 public class TransactionType  {
 	
-@Id
-        Long transactionTypeID;
+@Id Long transactionTypeID;
 
-	private boolean absolute;
-
+	private boolean absolute; 
 	
 	private String amountExpression;
 

@@ -5,24 +5,24 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Coadet {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  id;
-@Persistent
+	@Id Long   id;
+
 	private int coaID;
-@Persistent
+
 	private int COALevel;
-@Persistent
+
 	private String description;
-@Persistent
+
 	private int parent;
-@Persistent
+
 	private int rorder;
-@Persistent
+
 	private String shortCode;
 
 	public Coadet() {

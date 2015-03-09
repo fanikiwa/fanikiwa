@@ -1,49 +1,50 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Contact  {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long contactId;
+	@Id Long contactId;
 
-	@Persistent
+	
 	private Date dateActivated;
 
-	@Persistent
+	
 	private Date dateJoined;
 
-	@Persistent
+	
 	private Date dateOfBirth;
-@Persistent
+
 	private String email;
-@Persistent
+
 	private String gender;
-@Persistent
+
 	private String informBy;
-@Persistent
+
 	private String nationalID;
-@Persistent
+
 	private String otherNames;
 
-@Persistent
+
 	private String photo;
-@Persistent
+
 	private String pwd;
-@Persistent
+
 	private int refferedBy;
-@Persistent
+
 	private String status;
-@Persistent
+
 	private String surname;
-@Persistent
+
 	private String telephone;
 
 	public Contact() {

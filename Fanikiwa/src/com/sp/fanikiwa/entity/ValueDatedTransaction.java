@@ -9,8 +9,7 @@ import com.googlecode.objectify.annotation.Load;
 @Entity
 public class ValueDatedTransaction  {
 	
-	 @Id
-	 Long  transactionID;
+	 @Id Long  transactionID;
 
 	private double amount;
 
@@ -18,14 +17,11 @@ public class ValueDatedTransaction  {
 
 	private String contraReference;
 
-	private boolean forcePostFlag;
-
+	private boolean forcePostFlag; 
 	
-	private String narrative;
-
+	private String narrative; 
 	
-	private Date postDate;
-
+	private Date postDate; 
 	
 	private Date recordDate;
 

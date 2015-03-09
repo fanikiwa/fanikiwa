@@ -2,83 +2,84 @@ package com.sp.fanikiwa.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.googlecode.objectify.annotation.Id;
  
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Fanikiwamessage {
 	
-	 @PrimaryKey
-        @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-        Long  id;
-@Persistent
+	@Id Long  id;
+
 	private String accountId;
-@Persistent
+
 	private BigDecimal amount;
-@Persistent
+
 	private String BE_AccLabel;
 
-	@Persistent
+	
 	private String body;
-@Persistent
+
 	private String command;
-@Persistent
+
 	private String CP_ConfirmPassword;
-@Persistent
+
 	private String CP_NewPassword;
-@Persistent
+
 	private String customerTelno;
-@Persistent
+
 	private String email;
 
-	@Persistent
+	
 	private Date endDate;
 
-	@Persistent
+	
 	private String exception;
-@Persistent
+
 	private String HM_Param;
-@Persistent
+
 	private int memberId;
 
-	@Persistent
+	
 	private Date messageDate;
-@Persistent
+
 	private int messageType;
-@Persistent
+
 	private double MO_Interest;
-@Persistent
+
 	private int MO_Term;
-@Persistent
+
 	private BigDecimal mpesaBal;
-@Persistent
+
 	private String mpesaRef;
 
-	@Persistent
+	
 	private Date mpesaSentDate;
-@Persistent
+
 	private String nationalID;
-@Persistent
+
 	private String notificationMethod;
-@Persistent
+
 	private int offerId;
-@Persistent
+
 	private String pwd;
-@Persistent
+
 	private String senderTelno;
 
-	@Persistent
+	
 	private Date ST_EndDate;
 
-	@Persistent
+	
 	private Date ST_StartDate;
 
-	@Persistent
+	
 	private Date startDate;
-@Persistent
+
 	private String status;
 
 	public Fanikiwamessage() {
