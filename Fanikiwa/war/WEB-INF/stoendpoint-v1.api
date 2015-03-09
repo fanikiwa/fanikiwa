@@ -2,7 +2,7 @@
   "extends" : "thirdParty.api",
   "abstract" : false,
   "root" : "https://fanikiwaweb.appspot.com/_ah/api",
-  "name" : "loanendpoint",
+  "name" : "stoendpoint",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
@@ -27,14 +27,35 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "loanendpoint.listLoan" : {
-      "path" : "loan",
+    "stoendpoint.getSTOByID" : {
+      "path" : "sto/{id}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.listLoan",
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.getSTOByID",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "stoendpoint.listSTO" : {
+      "path" : "sto",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.listSTO",
       "request" : {
         "parameters" : {
           "cursor" : {
@@ -52,35 +73,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loanendpoint.getLoanByID" : {
-      "path" : "loan/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.getLoanByID",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "loanendpoint.updateLoan" : {
-      "path" : "loan",
+    "stoendpoint.updateSTO" : {
+      "path" : "sto",
       "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.updateLoan",
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.updateSTO",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -89,14 +89,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loanendpoint.insertLoan" : {
-      "path" : "loan",
+    "stoendpoint.insertSTO" : {
+      "path" : "sto",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.insertLoan",
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.insertSTO",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -105,14 +105,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "loanendpoint.removeLoan" : {
-      "path" : "loan/{id}",
+    "stoendpoint.removeSTO" : {
+      "path" : "sto/{id}",
       "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.LoanEndpoint.removeLoan",
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.removeSTO",
       "request" : {
         "parameters" : {
           "id" : {
@@ -129,86 +129,148 @@
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_Loan" : {
-        "id" : "CollectionResponse_Loan",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Loan"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Loan" : {
-        "id" : "Loan",
+      "STO" : {
+        "id" : "STO",
         "type" : "object",
         "properties" : {
           "id" : {
             "type" : "string",
             "format" : "int64"
           },
-          "amount" : {
+          "amountDefaulted" : {
             "type" : "number"
           },
-          "createdDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "interest" : {
+          "amountPaid" : {
             "type" : "number"
           },
-          "maturityDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "memberId" : {
+          "chargeCommFlag" : {
             "type" : "integer"
           },
-          "offerId" : {
+          "chargeWho" : {
+            "type" : "integer"
+          },
+          "commFreqFlag" : {
+            "type" : "integer"
+          },
+          "commissionAccount" : {
+            "type" : "integer"
+          },
+          "commissionAmount" : {
+            "type" : "number"
+          },
+          "commissionPaidFlag" : {
+            "type" : "integer"
+          },
+          "commSourceFlag" : {
+            "type" : "integer"
+          },
+          "crAccount" : {
+            "type" : "integer"
+          },
+          "createDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "crTxnType" : {
+            "type" : "integer"
+          },
+          "drAccount" : {
+            "type" : "integer"
+          },
+          "drTxnType" : {
+            "type" : "integer"
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "interval" : {
+            "type" : "string"
+          },
+          "limitFlag" : {
+            "type" : "integer"
+          },
+          "loanId" : {
+            "type" : "integer"
+          },
+          "nextPayDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "noOfDefaults" : {
+            "type" : "integer"
+          },
+          "noOfPayments" : {
+            "type" : "integer"
+          },
+          "noOfPaymentsMade" : {
             "type" : "integer"
           },
           "partialPay" : {
             "type" : "integer"
           },
-          "term" : {
+          "payAmount" : {
+            "type" : "number"
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "totalToPay" : {
+            "type" : "number"
+          },
+          "stoaccType" : {
             "type" : "integer"
+          },
+          "stotype" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "CollectionResponse_STO" : {
+        "id" : "CollectionResponse_STO",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "STO"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
           }
         }
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.LoanEndpoint.listLoan" : {
+      "com.sp.fanikiwa.api.STOEndpoint.getSTOByID" : {
         "response" : {
-          "$ref" : "CollectionResponse_Loan"
+          "$ref" : "STO"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.getLoanByID" : {
+      "com.sp.fanikiwa.api.STOEndpoint.listSTO" : {
         "response" : {
-          "$ref" : "Loan"
+          "$ref" : "CollectionResponse_STO"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.updateLoan" : {
+      "com.sp.fanikiwa.api.STOEndpoint.updateSTO" : {
         "request" : {
-          "$ref" : "Loan"
+          "$ref" : "STO"
         },
         "response" : {
-          "$ref" : "Loan"
+          "$ref" : "STO"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.insertLoan" : {
+      "com.sp.fanikiwa.api.STOEndpoint.insertSTO" : {
         "request" : {
-          "$ref" : "Loan"
+          "$ref" : "STO"
         },
         "response" : {
-          "$ref" : "Loan"
+          "$ref" : "STO"
         }
       },
-      "com.sp.fanikiwa.api.LoanEndpoint.removeLoan" : {
+      "com.sp.fanikiwa.api.STOEndpoint.removeSTO" : {
       }
     }
   }

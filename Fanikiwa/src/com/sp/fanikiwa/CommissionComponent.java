@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sp.fanikiwa.Enums.*;
+import com.sp.fanikiwa.api.TieredtableEndpoint;
 import com.sp.fanikiwa.api.TransactionTypeEndpoint;
-
 import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.TieredDet;
 import com.sp.fanikiwa.entity.TransactionType;
@@ -375,7 +375,7 @@ public class CommissionComponent {
         if (TT == null) throw new IllegalArgumentException("TransactionType["+Id+"] does not exist");
         List < LookupRow > lr = new ArrayList<LookupRow>();
         
-        TieredTableEndpoint tep = new TieredTableEndpoint();
+        TieredtableEndpoint tep = new TieredtableEndpoint();
         List<TieredDet> trd = tep.getTieredTableId(TT.getTieredTableId());
         for (TieredDet t : trd)
         {

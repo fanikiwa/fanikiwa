@@ -10,6 +10,8 @@ import com.sp.fanikiwa.entity.STO;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.Enums.STOType;
 import com.sp.fanikiwa.api.AccountEndpoint;
+import com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint;
+import com.sp.fanikiwa.api.STOEndpoint;
 import com.sp.utils.DateExtension;
 import com.sp.utils.Utils;
 
@@ -20,21 +22,20 @@ public class DiaryComponent {
 
     public void RunDiary(Date date)
     {
-        DiaryProgramControlEndpoint dDac = new DiaryProgramControlEndpoint();
-        List<Diaryprogramcontrol> controlRec = dDac.Select();
+        DiaryprogramcontrolEndpoint dDac = new DiaryprogramcontrolEndpoint();
+        List<Diaryprogramcontrol> controlRec = (List<Diaryprogramcontrol>) dDac.listDiaryprogramcontrol(null, null);
         Diaryprogramcontrol dp = new Diaryprogramcontrol();
         
         if (controlRec.Count == 0)
         {
-
-            dp.LastRun = date;
-            dp.NextRun =DateExtension.addDays(date, 1) ;
+            dp.setLastRun(date);
+            dp.setNextRun(DateExtension.addDays(date, 1)) ;
             dDac.Create(dp);
         }
         else { dp = controlRec[0]; }
 
-        Date lastRun = dp.LastRun;
-        for (Date i = dp.LastRun; i.after(date) ; i = DateExtension.addDays(i,1))
+        Date lastRun = dp.getLastRun();
+        for (Date i = dp.getLastRun(); i.after(date) ; i = DateExtension.addDays(i,1))
         {
             if (EnableLog) log.info("Processing started for [" + i + "]");
             //1. Run STOsn 
@@ -48,8 +49,8 @@ public class DiaryComponent {
         }
 
         //update db now- control rec
-        dp.LastRun = lastRun;
-        dp.NextRun = DateExtension.addDays(lastRun,1);
+        dp.setLastRun(lastRun);
+        dp.setNextRun(DateExtension.addDays(lastRun,1));
         dDac.UpdateById(dp);
     }
 

@@ -52,27 +52,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "coaendpoint.getCoaByID" : {
-      "path" : "coa/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "coaendpoint.insertCoa" : {
       "path" : "coa",
       "httpMethod" : "POST",
@@ -100,6 +79,27 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "coaendpoint.getCoaByID" : {
+      "path" : "coa/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -164,11 +164,6 @@
           "$ref" : "CollectionResponse_Coa"
         }
       },
-      "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID" : {
-        "response" : {
-          "$ref" : "Coa"
-        }
-      },
       "com.sp.fanikiwa.api.CoaEndpoint.insertCoa" : {
         "request" : {
           "$ref" : "Coa"
@@ -181,6 +176,11 @@
         "request" : {
           "$ref" : "Coa"
         },
+        "response" : {
+          "$ref" : "Coa"
+        }
+      },
+      "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID" : {
         "response" : {
           "$ref" : "Coa"
         }

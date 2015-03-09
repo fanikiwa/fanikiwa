@@ -27,14 +27,67 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "diaryprogramcontrolendpoint.updateDiaryprogramcontrol" : {
+      "path" : "diaryprogramcontrol",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "diaryprogramcontrolendpoint.insertDiaryprogramcontrol" : {
+      "path" : "diaryprogramcontrol",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.insertDiaryprogramcontrol",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "diaryprogramcontrolendpoint.removeDiaryprogramcontrol" : {
+      "path" : "diaryprogramcontrol/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
     "diaryprogramcontrolendpoint.listDiaryprogramcontrol" : {
-      "path" : "accounttype",
+      "path" : "diaryprogramcontrol",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listAccountType",
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listDiaryprogramcontrol",
       "request" : {
         "parameters" : {
           "cursor" : {
@@ -51,117 +104,66 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
-    },
-    "diaryprogramcontrolendpoint.removeAccountType" : {
-      "path" : "accounttype/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeAccountType",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "diaryprogramcontrolendpoint.updateAccountType" : {
-      "path" : "accounttype",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateAccountType",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "diaryprogramcontrolendpoint.insertAccountType" : {
-      "path" : "accounttype",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.insertAccountType",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
     "schemas" : {
-      "CollectionResponse_AccountType" : {
-        "id" : "CollectionResponse_AccountType",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "AccountType"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
-      },
-      "AccountType" : {
-        "id" : "AccountType",
+      "Diaryprogramcontrol" : {
+        "id" : "Diaryprogramcontrol",
         "type" : "object",
         "properties" : {
           "id" : {
             "type" : "string",
             "format" : "int64"
           },
-          "description" : {
-            "type" : "string"
+          "lastRun" : {
+            "type" : "string",
+            "format" : "date-time"
           },
-          "shortCode" : {
+          "nextRun" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "CollectionResponse_Diaryprogramcontrol" : {
+        "id" : "CollectionResponse_Diaryprogramcontrol",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Diaryprogramcontrol"
+            }
+          },
+          "nextPageToken" : {
             "type" : "string"
           }
         }
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listAccountType" : {
-        "response" : {
-          "$ref" : "CollectionResponse_AccountType"
-        }
-      },
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeAccountType" : {
-      },
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateAccountType" : {
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol" : {
         "request" : {
-          "$ref" : "AccountType"
+          "$ref" : "Diaryprogramcontrol"
         },
         "response" : {
-          "$ref" : "AccountType"
+          "$ref" : "Diaryprogramcontrol"
         }
       },
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.insertAccountType" : {
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.insertDiaryprogramcontrol" : {
         "request" : {
-          "$ref" : "AccountType"
+          "$ref" : "Diaryprogramcontrol"
         },
         "response" : {
-          "$ref" : "AccountType"
+          "$ref" : "Diaryprogramcontrol"
+        }
+      },
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol" : {
+      },
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.listDiaryprogramcontrol" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Diaryprogramcontrol"
         }
       }
     }
