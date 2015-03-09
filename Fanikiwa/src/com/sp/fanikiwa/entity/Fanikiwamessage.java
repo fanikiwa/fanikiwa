@@ -1,24 +1,22 @@
 package com.sp.fanikiwa.entity;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
+ 
+import java.util.Date; 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
+import javax.jdo.annotations.PrimaryKey; 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Fanikiwamessage {
 	
 	@Id Long  id;
 
 	private String accountId;
 
-	private BigDecimal amount;
+	private double amount;
 
 	private String BE_AccLabel;
 
@@ -54,7 +52,7 @@ public class Fanikiwamessage {
 
 	private int MO_Term;
 
-	private BigDecimal mpesaBal;
+	private double mpesaBal;
 
 	private String mpesaRef;
 
@@ -85,11 +83,11 @@ public class Fanikiwamessage {
 	public Fanikiwamessage() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -101,11 +99,11 @@ public class Fanikiwamessage {
 		this.accountId = accountId;
 	}
 
-	public BigDecimal getAmount() {
+	public double getAmount() {
 		return this.amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
@@ -229,11 +227,11 @@ public class Fanikiwamessage {
 		this.MO_Term = MO_Term;
 	}
 
-	public BigDecimal getMpesaBal() {
+	public double getMpesaBal() {
 		return this.mpesaBal;
 	}
 
-	public void setMpesaBal(BigDecimal mpesaBal) {
+	public void setMpesaBal(double mpesaBal) {
 		this.mpesaBal = mpesaBal;
 	}
 

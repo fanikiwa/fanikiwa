@@ -1,64 +1,44 @@
 package com.sp.fanikiwa.entity;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
-import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+import java.util.Date;  
+
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Load;
+  
+@Entity
 public class Offer  {
 	
-	@Id Long id;
-
-	private BigDecimal amount;
-
-	
-	private Date createdDate;
-
-	
+	@Id  Long  id;
 	private String description;
-
-	private Date expiryDate;
-
-	private double interest;
-
-	private int memberId;
-
-	
-	private String offerees;
-
-	private String offerType;
-
-	private byte partialPay;
-
-	private String publicOffer;
-
-	private String status;
-
+	private double amount;	
 	private int term;
-
+	private double interest;
+	private String publicOffer;
+	private Date createdDate;		
+	private Date expiryDate; 
+	private String offerees;
+	private String offerType;
+	private byte partialPay;	
+	private String status;	
+	@Load Ref<Member> member;
 	public Offer() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public BigDecimal getAmount() {
+	public double getAmount() {
 		return this.amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
@@ -94,12 +74,12 @@ public class Offer  {
 		this.interest = interest;
 	}
 
-	public int getMemberId() {
-		return this.memberId;
+	public Member getMember() {
+		return this.member.get();
 	}
 
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
+	public void setMemberId(Member member) {
+		this.member = Ref.create(member);
 	}
 
 	public String getOfferees() {

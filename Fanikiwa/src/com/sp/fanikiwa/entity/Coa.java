@@ -1,28 +1,24 @@
 package com.sp.fanikiwa.entity;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
-import com.googlecode.objectify.annotation.Id;
+  
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id; 
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Coa {
 	
-	@Id Long id;
+	@Id Long   id;
 
 	private String description;
 
 	public Coa() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

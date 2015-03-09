@@ -1,27 +1,21 @@
 package com.sp.fanikiwa.entity;
+ 
+import java.util.Date;  
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+ 
+@Entity
 public class Loan   {
 	
-	@Id Long id;
+	@Id Long  id;
 
-	private BigDecimal amount;
-
+	private double amount;
 	
 	private Date createdDate;
 
-	private double interest; 
+	private double interest;
 	
 	private Date maturityDate;
 
@@ -36,19 +30,19 @@ public class Loan   {
 	public Loan() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public BigDecimal getAmount() {
+	public double getAmount() {
 		return this.amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 

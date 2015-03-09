@@ -1,47 +1,38 @@
 package com.sp.fanikiwa.entity;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
-import com.googlecode.objectify.annotation.Id;
+  
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id; 
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Coadet {
 	
-	@Id Long   id;
-
-	private int coaID;
-
+	 @Id Long  id;
+ 
 	private int COALevel;
 
 	private String description;
-
-	private int parent;
-
+  
 	private int rorder;
 
 	private String shortCode;
 
+	private Ref<Coa> coa;
+	
 	public Coadet() {
 	}
+	
+	public Coadet(Long Id) {
+		setId(Id);
+	}
 
-	public long getId() {
+
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public int getCoaID() {
-		return this.coaID;
-	}
-
-	public void setCoaID(int coaID) {
-		this.coaID = coaID;
 	}
 
 	public int getCOALevel() {
@@ -59,15 +50,7 @@ public class Coadet {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public int getParent() {
-		return this.parent;
-	}
-
-	public void setParent(int parent) {
-		this.parent = parent;
-	}
-
+ 
 	public int getRorder() {
 		return this.rorder;
 	}
@@ -82,6 +65,14 @@ public class Coadet {
 
 	public void setShortCode(String shortCode) {
 		this.shortCode = shortCode;
+	}
+
+	public Coa getCoa() {
+		return this.coa.get();
+	}
+
+	public void setCoa(Coa coa) {
+		this.coa = Ref.create(coa);
 	}
 
 }

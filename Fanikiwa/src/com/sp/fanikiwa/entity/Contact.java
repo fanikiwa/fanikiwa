@@ -1,19 +1,14 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
-import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;  
+ 
+@Entity
 public class Contact  {
 	
-	@Id Long contactId;
+	 @Id Long contactId;
 
 	
 	private Date dateActivated;
@@ -50,11 +45,11 @@ public class Contact  {
 	public Contact() {
 	}
 
-	public long getContactId() {
+	public Long getContactId() {
 		return this.contactId;
 	}
 
-	public void setContactId(long contactId) {
+	public void setContactId(Long contactId) {
 		this.contactId = contactId;
 	}
 

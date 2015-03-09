@@ -2,82 +2,47 @@ package com.sp.fanikiwa.entity;
 
 import java.util.Date;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+import com.googlecode.objectify.annotation.Load;
+
+
+@Entity
 public class Member   {
 	
-	@Id Long memberId;
-
-	private int currentAccountId;
-
-	private int customerId; 
-	
-	private Date dateActivated; 
-	
-	private Date dateJoined; 
-	
+	 @Id Long  memberId;
+	private Date dateActivated;
+	private Date dateJoined;
 	private Date dateOfBirth;
-
 	private String email;
-
 	private String gender;
-
 	private String informBy;
-
-	private int investmentAccountId;
-
-	private int loanAccountId;
-
 	private int maxRecordsToDisplay;
-
 	private String nationalID;
-
-	private String otherNames; 
-	
+	private String otherNames;
 	private String photo;
-
 	private String pwd;
-
 	private int refferedBy;
-
 	private String status;
-
 	private String surname;
-
 	private String telephone;
+	
+	//FK
+	@Load Ref<Account> investmentAccount;
+	@Load Ref<Account> loanAccount;	
+	@Load Ref<Account> currentAccount;
+	@Load Ref<Customer> customer;
 
 	public Member() {
 	}
 
-	public long getMemberId() {
+	public Long getMemberId() {
 		return this.memberId;
 	}
 
-	public void setMemberId(long memberId) {
+	public void setMemberId(Long memberId) {
 		this.memberId = memberId;
-	}
-
-	public int getCurrentAccountId() {
-		return this.currentAccountId;
-	}
-
-	public void setCurrentAccountId(int currentAccountId) {
-		this.currentAccountId = currentAccountId;
-	}
-
-	public int getCustomerId() {
-		return this.customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
 	}
 
 	public Date getDateActivated() {
@@ -126,22 +91,6 @@ public class Member   {
 
 	public void setInformBy(String informBy) {
 		this.informBy = informBy;
-	}
-
-	public int getInvestmentAccountId() {
-		return this.investmentAccountId;
-	}
-
-	public void setInvestmentAccountId(int investmentAccountId) {
-		this.investmentAccountId = investmentAccountId;
-	}
-
-	public int getLoanAccountId() {
-		return this.loanAccountId;
-	}
-
-	public void setLoanAccountId(int loanAccountId) {
-		this.loanAccountId = loanAccountId;
 	}
 
 	public int getMaxRecordsToDisplay() {
@@ -214,6 +163,40 @@ public class Member   {
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+	
+	//FK
+	public Account getInvestmentAccount() {
+		return this.investmentAccount.get();
+	}
+
+	public void setInvestmentAccount(Account investmentAccount) {
+		this.investmentAccount = Ref.create(investmentAccount);
+	}
+
+	public Account getLoanAccount() {
+		return this.loanAccount.get();
+	}
+
+	public void setLoanAccount(Account loanAccount) {
+		this.loanAccount = Ref.create(loanAccount);
+	}
+
+
+	public Account getCurrentAccount() {
+		return this.currentAccount.get();
+	}
+
+	public void setCurrentAccount(Account currentAccount) {
+		this.currentAccount = Ref.create(currentAccount);
+	}
+
+	public Customer getCustomer() {
+		return this.customer.get();
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = Ref.create(customer);
 	}
 
 }

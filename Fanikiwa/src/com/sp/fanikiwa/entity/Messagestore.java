@@ -1,16 +1,15 @@
 package com.sp.fanikiwa.entity;
-
-import java.math.BigDecimal;
-
+ 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Messagestore  {
 	
 	@Id Long id;
@@ -44,9 +43,9 @@ public class Messagestore  {
 	
 	private String messageType;
 
-	private BigDecimal mpesaAmount;
+	private double mpesaAmount;
 
-	private BigDecimal mpesaBalance;
+	private double mpesaBalance;
 
 	
 	private String originatingAddress;
@@ -83,11 +82,11 @@ public class Messagestore  {
 	public Messagestore() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -171,19 +170,19 @@ public class Messagestore  {
 		this.messageType = messageType;
 	}
 
-	public BigDecimal getMpesaAmount() {
+	public double getMpesaAmount() {
 		return this.mpesaAmount;
 	}
 
-	public void setMpesaAmount(BigDecimal mpesaAmount) {
+	public void setMpesaAmount(double mpesaAmount) {
 		this.mpesaAmount = mpesaAmount;
 	}
 
-	public BigDecimal getMpesaBalance() {
+	public double getMpesaBalance() {
 		return this.mpesaBalance;
 	}
 
-	public void setMpesaBalance(BigDecimal mpesaBalance) {
+	public void setMpesaBalance(double mpesaBalance) {
 		this.mpesaBalance = mpesaBalance;
 	}
 

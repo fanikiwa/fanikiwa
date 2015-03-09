@@ -64,17 +64,26 @@
         "body" : "empty"
       }
     },
-    "memberendpoint.updateMember" : {
+    "memberendpoint.listMember" : {
       "path" : "member",
-      "httpMethod" : "PUT",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.updateMember",
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.listMember",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -101,26 +110,17 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "memberendpoint.listMember" : {
+    "memberendpoint.updateMember" : {
       "path" : "member",
-      "httpMethod" : "GET",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.listMember",
+      "rosyMethod" : "com.sp.fanikiwa.api.MemberEndpoint.updateMember",
       "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -174,12 +174,6 @@
             "type" : "string",
             "format" : "int64"
           },
-          "currentAccountId" : {
-            "type" : "integer"
-          },
-          "customerId" : {
-            "type" : "integer"
-          },
           "dateActivated" : {
             "type" : "string",
             "format" : "date-time"
@@ -200,12 +194,6 @@
           },
           "informBy" : {
             "type" : "string"
-          },
-          "investmentAccountId" : {
-            "type" : "integer"
-          },
-          "loanAccountId" : {
-            "type" : "integer"
           },
           "maxRecordsToDisplay" : {
             "type" : "integer"
@@ -232,6 +220,221 @@
             "type" : "string"
           },
           "telephone" : {
+            "type" : "string"
+          },
+          "investmentAccount" : {
+            "$ref" : "Account"
+          },
+          "loanAccount" : {
+            "$ref" : "Account"
+          },
+          "currentAccount" : {
+            "$ref" : "Account"
+          },
+          "customer" : {
+            "$ref" : "Customer"
+          }
+        }
+      },
+      "Account" : {
+        "id" : "Account",
+        "type" : "object",
+        "properties" : {
+          "accountID" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "accountName" : {
+            "type" : "string"
+          },
+          "accountNo" : {
+            "type" : "string"
+          },
+          "accruedInt" : {
+            "type" : "number"
+          },
+          "bal30" : {
+            "type" : "number"
+          },
+          "bal60" : {
+            "type" : "number"
+          },
+          "bal90" : {
+            "type" : "number"
+          },
+          "balOver90" : {
+            "type" : "number"
+          },
+          "bookBalance" : {
+            "type" : "number"
+          },
+          "branch" : {
+            "type" : "string"
+          },
+          "clearedBalance" : {
+            "type" : "number"
+          },
+          "closed" : {
+            "type" : "boolean"
+          },
+          "interestRate" : {
+            "type" : "number"
+          },
+          "intRate30" : {
+            "type" : "number"
+          },
+          "intRate60" : {
+            "type" : "number"
+          },
+          "intRate90" : {
+            "type" : "number"
+          },
+          "intRateOver90" : {
+            "type" : "number"
+          },
+          "limit" : {
+            "type" : "number"
+          },
+          "limitCheckFlag" : {
+            "type" : "integer"
+          },
+          "limitFlag" : {
+            "type" : "integer"
+          },
+          "passFlag" : {
+            "type" : "integer"
+          },
+          "customer" : {
+            "$ref" : "Customer"
+          },
+          "coadet" : {
+            "$ref" : "Coadet"
+          },
+          "accounttype" : {
+            "$ref" : "AccountType"
+          }
+        }
+      },
+      "Customer" : {
+        "id" : "Customer",
+        "type" : "object",
+        "properties" : {
+          "customerId" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "billToAddress" : {
+            "type" : "string"
+          },
+          "billToEmail" : {
+            "type" : "string"
+          },
+          "billToName" : {
+            "type" : "string"
+          },
+          "billToTelephone" : {
+            "type" : "string"
+          },
+          "branch" : {
+            "type" : "string"
+          },
+          "createdDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "customerNo" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "memberId" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "telephone" : {
+            "type" : "string"
+          },
+          "organization" : {
+            "$ref" : "Organization"
+          }
+        }
+      },
+      "Organization" : {
+        "id" : "Organization",
+        "type" : "object",
+        "properties" : {
+          "organizationID" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "andress" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Coadet" : {
+        "id" : "Coadet",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "rorder" : {
+            "type" : "integer"
+          },
+          "shortCode" : {
+            "type" : "string"
+          },
+          "coa" : {
+            "$ref" : "Coa"
+          },
+          "coalevel" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "Coa" : {
+        "id" : "Coa",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          }
+        }
+      },
+      "AccountType" : {
+        "id" : "AccountType",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "shortCode" : {
             "type" : "string"
           }
         }
@@ -263,12 +466,9 @@
       },
       "com.sp.fanikiwa.api.MemberEndpoint.removeMember" : {
       },
-      "com.sp.fanikiwa.api.MemberEndpoint.updateMember" : {
-        "request" : {
-          "$ref" : "Member"
-        },
+      "com.sp.fanikiwa.api.MemberEndpoint.listMember" : {
         "response" : {
-          "$ref" : "Member"
+          "$ref" : "CollectionResponse_Member"
         }
       },
       "com.sp.fanikiwa.api.MemberEndpoint.GetMemberByEmail" : {
@@ -276,9 +476,12 @@
           "$ref" : "Member"
         }
       },
-      "com.sp.fanikiwa.api.MemberEndpoint.listMember" : {
+      "com.sp.fanikiwa.api.MemberEndpoint.updateMember" : {
+        "request" : {
+          "$ref" : "Member"
+        },
         "response" : {
-          "$ref" : "CollectionResponse_Member"
+          "$ref" : "Member"
         }
       },
       "com.sp.fanikiwa.api.MemberEndpoint.getMemberByID" : {

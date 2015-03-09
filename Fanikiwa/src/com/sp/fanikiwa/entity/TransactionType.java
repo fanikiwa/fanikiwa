@@ -1,14 +1,12 @@
 package com.sp.fanikiwa.entity;
-
-import com.googlecode.objectify.Ref;
+ 
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Load;
+import com.googlecode.objectify.annotation.Id; 
 
 @Entity
 public class TransactionType  {
 	
-@Id Long transactionTypeID;
+   @Id Long transactionTypeID;
 
 	private boolean absolute; 
 	

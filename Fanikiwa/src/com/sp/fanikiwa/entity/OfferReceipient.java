@@ -6,12 +6,13 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class OfferReceipient   {
 	
-	@Id Long offerReceipientId;
+	@Id Long  offerReceipientId;
 
 	private String idType;
 
@@ -29,11 +30,11 @@ public class OfferReceipient   {
 	public OfferReceipient() {
 	}
 
-	public long getOfferReceipientId() {
+	public Long getOfferReceipientId() {
 		return this.offerReceipientId;
 	}
 
-	public void setOfferReceipientId(long offerReceipientId) {
+	public void setOfferReceipientId(Long offerReceipientId) {
 		this.offerReceipientId = offerReceipientId;
 	}
 

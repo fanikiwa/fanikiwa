@@ -251,6 +251,12 @@
           },
           "customer" : {
             "$ref" : "Customer"
+          },
+          "coadet" : {
+            "$ref" : "Coadet"
+          },
+          "accounttype" : {
+            "$ref" : "AccountType"
           }
         }
       },
@@ -320,6 +326,60 @@
             "type" : "string"
           },
           "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Coadet" : {
+        "id" : "Coadet",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "rorder" : {
+            "type" : "integer"
+          },
+          "shortCode" : {
+            "type" : "string"
+          },
+          "coa" : {
+            "$ref" : "Coa"
+          },
+          "coalevel" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "Coa" : {
+        "id" : "Coa",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          }
+        }
+      },
+      "AccountType" : {
+        "id" : "AccountType",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "shortCode" : {
             "type" : "string"
           }
         }

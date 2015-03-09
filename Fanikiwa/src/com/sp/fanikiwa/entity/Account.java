@@ -3,21 +3,17 @@ package com.sp.fanikiwa.entity;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Id; 
 import com.googlecode.objectify.annotation.Load;
  
 @Entity
 public class Account {
 
-	 @Id Long accountID;
-           
+	 @Id Long accountID;           
 
 	private String accountName;
 
-
 	private String accountNo;
-
 
 	private double accruedInt;
 
@@ -57,8 +53,8 @@ public class Account {
 
 //Foreign Keys
 	@Load Ref<Customer> customer;
-//	@Load Ref<Coa> coa;
-//	@Load Ref<AccountType> accounttype;
+	@Load Ref<Coadet> coadet;
+	@Load Ref<AccountType> accounttype;
 
 	public Account() {
 	}
@@ -241,19 +237,19 @@ public class Account {
 	public void setCustomer(Customer customer) {
 		this.customer = Ref.create(customer);
 	}
-//	public AccountType getAccounttype() {
-//		return this.accounttype.get();
-//	}
-//
-//	public void setAccounttype(AccountType accounttype) {
-//		this.accounttype = Ref.create(accounttype);
-//	}
-//
-//	public Coa getCoa() {
-//		return this.coa.get();
-//	}
-//
-//	public void setCoa(Coa coa) {
-//		this.coa = Ref.create(coa);
-//	}
+	public AccountType getAccounttype() {
+		return this.accounttype.get();
+	}
+
+	public void setAccounttype(AccountType accounttype) {
+		this.accounttype = Ref.create(accounttype);
+	}
+
+	public Coadet getCoadet() {
+		return this.coadet.get();
+	}
+
+	public void setCoadet(Coadet coadet) {
+		this.coadet = Ref.create(coadet);
+	}
 }

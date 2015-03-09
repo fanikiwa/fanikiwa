@@ -1,12 +1,10 @@
 package com.sp.fanikiwa.entity;
 
-
 import java.util.Date;  
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
- 
+  
 @Entity
 public class STO  {
 	
@@ -16,7 +14,7 @@ public class STO  {
 
 	private double amountPaid;
 
-	private boolean chargeCommFlag;
+	private byte chargeCommFlag;
 
 	private short chargeWho;
 
@@ -26,20 +24,19 @@ public class STO  {
 
 	private double commissionAmount;
 
-	private boolean commissionPaidFlag;
+	private byte commissionPaidFlag;
 
 	private short commSourceFlag;
 
 	private int crAccount;
-
 	
 	private Date createDate;
 
-	private Long crTxnType;
+	private int crTxnType;
 
-	private Long drAccount;
+	private int drAccount;
 
-	private Long drTxnType;
+	private int drTxnType;
 
 	private Date endDate;
 
@@ -48,7 +45,6 @@ public class STO  {
 	private int limitFlag;
 
 	private int loanId;
-
 	
 	private Date nextPayDate;
 
@@ -58,7 +54,7 @@ public class STO  {
 
 	private int noOfPaymentsMade;
 
-	private boolean partialPay;
+	private byte partialPay;
 
 	private double payAmount;
 
@@ -98,11 +94,11 @@ public class STO  {
 		this.amountPaid = amountPaid;
 	}
 
-	public boolean getChargeCommFlag() {
+	public byte getChargeCommFlag() {
 		return this.chargeCommFlag;
 	}
 
-	public void setChargeCommFlag(boolean chargeCommFlag) {
+	public void setChargeCommFlag(byte chargeCommFlag) {
 		this.chargeCommFlag = chargeCommFlag;
 	}
 
@@ -138,11 +134,11 @@ public class STO  {
 		this.commissionAmount = commissionAmount;
 	}
 
-	public boolean getCommissionPaidFlag() {
+	public byte getCommissionPaidFlag() {
 		return this.commissionPaidFlag;
 	}
 
-	public void setCommissionPaidFlag(boolean commissionPaidFlag) {
+	public void setCommissionPaidFlag(byte commissionPaidFlag) {
 		this.commissionPaidFlag = commissionPaidFlag;
 	}
 
@@ -170,27 +166,27 @@ public class STO  {
 		this.createDate = createDate;
 	}
 
-	public Long getCrTxnType() {
+	public int getCrTxnType() {
 		return this.crTxnType;
 	}
 
-	public void setCrTxnType(Long crTxnType) {
+	public void setCrTxnType(int crTxnType) {
 		this.crTxnType = crTxnType;
 	}
 
-	public Long getDrAccount() {
+	public int getDrAccount() {
 		return this.drAccount;
 	}
 
-	public void setDrAccount(Long drAccount) {
+	public void setDrAccount(int drAccount) {
 		this.drAccount = drAccount;
 	}
 
-	public Long getDrTxnType() {
+	public int getDrTxnType() {
 		return this.drTxnType;
 	}
 
-	public void setDrTxnType(Long drTxnType) {
+	public void setDrTxnType(int drTxnType) {
 		this.drTxnType = drTxnType;
 	}
 
@@ -258,11 +254,11 @@ public class STO  {
 		this.noOfPaymentsMade = noOfPaymentsMade;
 	}
 
-	public boolean getPartialPay() {
+	public byte getPartialPay() {
 		return this.partialPay;
 	}
 
-	public void setPartialPay(boolean partialPay) {
+	public void setPartialPay(byte partialPay) {
 		this.partialPay = partialPay;
 	}
 

@@ -1,13 +1,7 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
+  
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -29,7 +23,6 @@ public class Customer   {
 	private String billToTelephone;
 
 	private String branch;
-
 	
 	private Date createdDate;
 

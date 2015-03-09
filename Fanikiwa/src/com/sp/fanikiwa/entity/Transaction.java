@@ -4,8 +4,7 @@ import java.util.Date;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Id; 
 import com.googlecode.objectify.annotation.Load;
 
 @Entity
@@ -20,10 +19,12 @@ public class Transaction  {
 	private String contraReference;
 
 	private boolean forcePostFlag;
-	
+ 
 	private String narrative;
+
 	
 	private Date postDate;
+
 	
 	private Date recordDate;
 
@@ -32,6 +33,7 @@ public class Transaction  {
 	private String statementFlag;
 
 	private String userID;
+
 	
 	private Date valueDate;
 

@@ -8,12 +8,13 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
  
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity
 public class Mailinggroup  {
 	
-	@Id Long groupId; 
+	@Id Long   groupId; 
 	
 	private Date createdOn;
 
@@ -28,11 +29,11 @@ public class Mailinggroup  {
 	public Mailinggroup() {
 	}
 
-	public long getGroupId() {
+	public Long getGroupId() {
 		return this.groupId;
 	}
 
-	public void setGroupId(long groupId) {
+	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
 	}
 
