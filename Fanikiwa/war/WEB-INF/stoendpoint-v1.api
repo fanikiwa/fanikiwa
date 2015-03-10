@@ -234,10 +234,10 @@
           "totalToPay" : {
             "type" : "number"
           },
-          "stoaccType" : {
+          "stotype" : {
             "type" : "integer"
           },
-          "stotype" : {
+          "stoaccType" : {
             "type" : "integer"
           }
         }

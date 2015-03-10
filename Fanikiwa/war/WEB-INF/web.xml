@@ -23,6 +23,7 @@
   <url-pattern>/_ah/spi/*</url-pattern>
  </servlet-mapping>
  
+<!--  Needed by Objectify -->
  <filter>
         <filter-name>ObjectifyFilter</filter-name>
         <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
@@ -32,4 +33,22 @@
         <url-pattern>/*</url-pattern>
 </filter-mapping>
 
+<!-- Recieving mmails set up -->
+<servlet>
+  <servlet-name>mailhandler</servlet-name>
+  <servlet-class>MailHandlerServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+  <servlet-name>mailhandler</servlet-name>
+  <url-pattern>/_ah/mail/*</url-pattern>
+</servlet-mapping>
+<security-constraint>
+  <web-resource-collection>
+    <web-resource-name>mail</web-resource-name>
+    <url-pattern>/_ah/mail/*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+    <role-name>admin</role-name>
+  </auth-constraint>
+</security-constraint>
 </web-app>

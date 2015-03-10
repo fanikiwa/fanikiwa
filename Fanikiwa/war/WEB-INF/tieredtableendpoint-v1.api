@@ -27,22 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "tieredtableendpoint.insertAccountType" : {
-      "path" : "accounttype",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.insertAccountType",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "tieredtableendpoint.listTieredtable" : {
       "path" : "accounttype",
       "httpMethod" : "GET",
@@ -63,6 +47,22 @@
           }
         },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tieredtableendpoint.insertAccountType" : {
+      "path" : "accounttype",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.insertAccountType",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -108,6 +108,21 @@
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_AccountType" : {
+        "id" : "CollectionResponse_AccountType",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "AccountType"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "AccountType" : {
         "id" : "AccountType",
         "type" : "object",
@@ -123,35 +138,20 @@
             "type" : "string"
           }
         }
-      },
-      "CollectionResponse_AccountType" : {
-        "id" : "CollectionResponse_AccountType",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "AccountType"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.TieredtableEndpoint.listAccountType" : {
+        "response" : {
+          "$ref" : "CollectionResponse_AccountType"
+        }
+      },
       "com.sp.fanikiwa.api.TieredtableEndpoint.insertAccountType" : {
         "request" : {
           "$ref" : "AccountType"
         },
         "response" : {
           "$ref" : "AccountType"
-        }
-      },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.listAccountType" : {
-        "response" : {
-          "$ref" : "CollectionResponse_AccountType"
         }
       },
       "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType" : {
