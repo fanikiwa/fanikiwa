@@ -52,27 +52,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "diaryprogramcontrolendpoint.removeDiaryprogramcontrol" : {
-      "path" : "diaryprogramcontrol/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "diaryprogramcontrolendpoint.insertDiaryprogramcontrol" : {
       "path" : "diaryprogramcontrol",
       "httpMethod" : "POST",
@@ -103,6 +82,27 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "diaryprogramcontrolendpoint.removeDiaryprogramcontrol" : {
+      "path" : "diaryprogramcontrol/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     }
   },
@@ -148,8 +148,6 @@
           "$ref" : "CollectionResponse_Diaryprogramcontrol"
         }
       },
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol" : {
-      },
       "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.insertDiaryprogramcontrol" : {
         "request" : {
           "$ref" : "Diaryprogramcontrol"
@@ -165,6 +163,8 @@
         "response" : {
           "$ref" : "Diaryprogramcontrol"
         }
+      },
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol" : {
       }
     }
   }

@@ -27,27 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "tieredtableendpoint.removeAccountType" : {
-      "path" : "accounttype/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "tieredtableendpoint.insertAccountType" : {
       "path" : "accounttype",
       "httpMethod" : "POST",
@@ -78,6 +57,27 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tieredtableendpoint.removeAccountType" : {
+      "path" : "accounttype/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     },
     "tieredtableendpoint.listTieredtable" : {
@@ -141,8 +141,6 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType" : {
-      },
       "com.sp.fanikiwa.api.TieredtableEndpoint.insertAccountType" : {
         "request" : {
           "$ref" : "AccountType"
@@ -158,6 +156,8 @@
         "response" : {
           "$ref" : "AccountType"
         }
+      },
+      "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType" : {
       },
       "com.sp.fanikiwa.api.TieredtableEndpoint.listAccountType" : {
         "response" : {

@@ -27,14 +27,39 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "coadetendpoint.removeCoadet" : {
-      "path" : "coadet/{id}",
-      "httpMethod" : "DELETE",
+    "coadetendpoint.listCoadet" : {
+      "path" : "coadet",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.removeCoadet",
+      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "coadetendpoint.getCoadetByID" : {
+      "path" : "coadet/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID",
       "request" : {
         "parameters" : {
           "id" : {
@@ -45,7 +70,7 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "coadetendpoint.insertCoadet" : {
@@ -80,14 +105,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "coadetendpoint.getCoadetByID" : {
+    "coadetendpoint.removeCoadet" : {
       "path" : "coadet/{id}",
-      "httpMethod" : "GET",
+      "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID",
+      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.removeCoadet",
       "request" : {
         "parameters" : {
           "id" : {
@@ -98,37 +123,27 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "coadetendpoint.listCoadet" : {
-      "path" : "coadet",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
         "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "CollectionResponse_Coadet" : {
+        "id" : "CollectionResponse_Coadet",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Coadet"
+            }
+          },
+          "nextPageToken" : {
+            "type" : "string"
+          }
+        }
+      },
       "Coadet" : {
         "id" : "Coadet",
         "type" : "object",
@@ -166,25 +181,18 @@
             "type" : "string"
           }
         }
-      },
-      "CollectionResponse_Coadet" : {
-        "id" : "CollectionResponse_Coadet",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Coadet"
-            }
-          },
-          "nextPageToken" : {
-            "type" : "string"
-          }
-        }
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.CoadetEndpoint.removeCoadet" : {
+      "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Coadet"
+        }
+      },
+      "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID" : {
+        "response" : {
+          "$ref" : "Coadet"
+        }
       },
       "com.sp.fanikiwa.api.CoadetEndpoint.insertCoadet" : {
         "request" : {
@@ -202,15 +210,7 @@
           "$ref" : "Coadet"
         }
       },
-      "com.sp.fanikiwa.api.CoadetEndpoint.getCoadetByID" : {
-        "response" : {
-          "$ref" : "Coadet"
-        }
-      },
-      "com.sp.fanikiwa.api.CoadetEndpoint.listCoadet" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Coadet"
-        }
+      "com.sp.fanikiwa.api.CoadetEndpoint.removeCoadet" : {
       }
     }
   }

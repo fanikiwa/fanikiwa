@@ -64,6 +64,27 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "accountendpoint.removeAccount" : {
+      "path" : "account/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.removeAccount",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
     "accountendpoint.setAccountLimitStatus" : {
       "path" : "SetAccountLimitStatus/{status}",
       "httpMethod" : "POST",
@@ -142,64 +163,20 @@
         "body" : "empty"
       }
     },
-    "accountendpoint.blockFunds" : {
-      "path" : "BlockFunds/{blockamount}",
+    "accountendpoint.insertAccount" : {
+      "path" : "account",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.BlockFunds",
-      "request" : {
-        "parameters" : {
-          "blockamount" : {
-            "type" : "double",
-            "required" : true
-          }
-        },
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "accountendpoint.unBlockFunds" : {
-      "path" : "UnBlockFunds/{amount}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.UnBlockFunds",
-      "request" : {
-        "parameters" : {
-          "amount" : {
-            "type" : "double",
-            "required" : true
-          }
-        },
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "accountendpoint.doubleEntryPost" : {
-      "path" : "DoubleEntryPost",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.DoubleEntryPost",
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.insertAccount",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "accountendpoint.listAccount" : {
@@ -227,15 +204,37 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "accountendpoint.batchPost" : {
-      "path" : "BatchPost",
+    "accountendpoint.updateAccount" : {
+      "path" : "account",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.updateAccount",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "accountendpoint.blockFunds" : {
+      "path" : "BlockFunds/{blockamount}",
       "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.BatchPost",
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.BlockFunds",
       "request" : {
+        "parameters" : {
+          "blockamount" : {
+            "type" : "double",
+            "required" : true
+          }
+        },
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },
@@ -265,38 +264,6 @@
         "body" : "empty"
       }
     },
-    "accountendpoint.insertAccount" : {
-      "path" : "account",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.insertAccount",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "accountendpoint.updateAccount" : {
-      "path" : "account",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.updateAccount",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "accountendpoint.closeAccount" : {
       "path" : "CloseAccount",
       "httpMethod" : "POST",
@@ -313,22 +280,55 @@
         "body" : "empty"
       }
     },
-    "accountendpoint.removeAccount" : {
-      "path" : "account/{id}",
-      "httpMethod" : "DELETE",
+    "accountendpoint.unBlockFunds" : {
+      "path" : "UnBlockFunds/{amount}",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.removeAccount",
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.UnBlockFunds",
       "request" : {
         "parameters" : {
-          "id" : {
-            "type" : "int64",
+          "amount" : {
+            "type" : "double",
             "required" : true
           }
         },
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
         "body" : "empty"
+      }
+    },
+    "accountendpoint.batchPost" : {
+      "path" : "BatchPost",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.BatchPost",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "accountendpoint.doubleEntryPost" : {
+      "path" : "DoubleEntryPost",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.DoubleEntryPost",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "empty"
@@ -718,18 +718,6 @@
           }
         }
       },
-      "DoubleEntry" : {
-        "id" : "DoubleEntry",
-        "type" : "object",
-        "properties" : {
-          "dr" : {
-            "$ref" : "Transaction"
-          },
-          "cr" : {
-            "$ref" : "Transaction"
-          }
-        }
-      },
       "CollectionResponse_Account" : {
         "id" : "CollectionResponse_Account",
         "type" : "object",
@@ -756,6 +744,18 @@
             }
           }
         }
+      },
+      "DoubleEntry" : {
+        "id" : "DoubleEntry",
+        "type" : "object",
+        "properties" : {
+          "dr" : {
+            "$ref" : "Transaction"
+          },
+          "cr" : {
+            "$ref" : "Transaction"
+          }
+        }
       }
     },
     "methods" : {
@@ -769,42 +769,14 @@
           "$ref" : "Account"
         }
       },
+      "com.sp.fanikiwa.api.AccountEndpoint.removeAccount" : {
+      },
       "com.sp.fanikiwa.api.AccountEndpoint.SetAccountLimitStatus" : {
         "request" : {
           "$ref" : "Account"
         }
       },
       "com.sp.fanikiwa.api.AccountEndpoint.SetAccountLockStatus" : {
-        "request" : {
-          "$ref" : "Account"
-        }
-      },
-      "com.sp.fanikiwa.api.AccountEndpoint.BlockFunds" : {
-        "request" : {
-          "$ref" : "Account"
-        }
-      },
-      "com.sp.fanikiwa.api.AccountEndpoint.UnBlockFunds" : {
-        "request" : {
-          "$ref" : "Account"
-        }
-      },
-      "com.sp.fanikiwa.api.AccountEndpoint.DoubleEntryPost" : {
-        "request" : {
-          "$ref" : "DoubleEntry"
-        }
-      },
-      "com.sp.fanikiwa.api.AccountEndpoint.listAccount" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Account"
-        }
-      },
-      "com.sp.fanikiwa.api.AccountEndpoint.BatchPost" : {
-        "request" : {
-          "$ref" : "MultiEntry"
-        }
-      },
-      "com.sp.fanikiwa.api.AccountEndpoint.ClearEffects" : {
         "request" : {
           "$ref" : "Account"
         }
@@ -817,6 +789,11 @@
           "$ref" : "Account"
         }
       },
+      "com.sp.fanikiwa.api.AccountEndpoint.listAccount" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Account"
+        }
+      },
       "com.sp.fanikiwa.api.AccountEndpoint.updateAccount" : {
         "request" : {
           "$ref" : "Account"
@@ -825,12 +802,35 @@
           "$ref" : "Account"
         }
       },
+      "com.sp.fanikiwa.api.AccountEndpoint.BlockFunds" : {
+        "request" : {
+          "$ref" : "Account"
+        }
+      },
+      "com.sp.fanikiwa.api.AccountEndpoint.ClearEffects" : {
+        "request" : {
+          "$ref" : "Account"
+        }
+      },
       "com.sp.fanikiwa.api.AccountEndpoint.CloseAccount" : {
         "request" : {
           "$ref" : "Account"
         }
       },
-      "com.sp.fanikiwa.api.AccountEndpoint.removeAccount" : {
+      "com.sp.fanikiwa.api.AccountEndpoint.UnBlockFunds" : {
+        "request" : {
+          "$ref" : "Account"
+        }
+      },
+      "com.sp.fanikiwa.api.AccountEndpoint.BatchPost" : {
+        "request" : {
+          "$ref" : "MultiEntry"
+        }
+      },
+      "com.sp.fanikiwa.api.AccountEndpoint.DoubleEntryPost" : {
+        "request" : {
+          "$ref" : "DoubleEntry"
+        }
       }
     }
   }
