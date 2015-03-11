@@ -48,22 +48,6 @@
         "body" : "empty"
       }
     },
-    "tieredtableendpoint.updateAccountType" : {
-      "path" : "accounttype",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.updateAccountType",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "tieredtableendpoint.insertAccountType" : {
       "path" : "accounttype",
       "httpMethod" : "POST",
@@ -72,6 +56,22 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.insertAccountType",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "tieredtableendpoint.updateAccountType" : {
+      "path" : "accounttype",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.updateAccountType",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -143,7 +143,7 @@
     "methods" : {
       "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType" : {
       },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.updateAccountType" : {
+      "com.sp.fanikiwa.api.TieredtableEndpoint.insertAccountType" : {
         "request" : {
           "$ref" : "AccountType"
         },
@@ -151,7 +151,7 @@
           "$ref" : "AccountType"
         }
       },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.insertAccountType" : {
+      "com.sp.fanikiwa.api.TieredtableEndpoint.updateAccountType" : {
         "request" : {
           "$ref" : "AccountType"
         },

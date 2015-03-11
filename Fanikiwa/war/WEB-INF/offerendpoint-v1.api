@@ -59,31 +59,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "offerendpoint.listOffer" : {
-      "path" : "offer",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.listOffer",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "offerendpoint.removeOffer" : {
       "path" : "offer/{id}",
       "httpMethod" : "DELETE",
@@ -118,6 +93,31 @@
           "id" : {
             "type" : "int64",
             "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "offerendpoint.listOffer" : {
+      "path" : "offer",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OfferEndpoint.listOffer",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
           }
         },
         "body" : "empty"
@@ -486,16 +486,16 @@
           "$ref" : "Offer"
         }
       },
-      "com.sp.fanikiwa.api.OfferEndpoint.listOffer" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Offer"
-        }
-      },
       "com.sp.fanikiwa.api.OfferEndpoint.removeOffer" : {
       },
       "com.sp.fanikiwa.api.OfferEndpoint.getOfferByID" : {
         "response" : {
           "$ref" : "Offer"
+        }
+      },
+      "com.sp.fanikiwa.api.OfferEndpoint.listOffer" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Offer"
         }
       }
     }

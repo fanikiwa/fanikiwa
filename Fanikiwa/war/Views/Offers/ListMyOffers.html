@@ -1,4 +1,173 @@
-﻿@model IEnumerable<fPeerLending.Entities.Offer>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Famous Offers</title>
+</head>
+<body>
+ 
+    <form action="javascript:void(0);">
+        <h2>List Offers</h2>
+        <div><input id="listOffer" type="submit" value="List Offers"></div>
+    </form>
+    <div id="listOffersResult"></div>
+    
+    <form action="javascript:void(0);">
+      <h2>Insert New Offer</h2>
+         <div><input id="txtOfferName" placeholder="Offer Name here"></input></div>
+         <div><input id="txtCustomerId" placeholder="Customer Id here" type="number"></input></div>
+         <div><input id="txtCOAId" placeholder="COA Id here" type="number"></input></div>
+         <div><input id="txtOfferTypeId" placeholder="Offer Type Id here" type="number"></input></div> 
+         <div><input id="txtBookBalance" placeholder="Book Balance here" type="number"></input></div>
+         <div><input id="txtClearedBalance" placeholder="Cleared Balance here" type="number"></input></div>
+         <div><input id="txtLimit" placeholder="Limit here" type="number"></input></div>
+         <div><input id="txtInterestRate" placeholder="Interest Rate here" type="number"></input></div>
+          <div><input id="txtAccruedInt" placeholder="Accrued Interest here" type="number"></input></div>
+         <div><input id="txtLimitFlag" placeholder="Limit Flag here" type="number"></input></div>         
+         <div><input id="insertOffer" type="submit" value="Insert Offer"></div>
+    </form>
+    
+    <form action="javascript:void(0);">
+      <h2>Update Offer</h2>
+         
+
+         <div><input id="updateOffer" type="submit" value="Update Offer"></div>
+    </form>
+    
+    
+    <form action="javascript:void(0);">
+      <h2>Delete Offer</h2>
+         <div><input id="offerID" placeholder="Offer ID value"></input></div>
+         <div><input id="deleteOffer" type="submit" value="Delete Offer"></div>
+    </form>
+    
+    
+    <script type="text/javascript">
+        function init() {
+                //Parameters are APIName,APIVersion,CallBack function,API Root 
+                //http://localhost:8888/_ah/api
+                gapi.client.load('offerendpoint', 'v1', null, 'https://1-dot-fanikiwaweb.appspot.com/_ah/api');
+                //gapi.client.load('offerendpoint', 'v1', null, 'http://localhost:8888/_ah/api');
+                document.getElementById('listOffer').onclick = function() {
+                    listOffers();
+                  }
+                
+                document.getElementById('insertOffer').onclick = function() {
+                        insertOffer();
+                }
+                
+                document.getElementById('updateOffer').onclick = function() {
+                        updateOffer();
+                }
+                
+                document.getElementById('deleteOffer').onclick = function() {
+                        deleteOffer();
+                }
+        }
+        
+        //List Offers function that will execute the listOffer call
+        function listOffers() {
+                gapi.client.offerendpoint.listOffer().execute(function(resp) {
+                        if (!resp.code) {
+                                resp.items = resp.items || [];
+                                var result = "";
+                                for (var i=0;i<resp.items.length;i++) {
+                                        result = result+ resp.items[i].Description + "..." + "<b>" + resp.items[i].Amount + "</b>" + "[" + resp.items[i].OfferType + "]" + "<br/>";
+                                }
+                                document.getElementById('listOffersResult').innerHTML = result;
+                        }
+                });
+        }
+        
+        //Insert Offer function
+        function insertOffer() {
+                //Validate the entries  
+                var _OfferName = document.getElementById('txtOfferName').value;
+                var _CustomerId = document.getElementById('txtCustomerId').value;
+                var _COAId = document.getElementById('txtCOAId').value;
+                var _OfferTypeId = document.getElementById('txtOfferTypeId').value; 
+                var _BookBalance = document.getElementById('txtBookBalance').value;
+                var _ClearedBalance = document.getElementById('txtClearedBalance').value;
+                var _Limit = document.getElementById('txtLimit').value;
+                var _InterestRate = document.getElementById('txtInterestRate').value;
+                var _AccruedInt = document.getElementById('txtAccruedInt').value;
+                var _LimitFlag = document.getElementById('txtLimitFlag').value;
+                
+                //Build the Request Object
+                var requestData = {};
+                requestData.OfferName = _OfferName;
+                requestData.CustomerId = _CustomerId;
+                requestData.COAId = _COAId;
+                requestData.OfferTypeId = _OfferTypeId;
+                requestData.BookBalance = _BookBalance;
+                requestData.ClearedBalance = _ClearedBalance;
+                requestData.Limit = _Limit;
+                requestData.InterestRate = _InterestRate;
+                requestData.AccruedInt = _AccruedInt;
+                requestData.LimitFlag = _LimitFlag;
+                
+                gapi.client.offerendpoint.insertOffer(requestData).execute(function(resp) {
+                        if (!resp.code) {
+                                //Just logging to console now, you can do your check here/display message
+                                console.log(resp.id + ":" + resp.Description + ":" + resp.Amount);
+                        }
+                });
+        }
+        
+        //Update Offer function
+        function updateOffer() {
+                //Validate the entries
+                var _ID = document.getElementById("editOfferID").value;
+                var _AuthorName = document.getElementById('editAuthorName').value;
+                var _Message = document.getElementById('editMessage').value;
+                
+                //Build the Request Object
+                var requestData = {};
+                requestData.id = _ID;
+                requestData.author = _AuthorName;
+                requestData.message = _Message;
+                gapi.client.offerendpoint.updateOffer(requestData).execute(function(resp) {
+                        if (!resp.code) {
+                                //Just logging to console now, you can do your check here/display message
+                                console.log(resp.id + ":" + resp.author + ":" + resp.message);
+                        }
+                });
+        }
+        
+        //Delete Offer function
+        function deleteOffer() {
+                //Validate the entries
+                var _ID = document.getElementById('offerID').value;
+                
+                //Build the Request Object
+                var requestData = {};
+                requestData.id = _ID;
+                console.log(requestData);
+                gapi.client.offerendpoint.removeOffer(requestData).execute(function(resp) {
+                        //Just logging to console now, you can do your check here/display message
+                        console.log(resp);
+                });
+        }
+        
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@model IEnumerable<fPeerLending.Entities.Offer>
 @using ffWeb.UI.MVC.Helpers
 
 @{

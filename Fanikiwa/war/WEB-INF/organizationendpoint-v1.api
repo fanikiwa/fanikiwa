@@ -64,6 +64,22 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "organizationendpoint.insertOrganization" : {
+      "path" : "organization",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.OrganizationEndpoint.insertOrganization",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "organizationendpoint.removeOrganization" : {
       "path" : "organization/{id}",
       "httpMethod" : "DELETE",
@@ -83,22 +99,6 @@
       },
       "response" : {
         "body" : "empty"
-      }
-    },
-    "organizationendpoint.insertOrganization" : {
-      "path" : "organization",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OrganizationEndpoint.insertOrganization",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
       }
     },
     "organizationendpoint.listOrganization" : {
@@ -178,8 +178,6 @@
           "$ref" : "Organization"
         }
       },
-      "com.sp.fanikiwa.api.OrganizationEndpoint.removeOrganization" : {
-      },
       "com.sp.fanikiwa.api.OrganizationEndpoint.insertOrganization" : {
         "request" : {
           "$ref" : "Organization"
@@ -187,6 +185,8 @@
         "response" : {
           "$ref" : "Organization"
         }
+      },
+      "com.sp.fanikiwa.api.OrganizationEndpoint.removeOrganization" : {
       },
       "com.sp.fanikiwa.api.OrganizationEndpoint.listOrganization" : {
         "response" : {
