@@ -52,6 +52,27 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "customerendpoint.removeCustomer" : {
+      "path" : "customer/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.CustomerEndpoint.removeCustomer",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
     "customerendpoint.getCustomer" : {
       "path" : "customer/{id}",
       "httpMethod" : "GET",
@@ -103,27 +124,6 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "customerendpoint.removeCustomer" : {
-      "path" : "customer/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CustomerEndpoint.removeCustomer",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
       }
     }
   },
@@ -221,6 +221,8 @@
           "$ref" : "CollectionResponse_Customer"
         }
       },
+      "com.sp.fanikiwa.api.CustomerEndpoint.removeCustomer" : {
+      },
       "com.sp.fanikiwa.api.CustomerEndpoint.getCustomer" : {
         "response" : {
           "$ref" : "Customer"
@@ -241,8 +243,6 @@
         "response" : {
           "$ref" : "Customer"
         }
-      },
-      "com.sp.fanikiwa.api.CustomerEndpoint.removeCustomer" : {
       }
     }
   }

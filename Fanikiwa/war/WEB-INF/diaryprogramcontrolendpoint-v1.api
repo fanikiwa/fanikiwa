@@ -68,22 +68,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "diaryprogramcontrolendpoint.updateDiaryprogramcontrol" : {
-      "path" : "diaryprogramcontrol",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "diaryprogramcontrolendpoint.removeDiaryprogramcontrol" : {
       "path" : "diaryprogramcontrol/{id}",
       "httpMethod" : "DELETE",
@@ -103,6 +87,22 @@
       },
       "response" : {
         "body" : "empty"
+      }
+    },
+    "diaryprogramcontrolendpoint.updateDiaryprogramcontrol" : {
+      "path" : "diaryprogramcontrol",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
@@ -156,6 +156,8 @@
           "$ref" : "Diaryprogramcontrol"
         }
       },
+      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol" : {
+      },
       "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.updateDiaryprogramcontrol" : {
         "request" : {
           "$ref" : "Diaryprogramcontrol"
@@ -163,8 +165,6 @@
         "response" : {
           "$ref" : "Diaryprogramcontrol"
         }
-      },
-      "com.sp.fanikiwa.api.DiaryprogramcontrolEndpoint.removeDiaryprogramcontrol" : {
       }
     }
   }
