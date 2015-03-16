@@ -27,27 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "valuedatedtransactionendpoint.getValueDatedTransaction" : {
-      "path" : "valuedatedtransaction/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "valuedatedtransactionendpoint.removeValueDatedTransaction" : {
       "path" : "valuedatedtransaction/{id}",
       "httpMethod" : "DELETE",
@@ -69,14 +48,14 @@
         "body" : "empty"
       }
     },
-    "valuedatedtransactionendpoint.updateValueDatedTransaction" : {
+    "valuedatedtransactionendpoint.insertValueDatedTransaction" : {
       "path" : "valuedatedtransaction",
-      "httpMethod" : "PUT",
+      "httpMethod" : "POST",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.updateValueDatedTransaction",
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -110,17 +89,38 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "valuedatedtransactionendpoint.insertValueDatedTransaction" : {
+    "valuedatedtransactionendpoint.updateValueDatedTransaction" : {
       "path" : "valuedatedtransaction",
-      "httpMethod" : "POST",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction",
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.updateValueDatedTransaction",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "valuedatedtransactionendpoint.getValueDatedTransaction" : {
+      "path" : "valuedatedtransaction/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -527,14 +527,9 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction" : {
-        "response" : {
-          "$ref" : "ValueDatedTransaction"
-        }
-      },
       "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.removeValueDatedTransaction" : {
       },
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.updateValueDatedTransaction" : {
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction" : {
         "request" : {
           "$ref" : "ValueDatedTransaction"
         },
@@ -547,10 +542,15 @@
           "$ref" : "CollectionResponse_ValueDatedTransaction"
         }
       },
-      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.insertValueDatedTransaction" : {
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.updateValueDatedTransaction" : {
         "request" : {
           "$ref" : "ValueDatedTransaction"
         },
+        "response" : {
+          "$ref" : "ValueDatedTransaction"
+        }
+      },
+      "com.sp.fanikiwa.api.ValueDatedTransactionEndpoint.getValueDatedTransaction" : {
         "response" : {
           "$ref" : "ValueDatedTransaction"
         }

@@ -29,13 +29,13 @@ import javax.inject.Named;
 @Api(name = "memberendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class MemberEndpoint {
 
-	final Long CURRENT_ACC_COA_ID = 6509108836433920L;
-	final Long CURRENT_ACC_TYPE_ID = 5277655813324800L;
-	final Long LOAN_ACC_COA_ID = 6509108836433920L;
-	final Long LOAN_ACC_TYPE_ID = 5277655813324800L;
-	final Long INVESTMENT_ACC_COA_ID = 6509108836433920L;
-	final Long INVESTMENT_ACC_TYPE_ID = 5277655813324800L;
-	final Long CURRENT_ORG = 5981343255101440L;
+	final Long CURRENT_ACC_COA_ID = 5101298819006464L;
+	final Long CURRENT_ACC_TYPE_ID = 5672749318012928L;
+	final Long LOAN_ACC_COA_ID = 5124589889781760L;
+	final Long LOAN_ACC_TYPE_ID = 5705241014042624L;
+	final Long INVESTMENT_ACC_COA_ID = 5700305828184064L;
+	final Long INVESTMENT_ACC_TYPE_ID = 5167132077719552L;
+	final Long CURRENT_ORG = 5636318331666432L;
 
 	/**
 	 * This method lists all the entities inserted in datastore. It uses HTTP

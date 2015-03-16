@@ -52,22 +52,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "stoendpoint.insertSTO" : {
-      "path" : "sto",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.insertSTO",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "stoendpoint.getSTOByID" : {
       "path" : "sto/{id}",
       "httpMethod" : "GET",
@@ -124,6 +108,22 @@
       },
       "response" : {
         "body" : "empty"
+      }
+    },
+    "stoendpoint.insertSTO" : {
+      "path" : "sto",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.STOEndpoint.insertSTO",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
@@ -249,14 +249,6 @@
           "$ref" : "CollectionResponse_STO"
         }
       },
-      "com.sp.fanikiwa.api.STOEndpoint.insertSTO" : {
-        "request" : {
-          "$ref" : "STO"
-        },
-        "response" : {
-          "$ref" : "STO"
-        }
-      },
       "com.sp.fanikiwa.api.STOEndpoint.getSTOByID" : {
         "response" : {
           "$ref" : "STO"
@@ -271,6 +263,14 @@
         }
       },
       "com.sp.fanikiwa.api.STOEndpoint.removeSTO" : {
+      },
+      "com.sp.fanikiwa.api.STOEndpoint.insertSTO" : {
+        "request" : {
+          "$ref" : "STO"
+        },
+        "response" : {
+          "$ref" : "STO"
+        }
       }
     }
   }
