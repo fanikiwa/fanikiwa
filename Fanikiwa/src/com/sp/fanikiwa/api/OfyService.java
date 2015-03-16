@@ -12,8 +12,10 @@ import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.Organization;
 import com.sp.fanikiwa.entity.Quote;
+import com.sp.fanikiwa.entity.Settings;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
+import com.sp.fanikiwa.entity.Userprofile;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
  
 /**
@@ -36,6 +38,8 @@ static {
  ObjectifyService.register(Coadet.class);
  ObjectifyService.register(Coa.class);
  ObjectifyService.register(Offer.class);
+ ObjectifyService.register(Settings.class);
+ ObjectifyService.register(Userprofile.class);
  }
  
 public static Objectify ofy() {

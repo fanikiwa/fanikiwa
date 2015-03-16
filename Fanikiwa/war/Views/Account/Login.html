@@ -1,12 +1,80 @@
-﻿@model ffWeb.UI.MVC.Models.LoginModel
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-@{
-    ViewBag.Title = "Log in";
-}
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Fanikiwa Peer To Peer Lending</title>
+  </head>
 
+  <body> 
+  
 <hgroup class="title">
-    <h2 class="page-title">@ViewBag.Title.</h2>
+    <h1 class="page-title">Log in</h1>
+    <h2 class="page-title">Use a local account to log in</h2>
 </hgroup>
+
+    <form action="javascript:void(0);">
+        
+    <fieldset>
+        <legend>Registration Form</legend>
+
+        <article class="col1">
+            <div class="pad">
+
+<div><input id="UserName" placeholder="UserName"  autofocus="autofocus", type="email"></input></div>
+
+<div><input id="SurName" placeholder="SurName"></input></div>
+
+<div><input id="Password" placeholder="Password"  type="password"></input></div>
+
+<div><input id="ConfirmPassword" placeholder="ConfirmPassword" type="password"></input></div>
+               
+
+            </div>
+        </article>
+
+        <article class="col2">
+            <div class="pad">
+
+               <div><input id="InformBy" placeholder="InformBy"></input></div>
+
+<div><input id="Telephone" placeholder="Telephone"></input></div>
+
+<div><input id="TermsAccepted" placeholder="TermsAccepted" type="checkbox"></input></div>
+
+ 
+            </div>
+        </article>
+
+        <input type="submit" value="Register" id="btnSubmitRegisterForm" style="float: left; clear: both" />
+
+    </fieldset>
+    
+   
+    </form>
+    
+ 
+
+
+
+ 
+    <script type="text/javascript">
+
+       
+
+    </script>
+
+
+  </body>
+</html>
+ 
+
+
+
+
+
+
+ 
 
 <section id="loginForm">
 
@@ -74,128 +142,10 @@
 
 
 
-
-
-
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+ 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-
-            $("#progress").hide();
-
-            $.ajaxSetup({ cache: false });
-
-        });
-
-        //$("#btnSubmitMainLoginForm").on("click", function (e) {
-
-        //    e.preventDefault();
-
-        //    $("#login-main-form").validate()
-
-        //    //if (!$("#login-main-form").valid()) {
-        //    //    return false;
-        //    //}
-
-        //    //if ($("#login-main-form").valid()) {
-
-        //        $("#progress").removeClass('displaynone');
-        //        $("#progress").addClass('displayblock');
-        //        $("#progress").show();
-
-        //        $("#login-main-form").submit();
-        //    //}
-
-        //});
-
-        //$("#btnSubmitLoginForm").on("click", function (e) {
-
-        //    e.preventDefault();
-
-        //    $("#login-main-form").validate().form();
-
-        //    if (!$("#login-main-form").valid()) {
-
-        //        //alert("Not Valid");
-
-        //        //return false;
-        //    }
-
-        //    //$("#login-main-form").unbind("validate", false);
-
-        //    if ($("#login-main-form").valid()) {
-
-        //        alert("Valid");
-
-        //        $("#progress").removeClass('displaynone');
-        //        $("#progress").addClass('displayblock');
-        //        $("#progress").show();
-
-        //        $("#login-main-form").submit();
-
-        //        //return true;
-        //    }
-
-        //});
-
-
-        //// Handle form submit ...
-        //$("#login-main-form").on('submit', function (e) {
-
-        //    e.preventDefault();
-
-        //    //$("#login-main-form").validate().form();
-
-        //    //if ($("#login-main-form").valid() == false) {
-        //    //    alert("Not Valid");
-        //    //    return false;
-        //    //}
-
-        //    //$("#login-main-form").unbind("validate", false);
-
-        //    if ($("#login-main-form").validate().form()) {
-        //        //alert("Valid");
-        //        $("#progress").removeClass('displaynone');
-        //        $("#progress").addClass('displayblock');
-        //        $("#progress").show();
-
-        //        $("#login-main-form").submit();
-
-        //        return true;
-        //    }
-
-        //    return false;
-
-        //});
-
-        $("#btnSubmitRegisterFromLoginForm").on("click", function (e) {
-
-            e.preventDefault();
-
-            $("#progress").removeClass('displaynone');
-            $("#progress").addClass('displayblock');
-            $("#progress").show();
-
-            $("#register-from-login-form").submit();
-
-        });
-
-        $("#btnSubmitExternalLoginForm").on("click", function (e) {
-
-            e.preventDefault();
-
-            $("#progress").removeClass('displaynone');
-            $("#progress").addClass('displayblock');
-            $("#progress").show();
-
-            $("#external-login-form").submit();
-
-        });
-
+     
     </script>
 
-}
+ 

@@ -1,66 +1,34 @@
-﻿@model ffWeb.UI.MVC.Models.RegisterModel
-@{
-    ViewBag.Title = "Register";
-}
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Fanikiwa Peer To Peer Lending</title>
+  </head>
 
+  <body> 
+  
 <hgroup class="title">
-    <h2 class="page-title">@ViewBag.Title.</h2>
+    <h1 class="page-title">Register</h1>
     <h2 class="page-title">Create a new account.</h2>
 </hgroup>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", id = "register-form" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
+    <form action="javascript:void(0);">
+        
     <fieldset>
         <legend>Registration Form</legend>
 
         <article class="col1">
             <div class="pad">
 
-                <ol>
+<div><input id="UserName" placeholder="UserName"  autofocus="autofocus", type="email"></input></div>
 
-                    <li>
-                        @Html.ValidationMessageFor(m => m.UserName)
-                    </li>
-                    <li>
-                        @Html.ValidationMessageFor(m => m.SurName)
-                    </li>
-                    <li>
-                        @Html.ValidationMessageFor(m => m.Password)
-                    </li>
-                    <li>
-                        @Html.ValidationMessageFor(m => m.ConfirmPassword)
-                    </li>
+<div><input id="SurName" placeholder="SurName"></input></div>
 
+<div><input id="Password" placeholder="Password"  type="password"></input></div>
 
-                    <li>
-                        <h3>*UserName(Use Your Email):</h3>
-                        <span class="add-on"><i class="icon-envelope"></i></span>
-                        @Html.TextBoxFor(m => m.UserName, new { autofocus = "autofocus", type = "email", placeholder = "username@domain.co.ke" })
-                    </li>
-
-                    <li>
-                        <h3>*SurName:</h3>
-                        <span class="add-on"><i class="icon-key"></i></span>
-                        @Html.TextBoxFor(m => m.SurName, new { autofocus = "autofocus", placeholder = "SurName" })
-                    </li>
-
-                    <li>
-                        <h3>*Password:</h3>
-                        <span class="add-on"><i class="icon-key"></i></span>
-                        @Html.PasswordFor(m => m.Password, new { type = "password", minlength = "6", placeholder = "Password" })
-                    </li>
-
-                    <li>
-                        <h3>*ConfirmPassword:</h3>
-                        <span class="add-on"><i class="icon-key"></i></span>
-                        @Html.PasswordFor(m => m.ConfirmPassword, new { type = "password", minlength = "6", placeholder = "Confirm Password" })
-                    </li>
-
-                </ol>
+<div><input id="ConfirmPassword" placeholder="ConfirmPassword" type="password"></input></div>
+               
 
             </div>
         </article>
@@ -68,51 +36,13 @@
         <article class="col2">
             <div class="pad">
 
-                <ol>
+               <div><input id="InformBy" placeholder="InformBy"></input></div>
 
-                    <li>
-                        @Html.ValidationMessageFor(model => model.InformBy)
-                    </li>
-                    <li>
-                        @Html.ValidationMessageFor(m => m.Telephone)
-                    </li>
-                    <li>
-                        @Html.ValidationMessageFor(m => m.TermsAccepted)
-                    </li>
+<div><input id="Telephone" placeholder="Telephone"></input></div>
 
-                    <li>
-                        <h3>*InformBy:</h3>
-                        <span class="add-on"><i class="icon-envelope"></i></span>
-                        @{
-    List<SelectListItem> lstinformby = new List<SelectListItem>();
-    lstinformby.Add(new SelectListItem
-         {
-             Text = "SMS",
-             Value = "SMS",
+<div><input id="TermsAccepted" placeholder="TermsAccepted" type="checkbox"></input></div>
 
-         });
-    lstinformby.Add(new SelectListItem
-         {
-             Text = "EMAIL",
-             Value = "EMAIL",
-             Selected = true
-         });
-                        }
-                        @Html.DropDownListFor(model => model.InformBy, lstinformby, "-- Select Inform By --", new { id = "cboInformBy", style = "width: 310px;height: 30px;" })
-                    </li>
-
-                    <li>
-                        <h3>Phone: Must Conform to International format!</h3>
-                        <span class="add-on"><i class="icon-envelope"></i></span>
-                        @Html.TextBoxFor(m => m.Telephone, new { type = "tel", placeholder = "254717769329" })
-                    </li>
-
-                    <li>
-                        @Html.CheckBoxFor(m => m.TermsAccepted) I Accept the Terms and Conditions
-                    </li>
-
-                </ol>
-
+ 
             </div>
         </article>
 
@@ -120,49 +50,25 @@
 
     </fieldset>
     
-     
-}
+   
+    </form>
+    
+ 
 
 
 
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+ 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-
-            $("#progress").hide();
-
-            $.ajaxSetup({ cache: false });
-
-        });
-
-        $("#btnSubmitRegisterForm").on("click", function (e) {
-
-            e.preventDefault();
-
-            $("#register-form").validate();
-
-            if (!$("#register-form").valid()) {
-                return false;
-            }
-
-            if ($("#register-form").valid()) {
-
-                $("#progress").removeClass('displaynone');
-                $("#progress").addClass('displayblock');
-                $("#progress").show();
-
-                $("#register-form").submit();
-            }
-
-        });
+       
 
     </script>
 
-}
+
+  </body>
+</html>
+ 
+
 
 
 
