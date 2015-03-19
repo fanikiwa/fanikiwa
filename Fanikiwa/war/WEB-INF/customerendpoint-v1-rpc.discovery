@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/7gUYvfwy0JowRMNtfrI3q6BKgN0\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/7gUYvfwy0JowRMNtfrI3q6BKgN0\"",
  "discoveryVersion": "v1",
  "id": "customerendpoint:v1",
  "name": "customerendpoint",

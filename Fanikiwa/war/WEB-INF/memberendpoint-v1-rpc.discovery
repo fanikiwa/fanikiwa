@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/Tv2WbKul-140-FKRk-5HaWBRrws\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Tv2WbKul-140-FKRk-5HaWBRrws\"",
  "discoveryVersion": "v1",
  "id": "memberendpoint:v1",
  "name": "memberendpoint",

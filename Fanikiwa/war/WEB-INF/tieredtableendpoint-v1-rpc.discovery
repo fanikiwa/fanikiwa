@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/KPuX8HZ82dJqtrca5emRNJ8x77A\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/KPuX8HZ82dJqtrca5emRNJ8x77A\"",
  "discoveryVersion": "v1",
  "id": "tieredtableendpoint:v1",
  "name": "tieredtableendpoint",

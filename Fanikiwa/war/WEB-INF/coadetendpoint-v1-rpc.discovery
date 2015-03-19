@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/dDeWaQsA-4BHUTQeSeXXHlSQJd4\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/dDeWaQsA-4BHUTQeSeXXHlSQJd4\"",
  "discoveryVersion": "v1",
  "id": "coadetendpoint:v1",
  "name": "coadetendpoint",

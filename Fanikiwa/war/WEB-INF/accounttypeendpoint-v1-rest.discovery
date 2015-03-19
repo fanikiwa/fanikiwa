@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/a4LrUMYB4TnYtMisV3jBwK4-5EY\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/a4LrUMYB4TnYtMisV3jBwK4-5EY\"",
  "discoveryVersion": "v1",
  "id": "accounttypeendpoint:v1",
  "name": "accounttypeendpoint",

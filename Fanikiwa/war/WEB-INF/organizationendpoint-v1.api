@@ -27,22 +27,17 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "organizationendpoint.getOrganization" : {
-      "path" : "organization/{id}",
-      "httpMethod" : "GET",
+    "organizationendpoint.updateOrganization" : {
+      "path" : "organization",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OrganizationEndpoint.getOrganization",
+      "rosyMethod" : "com.sp.fanikiwa.api.OrganizationEndpoint.updateOrganization",
       "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -85,17 +80,22 @@
         "body" : "empty"
       }
     },
-    "organizationendpoint.updateOrganization" : {
-      "path" : "organization",
-      "httpMethod" : "PUT",
+    "organizationendpoint.getOrganization" : {
+      "path" : "organization/{id}",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.OrganizationEndpoint.updateOrganization",
+      "rosyMethod" : "com.sp.fanikiwa.api.OrganizationEndpoint.getOrganization",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -165,7 +165,10 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.OrganizationEndpoint.getOrganization" : {
+      "com.sp.fanikiwa.api.OrganizationEndpoint.updateOrganization" : {
+        "request" : {
+          "$ref" : "Organization"
+        },
         "response" : {
           "$ref" : "Organization"
         }
@@ -180,10 +183,7 @@
       },
       "com.sp.fanikiwa.api.OrganizationEndpoint.removeOrganization" : {
       },
-      "com.sp.fanikiwa.api.OrganizationEndpoint.updateOrganization" : {
-        "request" : {
-          "$ref" : "Organization"
-        },
+      "com.sp.fanikiwa.api.OrganizationEndpoint.getOrganization" : {
         "response" : {
           "$ref" : "Organization"
         }

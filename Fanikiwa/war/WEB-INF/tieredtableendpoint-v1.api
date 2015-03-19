@@ -43,17 +43,26 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "tieredtableendpoint.updateAccountType" : {
+    "tieredtableendpoint.listTieredtable" : {
       "path" : "accounttype",
-      "httpMethod" : "PUT",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.updateAccountType",
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.listAccountType",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -80,26 +89,17 @@
         "body" : "empty"
       }
     },
-    "tieredtableendpoint.listTieredtable" : {
+    "tieredtableendpoint.updateAccountType" : {
       "path" : "accounttype",
-      "httpMethod" : "GET",
+      "httpMethod" : "PUT",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.listAccountType",
+      "rosyMethod" : "com.sp.fanikiwa.api.TieredtableEndpoint.updateAccountType",
       "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -149,19 +149,19 @@
           "$ref" : "AccountType"
         }
       },
+      "com.sp.fanikiwa.api.TieredtableEndpoint.listAccountType" : {
+        "response" : {
+          "$ref" : "CollectionResponse_AccountType"
+        }
+      },
+      "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType" : {
+      },
       "com.sp.fanikiwa.api.TieredtableEndpoint.updateAccountType" : {
         "request" : {
           "$ref" : "AccountType"
         },
         "response" : {
           "$ref" : "AccountType"
-        }
-      },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.removeAccountType" : {
-      },
-      "com.sp.fanikiwa.api.TieredtableEndpoint.listAccountType" : {
-        "response" : {
-          "$ref" : "CollectionResponse_AccountType"
         }
       }
     }

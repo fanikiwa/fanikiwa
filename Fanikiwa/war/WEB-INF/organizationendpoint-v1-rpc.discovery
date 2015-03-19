@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"c05bU6zpvXPOpQakG5gG3IOJh8Y/-oOAB5THAfHkAPuNC3hzBTkTpjw\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/-oOAB5THAfHkAPuNC3hzBTkTpjw\"",
  "discoveryVersion": "v1",
  "id": "organizationendpoint:v1",
  "name": "organizationendpoint",
