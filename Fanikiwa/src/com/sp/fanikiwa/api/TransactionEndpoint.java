@@ -13,6 +13,7 @@ import com.googlecode.objectify.cmd.Query;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
+import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.Transaction;
 
 import java.util.ArrayList;
@@ -38,6 +39,27 @@ public class TransactionEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 			Query<Transaction> query = ofy().load().type(Transaction.class);
+			return GetTransactionsByQuery(query,  cursorString, count);
+	}
+	
+	@ApiMethod(name = "listAccountTransaction")
+	public CollectionResponse<Transaction> listAccountTransaction(Long AccountId,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Account account = ofy().load().type(Account.class).id(AccountId).now();
+			Query<Transaction> query = ofy().load().type(Transaction.class)
+					.filter("account",account)
+					.order("-postDate");
+			
+			return GetTransactionsByQuery(query,  cursorString, count);
+	}
+	
+	
+	
+	private CollectionResponse<Transaction> GetTransactionsByQuery(Query<Transaction> query, String cursorString,Integer count)
+	{
+
 			if (count != null)
 				query.limit(count);
 			if (cursorString != null && cursorString != "") {

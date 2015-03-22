@@ -4,7 +4,9 @@ import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.AccountLimitStatus;
+import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.DoubleEntry;
+import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.MultiEntry;
 import com.sp.fanikiwa.entity.PassFlag;
 import com.sp.fanikiwa.entity.Transaction;
@@ -46,6 +48,33 @@ public class AccountEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<Account> query = ofy().load().type(Account.class);
+		return GetAccountByQuery(query,  cursorString, count);
+	}
+	@ApiMethod(name = "listMemberAccount")
+	public CollectionResponse<Account> listMemberAccount(Long MemberId,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = ofy().load().type(Member.class).id(MemberId).now();
+		//Customer customer = ofy().load().type(Customer.class).id(member.getCustomer()).now();
+		Query<Account> query = ofy().load().type(Account.class).filter("customer",member.getCustomer());
+		
+		return GetAccountByQuery(query,  cursorString, count);
+	}
+	
+	@ApiMethod(name = "listAccountTransactions")
+	public CollectionResponse<Transaction> listAccountTransactions(Long AccountId,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		TransactionEndpoint tep = new TransactionEndpoint();
+		
+		return tep.listAccountTransaction(AccountId, cursorString, count);
+	}
+	
+	
+	private CollectionResponse<Account> GetAccountByQuery(Query<Account> query, String cursorString,Integer count)
+			{
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
