@@ -27,27 +27,6 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "settingsendpoint.removeSettings" : {
-      "path" : "settings/{id}",
-      "httpMethod" : "DELETE",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.removeSettings",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "string",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
     "settingsendpoint.listSettings" : {
       "path" : "settings",
       "httpMethod" : "GET",
@@ -89,22 +68,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "settingsendpoint.insertSettings" : {
-      "path" : "settings",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.insertSettings",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "settingsendpoint.getSettingsByKey" : {
       "path" : "settings/{Key}",
       "httpMethod" : "GET",
@@ -124,6 +87,43 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "settingsendpoint.insertSettings" : {
+      "path" : "settings",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.insertSettings",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "settingsendpoint.removeSettings" : {
+      "path" : "settings/{id}",
+      "httpMethod" : "DELETE",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.SettingsEndpoint.removeSettings",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     }
   },
@@ -165,8 +165,6 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.SettingsEndpoint.removeSettings" : {
-      },
       "com.sp.fanikiwa.api.SettingsEndpoint.listSettings" : {
         "response" : {
           "$ref" : "CollectionResponse_Settings"
@@ -180,6 +178,11 @@
           "$ref" : "Settings"
         }
       },
+      "com.sp.fanikiwa.api.SettingsEndpoint.getSettingsByKey" : {
+        "response" : {
+          "$ref" : "Settings"
+        }
+      },
       "com.sp.fanikiwa.api.SettingsEndpoint.insertSettings" : {
         "request" : {
           "$ref" : "Settings"
@@ -188,10 +191,7 @@
           "$ref" : "Settings"
         }
       },
-      "com.sp.fanikiwa.api.SettingsEndpoint.getSettingsByKey" : {
-        "response" : {
-          "$ref" : "Settings"
-        }
+      "com.sp.fanikiwa.api.SettingsEndpoint.removeSettings" : {
       }
     }
   }

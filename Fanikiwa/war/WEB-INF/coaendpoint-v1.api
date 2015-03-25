@@ -27,6 +27,27 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
+    "coaendpoint.getCoaByID" : {
+      "path" : "coa/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "coaendpoint.insertCoa" : {
       "path" : "coa",
       "httpMethod" : "POST",
@@ -104,27 +125,6 @@
       "response" : {
         "body" : "empty"
       }
-    },
-    "coaendpoint.getCoaByID" : {
-      "path" : "coa/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
@@ -159,6 +159,11 @@
       }
     },
     "methods" : {
+      "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID" : {
+        "response" : {
+          "$ref" : "Coa"
+        }
+      },
       "com.sp.fanikiwa.api.CoaEndpoint.insertCoa" : {
         "request" : {
           "$ref" : "Coa"
@@ -181,11 +186,6 @@
         }
       },
       "com.sp.fanikiwa.api.CoaEndpoint.removeCoa" : {
-      },
-      "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID" : {
-        "response" : {
-          "$ref" : "Coa"
-        }
       }
     }
   }
