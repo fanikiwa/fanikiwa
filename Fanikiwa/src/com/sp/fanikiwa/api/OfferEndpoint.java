@@ -20,6 +20,7 @@ import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.OfferStatus;
 
 import java.util.ArrayList; 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Named;
@@ -35,12 +36,54 @@ public class OfferEndpoint {
 	 * persisted and a cursor to the next page.
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	@ApiMethod(name = "listOffer")
+	@ApiMethod(name = "listOffer", path="/offers/all")
 	public CollectionResponse<Offer> listOffer(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
 		Query<Offer> query = ofy().load().type(Offer.class);
+		return GetOffersFromQuery(query, cursorString, count);
+	}
+	
+	@ApiMethod(name = "getOffersByMember",path="/offers/ByMember")
+	public CollectionResponse<Offer> getOffersByMember(
+			@Named("memberid") long MemberId,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = ofy().load().type(Member.class).id(MemberId).now();
+		Query<Offer> query = ofy().load().type(Offer.class).filter("member",member);
+		return GetOffersFromQuery(query, cursorString, count);
+	}
+	
+	@ApiMethod(name = "getPrivateOffersToMember",path="/offers/ToMember")
+	public CollectionResponse<Offer> getPrivateOffersToMember(
+			@Named("memberid") long MemberId,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = ofy().load().type(Member.class).id(MemberId).now();
+		Query<Offer> query = ofy().load().type(Offer.class)
+				.filter("publicOffer", false)
+				.filter("offerrees", member)
+				.filter("status","Open")
+				.filter("expiryDate >",new Date());
+		return GetOffersFromQuery(query, cursorString, count);
+	}
+	@ApiMethod(name = "getPublicOffers",path="/offers/PublicOffers")
+	public CollectionResponse<Offer> getPublicOffers(
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Query<Offer> query = ofy().load().type(Offer.class)
+				.filter("publicOffer", true)
+				.filter("status","Open")
+				.filter("expiryDate >",new Date());
+		return GetOffersFromQuery(query, cursorString, count);
+	}
+	private CollectionResponse<Offer> GetOffersFromQuery(Query<Offer> query,String cursorString,Integer count)
+	{
+		
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -70,6 +113,43 @@ public class OfferEndpoint {
 				.setNextPageToken(cursorString).build();
 	}
 
+//	@SuppressWarnings({ "unchecked", "unused" })
+//	@ApiMethod(name = "selectMockOffer")
+//	public CollectionResponse<Offer> SelectMockOffer(
+//			@Nullable @Named("cursor") String cursorString,
+//			@Nullable @Named("count") Integer count) {
+//
+//		Query<Offer> query = ofy().load().type(Offer.class);
+//		if (count != null)
+//			query.limit(count);
+//		if (cursorString != null && cursorString != "") {
+//			query = query.startAt(Cursor.fromWebSafeString(cursorString));
+//		}
+//
+//		List<Offer> records = new ArrayList<Offer>();
+//		QueryResultIterator<Offer> iterator = query.iterator();
+//		int num = 0;
+//		while (iterator.hasNext()) {
+//			records.add(iterator.next());
+//			if (count != null) {
+//				num++;
+//				if (num == count)
+//					break;
+//			}
+//		}
+//
+//		// Find the next cursor
+//		if (cursorString != null && cursorString != "") {
+//			Cursor cursor = iterator.getCursor();
+//			if (cursor != null) {
+//				cursorString = cursor.toWebSafeString();
+//			}
+//		}
+//		return CollectionResponse.<Offer> builder().setItems(records)
+//				.setNextPageToken(cursorString).build();
+//	}
+
+	
 	/**
 	 * This method gets the entity having primary key id. It uses HTTP GET
 	 * method.

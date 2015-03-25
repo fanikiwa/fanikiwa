@@ -110,22 +110,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userprofileendpoint.insertUserprofile" : {
-      "path" : "userprofile",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.insertUserprofile",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "userprofileendpoint.listUserprofile" : {
       "path" : "userprofile",
       "httpMethod" : "GET",
@@ -150,6 +134,22 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "userprofileendpoint.insertUserprofile" : {
+      "path" : "userprofile",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.UserprofileEndpoint.insertUserprofile",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
@@ -159,33 +159,10 @@
         "type" : "object",
         "properties" : {
           "userId" : {
-            "type" : "string"
-          },
-          "password" : {
-            "type" : "string"
-          },
-          "createDate" : {
             "type" : "string",
-            "format" : "date-time"
+            "format" : "int64"
           },
-          "passwordSalt" : {
-            "type" : "string"
-          },
-          "passwordFailuresSinceLastSuccess" : {
-            "type" : "string"
-          },
-          "passwordVerificationTokenExpirationDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "confirmationToken" : {
-            "type" : "string"
-          },
-          "passwordChangedDate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "passwordVerificationToken" : {
+          "userName" : {
             "type" : "string"
           }
         }
@@ -227,17 +204,17 @@
           "$ref" : "Userprofile"
         }
       },
+      "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile" : {
+        "response" : {
+          "$ref" : "CollectionResponse_Userprofile"
+        }
+      },
       "com.sp.fanikiwa.api.UserprofileEndpoint.insertUserprofile" : {
         "request" : {
           "$ref" : "Userprofile"
         },
         "response" : {
           "$ref" : "Userprofile"
-        }
-      },
-      "com.sp.fanikiwa.api.UserprofileEndpoint.listUserprofile" : {
-        "response" : {
-          "$ref" : "CollectionResponse_Userprofile"
         }
       }
     }

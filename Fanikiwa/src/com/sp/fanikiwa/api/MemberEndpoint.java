@@ -19,8 +19,6 @@ import com.sp.fanikiwa.entity.Coadet;
 import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Organization;
-import com.sp.fanikiwa.entity.Userprofile;
-import com.sp.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +28,14 @@ import javax.inject.Named;
 
 @Api(name = "memberendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class MemberEndpoint {
+
+	final Long CURRENT_ACC_COA_ID = 6509108836433920L;
+	final Long CURRENT_ACC_TYPE_ID = 5277655813324800L;
+	final Long LOAN_ACC_COA_ID = 6509108836433920L;
+	final Long LOAN_ACC_TYPE_ID = 5277655813324800L;
+	final Long INVESTMENT_ACC_COA_ID = 6509108836433920L;
+	final Long INVESTMENT_ACC_TYPE_ID = 5277655813324800L;
+	final Long CURRENT_ORG = 5981343255101440L;
 
 	/**
 	 * This method lists all the entities inserted in datastore. It uses HTTP
@@ -161,23 +167,13 @@ public class MemberEndpoint {
 	public Member Register(Member member) throws ConflictException,
 			NotFoundException {
 
-		//Create the user
-		Userprofile user = new Userprofile();
-		user.setCreateDate(new Date());
-		user.setPassword(member.getPwd()); // think of encrypting
-		user.setUserId(member.getEmail());
-
-		UserprofileEndpoint upep = new UserprofileEndpoint();
-		upep.insertUserprofile(user);
-		
-		//Create Customer
 		Customer customer = new Customer();
 		// at this point, fill the customer with the details from the UI
 		customer.setName(member.getSurname());
 		customer.setEmail(member.getEmail());
 		customer.setTelephone(member.getTelephone());
 		customer.setCreatedDate(new Date());
-		customer.setOrganization(new Organization(Config.GetLong("CURRENT_ORG")));
+		customer.setOrganization(new Organization(CURRENT_ORG));
 
 		CustomerEndpoint cep = new CustomerEndpoint();
 		Customer customerReturned = cep.insertCustomer(customer);
@@ -187,8 +183,8 @@ public class MemberEndpoint {
 		Account currentAccount = new Account();
 		currentAccount.setAccountName(customerReturned.getName() + " Curr A/c");
 		currentAccount.setCustomer(customerReturned);
-		currentAccount.setCoadet(new Coadet(Config.GetLong("CURRENT_ACC_COA_ID")));
-		currentAccount.setAccounttype(new AccountType(Config.GetLong("CURRENT_ACC_TYPE_ID")));
+		currentAccount.setCoadet(new Coadet(CURRENT_ACC_COA_ID));
+		currentAccount.setAccounttype(new AccountType(CURRENT_ACC_TYPE_ID));
 		currentAccount.setBookBalance(0.00);
 		currentAccount.setClearedBalance(0.00);
 		currentAccount.setLimit(0.00);
@@ -201,8 +197,8 @@ public class MemberEndpoint {
 		Account loanaccount = new Account();
 		loanaccount.setAccountName(customerReturned.getName() + " Loan A/c");
 		loanaccount.setCustomer(customerReturned);
-		loanaccount.setCoadet(new Coadet(Config.GetLong("LOAN_ACC_COA_ID")));
-		loanaccount.setAccounttype(new AccountType(Config.GetLong("LOAN_ACC_COA_ID")));
+		loanaccount.setCoadet(new Coadet(LOAN_ACC_COA_ID));
+		loanaccount.setAccounttype(new AccountType(LOAN_ACC_COA_ID));
 		loanaccount.setBookBalance(0.00);
 		loanaccount.setClearedBalance(0.00);
 		loanaccount.setLimit(0.00);
@@ -213,9 +209,9 @@ public class MemberEndpoint {
 		invesmentaccount.setAccountName(customerReturned.getName()
 				+ " Loan A/c");
 		invesmentaccount.setCustomer(customerReturned);
-		invesmentaccount.setCoadet(new Coadet(Config.GetLong("INVESTMENT_ACC_COA_ID")));
+		invesmentaccount.setCoadet(new Coadet(INVESTMENT_ACC_COA_ID));
 		invesmentaccount
-				.setAccounttype(new AccountType(Config.GetLong("INVESTMENT_ACC_TYPE_ID")));
+				.setAccounttype(new AccountType(INVESTMENT_ACC_TYPE_ID));
 		invesmentaccount.setBookBalance(0.00);
 		invesmentaccount.setClearedBalance(0.00);
 		invesmentaccount.setLimit(0.00);

@@ -23,6 +23,7 @@ import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 

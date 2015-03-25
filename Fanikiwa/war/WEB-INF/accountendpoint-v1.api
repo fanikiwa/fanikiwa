@@ -65,6 +65,31 @@
         "body" : "empty"
       }
     },
+    "accountendpoint.listAccount" : {
+      "path" : "account",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.listAccount",
+      "request" : {
+        "parameters" : {
+          "cursor" : {
+            "type" : "string",
+            "required" : false
+          },
+          "count" : {
+            "type" : "int32",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "accountendpoint.setAccountLimitStatus" : {
       "path" : "SetAccountLimitStatus/{status}",
       "httpMethod" : "POST",
@@ -107,31 +132,6 @@
         "body" : "empty"
       }
     },
-    "accountendpoint.listAccount" : {
-      "path" : "account",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.listAccount",
-      "request" : {
-        "parameters" : {
-          "cursor" : {
-            "type" : "string",
-            "required" : false
-          },
-          "count" : {
-            "type" : "int32",
-            "required" : false
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "accountendpoint.post" : {
       "path" : "Post",
       "httpMethod" : "POST",
@@ -170,6 +170,22 @@
         "body" : "empty"
       }
     },
+    "accountendpoint.closeAccount" : {
+      "path" : "CloseAccount",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.CloseAccount",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
     "accountendpoint.setAccountLockStatus" : {
       "path" : "SetAccountLockStatus/{status}",
       "httpMethod" : "POST",
@@ -199,22 +215,6 @@
             "required" : true
           }
         },
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "empty"
-      }
-    },
-    "accountendpoint.closeAccount" : {
-      "path" : "CloseAccount",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.AccountEndpoint.CloseAccount",
-      "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },
@@ -772,14 +772,14 @@
           "$ref" : "Account"
         }
       },
-      "com.sp.fanikiwa.api.AccountEndpoint.SetAccountLimitStatus" : {
-        "request" : {
-          "$ref" : "Account"
-        }
-      },
       "com.sp.fanikiwa.api.AccountEndpoint.listAccount" : {
         "response" : {
           "$ref" : "CollectionResponse_Account"
+        }
+      },
+      "com.sp.fanikiwa.api.AccountEndpoint.SetAccountLimitStatus" : {
+        "request" : {
+          "$ref" : "Account"
         }
       },
       "com.sp.fanikiwa.api.AccountEndpoint.Post" : {
@@ -792,12 +792,12 @@
           "$ref" : "Account"
         }
       },
-      "com.sp.fanikiwa.api.AccountEndpoint.SetAccountLockStatus" : {
+      "com.sp.fanikiwa.api.AccountEndpoint.CloseAccount" : {
         "request" : {
           "$ref" : "Account"
         }
       },
-      "com.sp.fanikiwa.api.AccountEndpoint.CloseAccount" : {
+      "com.sp.fanikiwa.api.AccountEndpoint.SetAccountLockStatus" : {
         "request" : {
           "$ref" : "Account"
         }

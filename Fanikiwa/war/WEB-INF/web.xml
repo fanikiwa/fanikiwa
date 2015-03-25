@@ -8,7 +8,8 @@
 		<url-pattern>/fanikiwa</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>/Views/Shared/_Layout.html</welcome-file>
+<!-- 		<welcome-file>index.html</welcome-file> -->
 	</welcome-file-list>
  <servlet>
   <servlet-name>SystemServiceServlet</servlet-name>

@@ -8,5 +8,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Tools/objectify-5.1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Tools/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Tools/twilio-java-sdk-3.3.10-jar-with-dependencies.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

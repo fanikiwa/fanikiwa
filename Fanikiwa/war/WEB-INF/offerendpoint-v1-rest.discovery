@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/dDoSs-6csoKMeIKcO-LfFq43tWY\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/_FPyXYyaEpjYLWQTOMP_UDt9UeU\"",
  "discoveryVersion": "v1",
  "id": "offerendpoint:v1",
  "name": "offerendpoint",
@@ -14,10 +14,10 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/offerendpoint/v1/",
- "basePath": "/_ah/api/offerendpoint/v1/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
+ "basePath": "/_ah/api/",
  "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
- "servicePath": "offerendpoint/v1/",
+ "servicePath": "",
  "batchPath": "batch",
  "parameters": {
   "alt": {
@@ -393,21 +393,14 @@
     "member": {
      "$ref": "Member"
     },
-    "memberId": {
-     "$ref": "Member"
-    },
     "offerType": {
      "type": "string"
     },
-    "offerees": {
-     "type": "string"
-    },
     "partialPay": {
-     "type": "integer",
-     "format": "int32"
+     "type": "boolean"
     },
     "publicOffer": {
-     "type": "string"
+     "type": "boolean"
     },
     "status": {
      "type": "string"
@@ -441,7 +434,7 @@
  "methods": {
   "getOfferByID": {
    "id": "offerendpoint.getOfferByID",
-   "path": "offer/{id}",
+   "path": "offerendpoint/v1/offer/{id}",
    "httpMethod": "GET",
    "parameters": {
     "id": {
@@ -461,9 +454,93 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "getOffersByMember": {
+   "id": "offerendpoint.getOffersByMember",
+   "path": "offers/ByMember",
+   "httpMethod": "GET",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getPrivateOffersToMember": {
+   "id": "offerendpoint.getPrivateOffersToMember",
+   "path": "offers/ToMember",
+   "httpMethod": "GET",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getPublicOffers": {
+   "id": "offerendpoint.getPublicOffers",
+   "path": "offers/PublicOffers",
+   "httpMethod": "GET",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "insertOffer": {
    "id": "offerendpoint.insertOffer",
-   "path": "offer",
+   "path": "offerendpoint/v1/offer",
    "httpMethod": "POST",
    "request": {
     "$ref": "Offer",
@@ -478,7 +555,7 @@
   },
   "listOffer": {
    "id": "offerendpoint.listOffer",
-   "path": "offer",
+   "path": "offers/all",
    "httpMethod": "GET",
    "parameters": {
     "count": {
@@ -500,7 +577,7 @@
   },
   "removeOffer": {
    "id": "offerendpoint.removeOffer",
-   "path": "offer/{id}",
+   "path": "offerendpoint/v1/offer/{id}",
    "httpMethod": "DELETE",
    "parameters": {
     "id": {
@@ -519,7 +596,7 @@
   },
   "updateOffer": {
    "id": "offerendpoint.updateOffer",
-   "path": "offer",
+   "path": "offerendpoint/v1/offer",
    "httpMethod": "PUT",
    "request": {
     "$ref": "Offer",

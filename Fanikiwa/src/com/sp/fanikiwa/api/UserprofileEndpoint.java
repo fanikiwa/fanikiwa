@@ -1,7 +1,6 @@
 package com.sp.fanikiwa.api;
 
-import static com.sp.fanikiwa.api.OfyService.ofy;
-
+import static com.sp.fanikiwa.api.OfyService.ofy; 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -12,11 +11,9 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query;
-import com.sp.fanikiwa.entity.Userprofile;
-
+import com.sp.fanikiwa.entity.Userprofile; 
 import java.util.ArrayList;
-import java.util.List;
-
+import java.util.List; 
 import javax.inject.Named;
 
 @Api(name = "userprofileendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
@@ -91,7 +88,7 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "updateUserprofile")
 	public Userprofile updateUserprofile(Userprofile Userprofile)
 			throws NotFoundException {
-		Userprofile record = findRecord(Userprofile.getUserId());
+		Userprofile record = findRecord(Userprofile.getUserId().toString());
 		if (record == null) {
 			throw new NotFoundException("Record does not exist");
 		}
@@ -131,7 +128,7 @@ public class UserprofileEndpoint {
 	public Userprofile insertUserprofile(Userprofile userprofile)
 			throws NotFoundException, ConflictException {
 		if (userprofile.getUserId() != null) {
-			if (findRecord(userprofile.getUserId()) != null) {
+			if (findRecord(userprofile.getUserId().toString()) != null) {
 				throw new ConflictException("Object already exists");
 			}
 		}
@@ -145,10 +142,10 @@ public class UserprofileEndpoint {
 		user = findRecord( userId);
 		if(user != null)
 		{
-			if (user.getPassword().equals(pwd) )
-			{
-				return user;
-			}
+//			if (user.getPassword().equals(pwd) )
+//			{
+//				return user;
+//			}
 		}
 		return null; 
 	}
