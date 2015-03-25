@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/o1VOjvyO4-L47zp7G9SfsKHwR48\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/r4qYzaO66BsoUtS7Z3OsKPHn55c\"",
  "discoveryVersion": "v1",
  "id": "userprofileendpoint:v1",
  "name": "userprofileendpoint",
@@ -93,34 +93,11 @@
    "id": "Userprofile",
    "type": "object",
    "properties": {
-    "confirmationToken": {
-     "type": "string"
-    },
-    "createDate": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "password": {
-     "type": "string"
-    },
-    "passwordChangedDate": {
-     "type": "string",
-     "format": "date-time"
-    },
-    "passwordFailuresSinceLastSuccess": {
-     "type": "string"
-    },
-    "passwordSalt": {
-     "type": "string"
-    },
-    "passwordVerificationToken": {
-     "type": "string"
-    },
-    "passwordVerificationTokenExpirationDate": {
-     "type": "string",
-     "format": "date-time"
-    },
     "userId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "userName": {
      "type": "string"
     }
    }
