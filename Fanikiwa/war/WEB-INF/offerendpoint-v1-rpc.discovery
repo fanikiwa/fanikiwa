@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/fcCDVN_aftgw-oSG0sY-dkBk7yk\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/_FI6sgoOW3XuPQyrNJwpCTTYSeA\"",
  "discoveryVersion": "v1",
  "id": "offerendpoint:v1",
  "name": "offerendpoint",
@@ -405,8 +405,7 @@
      "format": "int32"
     },
     "publicOffer": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     },
     "status": {
      "type": "string"
@@ -458,79 +457,6 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "offerendpoint.getOffersByMember": {
-   "id": "offerendpoint.getOffersByMember",
-   "allowGet": true,
-   "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "cursor": {
-     "type": "string"
-    },
-    "memberid": {
-     "type": "string",
-     "required": true,
-     "format": "int64"
-    }
-   },
-   "parameterOrder": [
-    "memberid"
-   ],
-   "returns": {
-    "$ref": "CollectionResponse_Offer"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
-  "offerendpoint.getPrivateOffersToMember": {
-   "id": "offerendpoint.getPrivateOffersToMember",
-   "allowGet": true,
-   "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "cursor": {
-     "type": "string"
-    },
-    "memberid": {
-     "type": "string",
-     "required": true,
-     "format": "int64"
-    }
-   },
-   "parameterOrder": [
-    "memberid"
-   ],
-   "returns": {
-    "$ref": "CollectionResponse_Offer"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
-  "offerendpoint.getPublicOffers": {
-   "id": "offerendpoint.getPublicOffers",
-   "allowGet": true,
-   "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "cursor": {
-     "type": "string"
-    }
-   },
-   "returns": {
-    "$ref": "CollectionResponse_Offer"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "offerendpoint.insertOffer": {
    "id": "offerendpoint.insertOffer",
    "parameters": {
@@ -567,6 +493,32 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "offerendpoint.privateOffersToMember": {
+   "id": "offerendpoint.privateOffersToMember",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "offerendpoint.removeOffer": {
    "id": "offerendpoint.removeOffer",
    "parameters": {
@@ -579,6 +531,50 @@
    "parameterOrder": [
     "id"
    ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.retrievePublicOffers": {
+   "id": "offerendpoint.retrievePublicOffers",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    }
+   },
+   "returns": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "offerendpoint.selectOffersByMember": {
+   "id": "offerendpoint.selectOffersByMember",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "cursor": {
+     "type": "string"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "returns": {
+    "$ref": "CollectionResponse_Offer"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]

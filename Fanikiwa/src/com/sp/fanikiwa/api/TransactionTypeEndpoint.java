@@ -24,6 +24,12 @@ import javax.inject.Named;
 @Api(name = "transactiontypeendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class TransactionTypeEndpoint {
 
+
+	public TransactionTypeEndpoint() {
+
+	}
+	
+	
 	/**
 	 * This method lists all the entities inserted in datastore.
 	 * It uses HTTP GET method and paging support.

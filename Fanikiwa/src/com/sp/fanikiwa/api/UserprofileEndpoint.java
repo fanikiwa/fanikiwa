@@ -19,6 +19,11 @@ import javax.inject.Named;
 @Api(name = "userprofileendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class UserprofileEndpoint {
 
+
+	public UserprofileEndpoint() {
+
+	}
+
 	/**
 	 * This method lists all the entities inserted in datastore. It uses HTTP
 	 * GET method and paging support.

@@ -13,6 +13,7 @@ import com.sp.fanikiwa.entity.Offer;
 import com.sp.fanikiwa.entity.Organization;
 import com.sp.fanikiwa.entity.Quote;
 import com.sp.fanikiwa.entity.Transaction;
+import com.sp.fanikiwa.entity.TransactionModel;
 import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
  
@@ -36,6 +37,7 @@ static {
  ObjectifyService.register(Coadet.class);
  ObjectifyService.register(Coa.class);
  ObjectifyService.register(Offer.class);
+ ObjectifyService.register(TransactionModel.class);
  }
  
 public static Objectify ofy() {

@@ -15,7 +15,7 @@ public class Offer  {
 	private double amount;	
 	private int term;
 	private double interest;
-	private byte publicOffer;
+	private String publicOffer;
 	private Date createdDate;		
 	private Date expiryDate; 
 	private String offerees;
@@ -106,11 +106,11 @@ public class Offer  {
 		this.partialPay = partialPay;
 	}
 
-	public byte getPublicOffer() {
+	public String getPublicOffer() {
 		return this.publicOffer;
 	}
 
-	public void setPublicOffer(byte publicOffer) {
+	public void setPublicOffer(String publicOffer) {
 		this.publicOffer = publicOffer;
 	}
 

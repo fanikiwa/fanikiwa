@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/fcCDVN_aftgw-oSG0sY-dkBk7yk\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/_FI6sgoOW3XuPQyrNJwpCTTYSeA\"",
  "discoveryVersion": "v1",
  "id": "offerendpoint:v1",
  "name": "offerendpoint",
@@ -14,10 +14,10 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
- "basePath": "/_ah/api/",
+ "baseUrl": "https://fanikiwaweb.appspot.com/_ah/api/offerendpoint/v1/",
+ "basePath": "/_ah/api/offerendpoint/v1/",
  "rootUrl": "https://fanikiwaweb.appspot.com/_ah/api/",
- "servicePath": "",
+ "servicePath": "offerendpoint/v1/",
  "batchPath": "batch",
  "parameters": {
   "alt": {
@@ -407,8 +407,7 @@
      "format": "int32"
     },
     "publicOffer": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string"
     },
     "status": {
      "type": "string"
@@ -442,7 +441,7 @@
  "methods": {
   "getOfferByID": {
    "id": "offerendpoint.getOfferByID",
-   "path": "offerendpoint/v1/offer/{id}",
+   "path": "offer/{id}",
    "httpMethod": "GET",
    "parameters": {
     "id": {
@@ -462,93 +461,9 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "getOffersByMember": {
-   "id": "offerendpoint.getOffersByMember",
-   "path": "offers/ByMember",
-   "httpMethod": "GET",
-   "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32",
-     "location": "query"
-    },
-    "cursor": {
-     "type": "string",
-     "location": "query"
-    },
-    "memberid": {
-     "type": "string",
-     "required": true,
-     "format": "int64",
-     "location": "query"
-    }
-   },
-   "parameterOrder": [
-    "memberid"
-   ],
-   "response": {
-    "$ref": "CollectionResponse_Offer"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
-  "getPrivateOffersToMember": {
-   "id": "offerendpoint.getPrivateOffersToMember",
-   "path": "offers/ToMember",
-   "httpMethod": "GET",
-   "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32",
-     "location": "query"
-    },
-    "cursor": {
-     "type": "string",
-     "location": "query"
-    },
-    "memberid": {
-     "type": "string",
-     "required": true,
-     "format": "int64",
-     "location": "query"
-    }
-   },
-   "parameterOrder": [
-    "memberid"
-   ],
-   "response": {
-    "$ref": "CollectionResponse_Offer"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
-  "getPublicOffers": {
-   "id": "offerendpoint.getPublicOffers",
-   "path": "offers/PublicOffers",
-   "httpMethod": "GET",
-   "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32",
-     "location": "query"
-    },
-    "cursor": {
-     "type": "string",
-     "location": "query"
-    }
-   },
-   "response": {
-    "$ref": "CollectionResponse_Offer"
-   },
-   "scopes": [
-    "https://www.googleapis.com/auth/userinfo.email"
-   ]
-  },
   "insertOffer": {
    "id": "offerendpoint.insertOffer",
-   "path": "offerendpoint/v1/offer",
+   "path": "offer",
    "httpMethod": "POST",
    "request": {
     "$ref": "Offer",
@@ -563,7 +478,7 @@
   },
   "listOffer": {
    "id": "offerendpoint.listOffer",
-   "path": "offers/all",
+   "path": "offer",
    "httpMethod": "GET",
    "parameters": {
     "count": {
@@ -583,9 +498,40 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "privateOffersToMember": {
+   "id": "offerendpoint.privateOffersToMember",
+   "path": "PrivateOffersToMember/{memberid}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "removeOffer": {
    "id": "offerendpoint.removeOffer",
-   "path": "offerendpoint/v1/offer/{id}",
+   "path": "offer/{id}",
    "httpMethod": "DELETE",
    "parameters": {
     "id": {
@@ -602,9 +548,62 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "retrievePublicOffers": {
+   "id": "offerendpoint.retrievePublicOffers",
+   "path": "retrievePublicOffers",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    }
+   },
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectOffersByMember": {
+   "id": "offerendpoint.selectOffersByMember",
+   "path": "selectOffersByMember/{memberid}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "updateOffer": {
    "id": "offerendpoint.updateOffer",
-   "path": "offerendpoint/v1/offer",
+   "path": "offer",
    "httpMethod": "PUT",
    "request": {
     "$ref": "Offer",

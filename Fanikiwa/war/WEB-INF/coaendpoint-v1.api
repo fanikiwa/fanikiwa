@@ -27,14 +27,14 @@
   "ownerName" : "sp.com",
   "packagePath" : "fanikiwa.entity",
   "methods" : {
-    "coaendpoint.getCoaByID" : {
+    "coaendpoint.removeCoa" : {
       "path" : "coa/{id}",
-      "httpMethod" : "GET",
+      "httpMethod" : "DELETE",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID",
+      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.removeCoa",
       "request" : {
         "parameters" : {
           "id" : {
@@ -43,6 +43,22 @@
           }
         },
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "coaendpoint.updateCoa" : {
+      "path" : "coa",
+      "httpMethod" : "PUT",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.updateCoa",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -56,22 +72,6 @@
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.insertCoa",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "coaendpoint.updateCoa" : {
-      "path" : "coa",
-      "httpMethod" : "PUT",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.updateCoa",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -105,14 +105,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "coaendpoint.removeCoa" : {
+    "coaendpoint.getCoaByID" : {
       "path" : "coa/{id}",
-      "httpMethod" : "DELETE",
+      "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.removeCoa",
+      "rosyMethod" : "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID",
       "request" : {
         "parameters" : {
           "id" : {
@@ -123,7 +123,7 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     }
   },
@@ -159,7 +159,12 @@
       }
     },
     "methods" : {
-      "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID" : {
+      "com.sp.fanikiwa.api.CoaEndpoint.removeCoa" : {
+      },
+      "com.sp.fanikiwa.api.CoaEndpoint.updateCoa" : {
+        "request" : {
+          "$ref" : "Coa"
+        },
         "response" : {
           "$ref" : "Coa"
         }
@@ -172,20 +177,15 @@
           "$ref" : "Coa"
         }
       },
-      "com.sp.fanikiwa.api.CoaEndpoint.updateCoa" : {
-        "request" : {
-          "$ref" : "Coa"
-        },
-        "response" : {
-          "$ref" : "Coa"
-        }
-      },
       "com.sp.fanikiwa.api.CoaEndpoint.listCoa" : {
         "response" : {
           "$ref" : "CollectionResponse_Coa"
         }
       },
-      "com.sp.fanikiwa.api.CoaEndpoint.removeCoa" : {
+      "com.sp.fanikiwa.api.CoaEndpoint.getCoaByID" : {
+        "response" : {
+          "$ref" : "Coa"
+        }
       }
     }
   }
