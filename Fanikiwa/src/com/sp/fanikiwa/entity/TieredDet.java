@@ -1,27 +1,28 @@
 package com.sp.fanikiwa.entity;
- 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
-@Entity
-public class TieredDet   {
-	
-	@Id Long id;
+import com.googlecode.objectify.annotation.Index;
 
+@Entity
+public class TieredDet {
+
+	@Id
+	Long id;
+
+ 
 	private byte absolute;
 
+ 
 	private double max;
 
+ 
 	private double min;
 
+ 
 	private double rate;
 
+	@Index
 	private long tieredID;
 
 	public TieredDet() {

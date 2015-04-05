@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/_FI6sgoOW3XuPQyrNJwpCTTYSeA\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/VlHgQhgP_V-xxGLik5d2Ukq3hVU\"",
  "discoveryVersion": "v1",
  "id": "offerendpoint:v1",
  "name": "offerendpoint",
@@ -393,8 +393,52 @@
     "member": {
      "$ref": "Member"
     },
-    "memberId": {
-     "$ref": "Member"
+    "offerType": {
+     "type": "string"
+    },
+    "offerees": {
+     "type": "string"
+    },
+    "partialPay": {
+     "type": "boolean"
+    },
+    "publicOffer": {
+     "type": "boolean"
+    },
+    "status": {
+     "type": "string"
+    },
+    "term": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
+  "OfferDTO": {
+   "id": "OfferDTO",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "createdDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "description": {
+     "type": "string"
+    },
+    "email": {
+     "type": "string"
+    },
+    "expiryDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "interest": {
+     "type": "number",
+     "format": "double"
     },
     "offerType": {
      "type": "string"
@@ -403,11 +447,10 @@
      "type": "string"
     },
     "partialPay": {
-     "type": "integer",
-     "format": "int32"
+     "type": "boolean"
     },
     "publicOffer": {
-     "type": "string"
+     "type": "boolean"
     },
     "status": {
      "type": "string"
@@ -422,7 +465,7 @@
    "id": "Organization",
    "type": "object",
    "properties": {
-    "andress": {
+    "address": {
      "type": "string"
     },
     "email": {
@@ -461,16 +504,63 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "insertOffer": {
-   "id": "offerendpoint.insertOffer",
-   "path": "offer",
+  "listBorrowOffers": {
+   "id": "offerendpoint.listBorrowOffers",
+   "path": "ListBorrowOffers/{memberid}",
    "httpMethod": "POST",
-   "request": {
-    "$ref": "Offer",
-    "parameterName": "resource"
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
    },
+   "parameterOrder": [
+    "memberid"
+   ],
    "response": {
-    "$ref": "Offer"
+    "$ref": "CollectionResponse_Offer"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "listMyLendOffers": {
+   "id": "offerendpoint.listMyLendOffers",
+   "path": "ListMyLendOffers/{memberid}",
+   "httpMethod": "POST",
+   "parameters": {
+    "count": {
+     "type": "integer",
+     "format": "int32",
+     "location": "query"
+    },
+    "cursor": {
+     "type": "string",
+     "location": "query"
+    },
+    "memberid": {
+     "type": "string",
+     "required": true,
+     "format": "int64",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "memberid"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_Offer"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -498,32 +588,16 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "privateOffersToMember": {
-   "id": "offerendpoint.privateOffersToMember",
-   "path": "PrivateOffersToMember/{memberid}",
+  "makeOffer": {
+   "id": "offerendpoint.makeOffer",
+   "path": "MakeOffer",
    "httpMethod": "POST",
-   "parameters": {
-    "count": {
-     "type": "integer",
-     "format": "int32",
-     "location": "query"
-    },
-    "cursor": {
-     "type": "string",
-     "location": "query"
-    },
-    "memberid": {
-     "type": "string",
-     "required": true,
-     "format": "int64",
-     "location": "path"
-    }
+   "request": {
+    "$ref": "OfferDTO",
+    "parameterName": "resource"
    },
-   "parameterOrder": [
-    "memberid"
-   ],
    "response": {
-    "$ref": "CollectionResponse_Offer"
+    "$ref": "Offer"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

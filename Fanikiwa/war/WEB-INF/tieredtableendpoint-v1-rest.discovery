@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/KPuX8HZ82dJqtrca5emRNJ8x77A\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/ix5WjFnifR9J54O-KpeEglFDytE\"",
  "discoveryVersion": "v1",
  "id": "tieredtableendpoint:v1",
  "name": "tieredtableendpoint",
@@ -74,49 +74,75 @@
   }
  },
  "schemas": {
-  "AccountType": {
-   "id": "AccountType",
-   "type": "object",
-   "properties": {
-    "description": {
-     "type": "string"
-    },
-    "id": {
-     "type": "string",
-     "format": "int64"
-    },
-    "shortCode": {
-     "type": "string"
-    }
-   }
-  },
-  "CollectionResponse_AccountType": {
-   "id": "CollectionResponse_AccountType",
+  "CollectionResponse_TieredDet": {
+   "id": "CollectionResponse_TieredDet",
    "type": "object",
    "properties": {
     "items": {
      "type": "array",
      "items": {
-      "$ref": "AccountType"
+      "$ref": "TieredDet"
      }
     },
     "nextPageToken": {
      "type": "string"
     }
    }
+  },
+  "TieredDet": {
+   "id": "TieredDet",
+   "type": "object",
+   "properties": {
+    "absolute": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "id": {
+     "type": "string",
+     "format": "int64"
+    },
+    "max": {
+     "type": "number",
+     "format": "double"
+    },
+    "min": {
+     "type": "number",
+     "format": "double"
+    },
+    "rate": {
+     "type": "number",
+     "format": "double"
+    },
+    "tieredID": {
+     "type": "string",
+     "format": "int64"
+    }
+   }
+  },
+  "TieredDetCollection": {
+   "id": "TieredDetCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "TieredDet"
+     }
+    }
+   }
   }
  },
  "methods": {
-  "insertAccountType": {
-   "id": "tieredtableendpoint.insertAccountType",
-   "path": "accounttype",
+  "insertTieredDet": {
+   "id": "tieredtableendpoint.insertTieredDet",
+   "path": "tiereddet",
    "httpMethod": "POST",
    "request": {
-    "$ref": "AccountType",
+    "$ref": "TieredDet",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "AccountType"
+    "$ref": "TieredDet"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -124,7 +150,7 @@
   },
   "listTieredtable": {
    "id": "tieredtableendpoint.listTieredtable",
-   "path": "accounttype",
+   "path": "tiereddet",
    "httpMethod": "GET",
    "parameters": {
     "count": {
@@ -138,15 +164,15 @@
     }
    },
    "response": {
-    "$ref": "CollectionResponse_AccountType"
+    "$ref": "CollectionResponse_TieredDet"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "removeAccountType": {
-   "id": "tieredtableendpoint.removeAccountType",
-   "path": "accounttype/{id}",
+  "removeTieredDet": {
+   "id": "tieredtableendpoint.removeTieredDet",
+   "path": "tiereddet/{id}",
    "httpMethod": "DELETE",
    "parameters": {
     "id": {
@@ -163,20 +189,48 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
-  "updateAccountType": {
-   "id": "tieredtableendpoint.updateAccountType",
-   "path": "accounttype",
+  "updateTieredDet": {
+   "id": "tieredtableendpoint.updateTieredDet",
+   "path": "tiereddet",
    "httpMethod": "PUT",
    "request": {
-    "$ref": "AccountType",
+    "$ref": "TieredDet",
     "parameterName": "resource"
    },
    "response": {
-    "$ref": "AccountType"
+    "$ref": "TieredDet"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
+  }
+ },
+ "resources": {
+  "tieredtableEndpoint": {
+   "methods": {
+    "getTieredTableId": {
+     "id": "tieredtableendpoint.tieredtableEndpoint.getTieredTableId",
+     "path": "tiereddetcollection/{tableid}",
+     "httpMethod": "GET",
+     "parameters": {
+      "tableid": {
+       "type": "string",
+       "required": true,
+       "format": "int64",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "tableid"
+     ],
+     "response": {
+      "$ref": "TieredDetCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
   }
  }
 }

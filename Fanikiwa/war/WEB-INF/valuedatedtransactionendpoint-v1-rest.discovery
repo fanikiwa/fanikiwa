@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/wpFzgah3P3ATpiEm-EMgUbvOYqI\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/LLv1ivcsNBPDQ8AJjUP1yNxbosI\"",
  "discoveryVersion": "v1",
  "id": "valuedatedtransactionendpoint:v1",
  "name": "valuedatedtransactionendpoint",
@@ -295,7 +295,7 @@
    "id": "Organization",
    "type": "object",
    "properties": {
-    "andress": {
+    "address": {
      "type": "string"
     },
     "email": {
@@ -496,6 +496,18 @@
      "format": "date-time"
     }
    }
+  },
+  "ValueDatedTransactionCollection": {
+   "id": "ValueDatedTransactionCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "ValueDatedTransaction"
+     }
+    }
+   }
   }
  },
  "methods": {
@@ -591,6 +603,34 @@
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
+  }
+ },
+ "resources": {
+  "valueDatedTransactionEndpoint": {
+   "methods": {
+    "selectByValueDate": {
+     "id": "valuedatedtransactionendpoint.valueDatedTransactionEndpoint.selectByValueDate",
+     "path": "SelectByValueDate/{date}",
+     "httpMethod": "POST",
+     "parameters": {
+      "date": {
+       "type": "string",
+       "required": true,
+       "format": "date-time",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "date"
+     ],
+     "response": {
+      "$ref": "ValueDatedTransactionCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
   }
  }
 }

@@ -1,45 +1,43 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
- 
+
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;  
- 
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
-public class Contact  {
-	
-	 @Id Long contactId;
+public class Contact {
 
-	
+	@Id
+	Long contactId;
+ 
 	private Date dateActivated;
-
-	
+ 
 	private Date dateJoined;
-
-	
+ 
 	private Date dateOfBirth;
-
+ 
 	private String email;
-
+ 
 	private String gender;
-
+ 
 	private String informBy;
-
+ 
 	private String nationalID;
-
+ 
 	private String otherNames;
-
-
+ 
 	private String photo;
-
+ 
 	private String pwd;
-
+ 
 	private int refferedBy;
-
+ 
 	private String status;
-
+ 
 	private String surname;
-
+ 
 	private String telephone;
 
 	public Contact() {

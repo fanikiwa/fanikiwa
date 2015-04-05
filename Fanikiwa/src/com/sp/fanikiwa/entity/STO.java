@@ -1,70 +1,102 @@
 package com.sp.fanikiwa.entity;
 
-import java.util.Date;  
+import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-  
-@Entity
-public class STO  {
-	
-	@Id  Long  id;
+import com.googlecode.objectify.annotation.Index;
 
+@Entity
+public class STO {
+
+	@Id
+	Long id;
+
+ 
 	private double amountDefaulted;
 
+ 
 	private double amountPaid;
 
-	private byte chargeCommFlag;
+ 
+	private boolean chargeCommFlag;
 
+ 
 	private short chargeWho;
 
+ 
 	private short commFreqFlag;
 
-	private int commissionAccount;
+ 
+	private Long commissionAccount;
 
+ 
 	private double commissionAmount;
 
-	private byte commissionPaidFlag;
+ 
+	private boolean commissionPaidFlag;
 
+ 
 	private short commSourceFlag;
 
-	private int crAccount;
-	
+ 
+	private Long crAccount;
+
+ 
 	private Date createDate;
 
-	private int crTxnType;
+ 
+	private Long crTxnType;
 
-	private int drAccount;
+ 
+	private Long drAccount;
 
-	private int drTxnType;
+ 
+	private Long drTxnType;
 
+ 
 	private Date endDate;
 
+ 
 	private String interval;
 
+ 
 	private int limitFlag;
 
-	private int loanId;
-	
+ 
+	private int feesFlag;
+
+ 
+	private Long loanId;
+
+ 
 	private Date nextPayDate;
 
+ 
 	private int noOfDefaults;
 
+ 
 	private int noOfPayments;
 
+ 
 	private int noOfPaymentsMade;
 
-	private byte partialPay;
+ 
+	private boolean partialPay;
 
+ 
 	private double payAmount;
 
-	
+ 
 	private Date startDate;
 
+ 
 	private int STOAccType;
 
+ 
 	private int STOType;
 
+ 
 	private double totalToPay;
 
 	public STO() {
@@ -94,11 +126,11 @@ public class STO  {
 		this.amountPaid = amountPaid;
 	}
 
-	public byte getChargeCommFlag() {
+	public boolean getChargeCommFlag() {
 		return this.chargeCommFlag;
 	}
 
-	public void setChargeCommFlag(byte chargeCommFlag) {
+	public void setChargeCommFlag(boolean chargeCommFlag) {
 		this.chargeCommFlag = chargeCommFlag;
 	}
 
@@ -118,11 +150,11 @@ public class STO  {
 		this.commFreqFlag = commFreqFlag;
 	}
 
-	public int getCommissionAccount() {
+	public Long getCommissionAccount() {
 		return this.commissionAccount;
 	}
 
-	public void setCommissionAccount(int commissionAccount) {
+	public void setCommissionAccount(Long commissionAccount) {
 		this.commissionAccount = commissionAccount;
 	}
 
@@ -134,11 +166,11 @@ public class STO  {
 		this.commissionAmount = commissionAmount;
 	}
 
-	public byte getCommissionPaidFlag() {
+	public boolean getCommissionPaidFlag() {
 		return this.commissionPaidFlag;
 	}
 
-	public void setCommissionPaidFlag(byte commissionPaidFlag) {
+	public void setCommissionPaidFlag(boolean commissionPaidFlag) {
 		this.commissionPaidFlag = commissionPaidFlag;
 	}
 
@@ -150,11 +182,11 @@ public class STO  {
 		this.commSourceFlag = commSourceFlag;
 	}
 
-	public int getCrAccount() {
+	public Long getCrAccount() {
 		return this.crAccount;
 	}
 
-	public void setCrAccount(int crAccount) {
+	public void setCrAccount(Long crAccount) {
 		this.crAccount = crAccount;
 	}
 
@@ -166,27 +198,27 @@ public class STO  {
 		this.createDate = createDate;
 	}
 
-	public int getCrTxnType() {
+	public Long getCrTxnType() {
 		return this.crTxnType;
 	}
 
-	public void setCrTxnType(int crTxnType) {
+	public void setCrTxnType(Long crTxnType) {
 		this.crTxnType = crTxnType;
 	}
 
-	public int getDrAccount() {
+	public Long getDrAccount() {
 		return this.drAccount;
 	}
 
-	public void setDrAccount(int drAccount) {
+	public void setDrAccount(Long drAccount) {
 		this.drAccount = drAccount;
 	}
 
-	public int getDrTxnType() {
+	public Long getDrTxnType() {
 		return this.drTxnType;
 	}
 
-	public void setDrTxnType(int drTxnType) {
+	public void setDrTxnType(Long drTxnType) {
 		this.drTxnType = drTxnType;
 	}
 
@@ -214,11 +246,19 @@ public class STO  {
 		this.limitFlag = limitFlag;
 	}
 
-	public int getLoanId() {
+	public int getFeesFlag() {
+		return feesFlag;
+	}
+
+	public void setFeesFlag(int feesFlag) {
+		this.feesFlag = feesFlag;
+	}
+
+	public Long getLoanId() {
 		return this.loanId;
 	}
 
-	public void setLoanId(int loanId) {
+	public void setLoanId(Long loanId) {
 		this.loanId = loanId;
 	}
 
@@ -254,11 +294,11 @@ public class STO  {
 		this.noOfPaymentsMade = noOfPaymentsMade;
 	}
 
-	public byte getPartialPay() {
+	public boolean getPartialPay() {
 		return this.partialPay;
 	}
 
-	public void setPartialPay(byte partialPay) {
+	public void setPartialPay(boolean partialPay) {
 		this.partialPay = partialPay;
 	}
 

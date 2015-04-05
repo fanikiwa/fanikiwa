@@ -3,10 +3,14 @@ package com.sp.fanikiwa.api;
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
 import com.sp.fanikiwa.entity.Account;
-import com.sp.fanikiwa.entity.AccountLimitStatus;
+import com.sp.fanikiwa.Enums.AccountLimitStatus;
+import com.sp.fanikiwa.Enums.PostingCheckFlag;
+import com.sp.fanikiwa.entity.BatchSimulateStatus;
 import com.sp.fanikiwa.entity.DoubleEntry;
 import com.sp.fanikiwa.entity.MultiEntry;
-import com.sp.fanikiwa.entity.PassFlag;
+import com.sp.fanikiwa.Enums.PassFlag;
+import com.sp.fanikiwa.entity.SimulatePostStatus;
+import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
 import com.sp.fanikiwa.entity.TransactionType;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
@@ -23,9 +27,11 @@ import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.inject.Named;
 
@@ -149,7 +155,7 @@ public class AccountEndpoint {
 	private Account findRecord(Long id) {
 		return ofy().load().type(Account.class).id(id).now();
 	}
-  
+
 	@ApiMethod(name = "BlockFunds")
 	public void BlockFunds(Account account, @Named("blockamount") double amount)
 			throws NotFoundException {
@@ -163,6 +169,20 @@ public class AccountEndpoint {
 		Account acc = findRecord(account.getAccountID());
 		acc.setClearedBalance(account.getClearedBalance() + amount);
 		this.updateAccount(acc);
+	}
+
+	public void ClearDaysEffects(@Named("date") Date date)
+			throws NotFoundException {
+
+		for (ValueDatedTransaction txn : GetValueDatedTransactionByDate(date)) {
+			ClearEffects(txn.getAccount(), txn.getAmount());
+		}
+	}
+
+	private Collection<ValueDatedTransaction> GetValueDatedTransactionByDate(
+			Date date) {
+		ValueDatedTransactionEndpoint vDac = new ValueDatedTransactionEndpoint();
+		return vDac.SelectByValueDate(date);
 	}
 
 	@ApiMethod(name = "CloseAccount")
@@ -196,12 +216,21 @@ public class AccountEndpoint {
 		this.MarkLimit(acc, amount * -1);
 	}
 
+	@ApiMethod(name = "SimulatePost")
+	public void SimulatePost(final MultiEntry multiEntry,@Named("flags") final PostingCheckFlag flags) {
+		ofy().transact(new VoidWork() {
+			public void vrun() {
+				Simulate(multiEntry, flags);
+			}
+		});
+	}
+
 	@ApiMethod(name = "BatchPost")
-	public void BatchPost(final MultiEntry multiEntry) {
+	public void BatchPost(final MultiEntry multiEntry, @Named("flags")final PostingCheckFlag flags) {
 		ofy().transact(new VoidWork() {
 			public void vrun() {
 				for (Transaction transaction : multiEntry.getTransactions()) {
-					Post(transaction);
+					Post(transaction,flags);
 				}
 
 			}
@@ -209,22 +238,22 @@ public class AccountEndpoint {
 	}
 
 	@ApiMethod(name = "DoubleEntryPost")
-	public void DoubleEntryPost(final DoubleEntry doubleEntry) {
+	public void DoubleEntryPost(final DoubleEntry doubleEntry, @Named("flags")final PostingCheckFlag flags) {
 		ofy().transact(new VoidWork() {
 			public void vrun() {
-				Post(doubleEntry.getDr());
-				Post(doubleEntry.getCr());
+				Post(doubleEntry.getDr(),flags);
+				Post(doubleEntry.getCr(),flags);
 			}
 		});
 	}
 
 	@ApiMethod(name = "Post")
-	public void Post(final Transaction transaction) {
+	public void Post(final Transaction transaction,@Named("flags") final PostingCheckFlag flags) {
 		ofy().transact(new VoidWork() {
 			public void vrun() {
 				try {
-					postAtomic(transaction);
-				} catch (NotFoundException | ConflictException e) {
+					postAtomic(transaction,flags);
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -232,12 +261,138 @@ public class AccountEndpoint {
 		});
 	}
 
-	private void postAtomic(Transaction transaction) throws NotFoundException,
-			ConflictException {
+	public CollectionResponse<StatementModel> GetMiniStatement(Account account,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+		TransactionEndpoint tep = new TransactionEndpoint();
+		CollectionResponse<Transaction> txnCB = tep.GetMiniStatement(account,
+				cursorString, count);
+		List<StatementModel> records = new ArrayList<StatementModel>();
 
-		Account account = findRecord(transaction.getAccount().getAccountID());
+		// go through the transactins and compute running balance
+
+		double bal = account.getBookBalance();
+		for (Transaction txn : txnCB.getItems()) {
+			StatementModel txnv = new StatementModel();
+			txnv.setPostDate(txn.getPostDate());
+			txnv.setTransactionID(txn.getTransactionID());
+			txnv.setNarrative(txn.getNarrative());
+			txnv.setAmount(txn.getAmount());
+			txnv.setContraReference(txn.getContraReference());
+
+			if (txn.getAmount() > 0) {
+				txnv.setCredit(txn.getAmount());
+				txnv.setDebit(0);
+			} else {
+				txnv.setCredit(0);
+				txnv.setDebit(txn.getAmount());
+			}
+
+			bal -= txn.getAmount();
+			txnv.setBalance(bal);
+
+			// add to viewxn
+			records.add(txnv);
+
+		}
+
+		return CollectionResponse.<StatementModel> builder().setItems(records)
+				.setNextPageToken(txnCB.getNextPageToken()).build();
+	}
+
+	public CollectionResponse<StatementModel> GetStatement(
+			@Named("sdate") Date sdate, @Named("edate") Date edate,
+			Account account, @Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+		TransactionEndpoint tep = new TransactionEndpoint();
+		CollectionResponse<Transaction> txnCB = tep.GetStatement(sdate, edate,
+				account, cursorString, count);
+
+		List<StatementModel> records = new ArrayList<StatementModel>();
+		StatementModel first = new StatementModel();
+		first.setPostDate(new Date());
+		first.setTransactionID(-1L);
+		first.setNarrative("BALANCE B/F");
+
+		double amount = SumTransactionsBeforeDate(tep
+				.GetTransactionsBeforeDate(sdate, account, cursorString, count)
+				.getItems());
+		if (amount > 0) {
+			first.setCredit(amount);
+			first.setDebit(0);
+		} else {
+			first.setCredit(0);
+			first.setDebit(amount);
+		}
+		first.setBalance(amount);
+
+		// add to view
+		records.add(first);
+
+		// go through the transactins and compute running balance
+		double bal = amount;
+		for (Transaction txn : txnCB.getItems()) {
+			StatementModel txnv = new StatementModel();
+			txnv.setPostDate(txn.getPostDate());
+			txnv.setTransactionID(txn.getTransactionID());
+			txnv.setNarrative(txn.getNarrative());
+			txnv.setAmount(txn.getAmount());
+			txnv.setContraReference(txn.getContraReference());
+
+			if (txn.getAmount() > 0) {
+				txnv.setCredit(txn.getAmount());
+				txnv.setDebit(0);
+			} else {
+				txnv.setCredit(0);
+				txnv.setDebit(txn.getAmount());
+			}
+
+			bal += txn.getAmount();
+			txnv.setBalance(bal);
+
+			// add to viewxn
+			records.add(txnv);
+
+		}
+
+		return CollectionResponse.<StatementModel> builder().setItems(records)
+				.setNextPageToken(txnCB.getNextPageToken()).build();
+	}
+
+	private double SumTransactionsBeforeDate(Collection<Transaction> collection) {
+		double total = 0;
+		for (Transaction t : collection) {
+			total += t.getAmount();
+		}
+		return total;
+	}
+
+	public BatchSimulateStatus Simulate(final MultiEntry multiEntry, @Named("flags") PostingCheckFlag flags) {
+		List<SimulatePostStatus> SimulateStatus = new ArrayList<SimulatePostStatus>();
+		for (Transaction tx : multiEntry.getTransactions()) {
+			SimulateStatus.add(ValidatePost(tx.getAccount(), tx, flags));
+		}
+
+		return new BatchSimulateStatus(SimulateStatus);
+
+	}
+
+	private void postAtomic(Transaction transaction) throws Exception {
+		postAtomic( transaction, PostingCheckFlag.CheckLimitAndPassFlag);
+	}
+	private void postAtomic(Transaction transaction, PostingCheckFlag checkflags) throws Exception {
+
+		Account account = transaction.getAccount();
 		// Step 1: Validate
-		ValidatePost(account, transaction);
+		SimulatePostStatus status = ValidatePost(account, transaction, checkflags);
+		if (!status.isCanPost()) {
+			String msg = "";
+			for (Exception e : status.Errors) {
+				msg += e.getMessage() + "\n";
+			}
+			throw new Exception("Simulation Error \n" + msg);
+		}
+		;
 
 		// Step 2 - Insert new transaction.
 		// /TODO Confirm this is legal/best practice
@@ -287,12 +442,10 @@ public class AccountEndpoint {
 
 	}
 
-	private void ValidatePost(Account account, Transaction transaction)
-			throws NotFoundException {
-		if (account.getClosed())
-			throw new NotFoundException("Account closed");
-		if (transaction == null)
-			throw new NotFoundException("transaction is null");
+
+	private SimulatePostStatus ValidatePost(Account account,
+			Transaction transaction, PostingCheckFlag limitCheck) {
+		SimulatePostStatus result = new SimulatePostStatus();
 
 		// Step 1 - See if we can post into this account by looking at lock and
 		// limit flags.
@@ -304,42 +457,115 @@ public class AccountEndpoint {
 		// get account status
 		AccountLimitStatus limistatus = AccountLimitStatus.values()[account
 				.getLimitFlag()];
-		PassFlag lockstatus = PassFlag.values()[account.getPassFlag()];
 
 		// transaction type
 		TransactionType _TransactionType = transaction.getTransactionType();
 
-		// Do account status tests only if the transaction is not a force post
-		if (!transaction.getForcePostFlag()) {
-			// check 1 - Lock status
-			if ((lockstatus == PassFlag.Locked)
-					|| (lockstatus == PassFlag.AllPostingProhibited)
-					|| (lockstatus == PassFlag.CreditPostingProhibited && _TransactionType
-							.getDebitCredit().equals("C"))
-					|| (lockstatus == PassFlag.DebitPostingProhibited && _TransactionType
-							.getDebitCredit().equals("D"))) {
-				throw new IllegalArgumentException(
-						String.format(
-								"Account [{0}] posting prohibited.\nAccount lock status =[{2}]",
-								account.getAccountID(),
-								_TransactionType.getTransactionTypeID(),
-								lockstatus.toString()));
-			}
+		// populate status object
+		result.AccountID = account.getAccountID();
+		result.BlockedStatus = PassFlag.values()[account.getPassFlag()];
+		result.BookBalanceBeforePosting = account.getBookBalance();
+		result.ClearedBalanceBeforePosting = account.getClearedBalance();
+		result.Limit = account.getLimit();
+		result.LimitStatus = AccountLimitStatus.values()[account.getLimitFlag()];
+		result.TransactionAmount = transaction.getAmount();
+		result.TransactionTypeId = transaction.getTransactionType()
+				.getTransactionTypeID();
 
-			// check 2 - Limit status
-			if ((limistatus == AccountLimitStatus.PostingOverDrawingProhibited && AmountAvailableAfterTxn < 0)
-					|| (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed && AmountAvailableOnUncleared < 0)) {
-				throw new IllegalArgumentException(
-						String.format(
-								"Account [{0}] overdraw prohibited, limit status =[{2}]",
-								account.getAccountID(),
-								_TransactionType.getTransactionTypeID(),
-								limistatus.toString()// Enum.GetName(typeof(AccountStatus),
-														// limistatus))
-						));
-			}
+		// start checking
+		if (account.getClosed()) {
+			result.Errors.add(new NotFoundException("Account closed"));
+			return result;
 		}
 
+		if (transaction == null) {
+			result.Errors.add(new NotFoundException("transaction is null"));
+			return result;
+		}
+
+		// Do account status tests only if the transaction is not a force post
+		if (transaction.getForcePostFlag()
+				|| limitCheck == PostingCheckFlag.ForcePost)
+			return result;
+
+		PassFlag lockstatus = PassFlag.values()[account.getPassFlag()];
+		switch (limitCheck) {
+		case CheckPassFlagOnly:// does not check limit but checks PassFlag
+			if (!CheckPassFlag(lockstatus, account, _TransactionType)) {
+				result.Errors
+						.add(new IllegalArgumentException(
+								String.format(
+										"Account [%d] posting prohibited.\nAccount lock status =[%s]",
+										account.getAccountID(),
+										_TransactionType.getTransactionTypeID(),
+										lockstatus.toString())));
+			}
+			return result;
+			
+		case CheckLimitFlagOnly:// Checks account limit status and not PassFlag
+			if (!CheckLimitFlag(limistatus, AmountAvailableAfterTxn,
+					AmountAvailableOnUncleared)) {
+
+				result.Errors
+						.add(new IllegalArgumentException(
+								String.format(
+										"Account [%d] overdraw prohibited, limit status =[%s]",
+										account.getAccountID(),
+										_TransactionType.getTransactionTypeID(),
+										limistatus.toString()// Enum.GetName(typeof(AccountStatus),
+																// limistatus))
+								)));
+			}
+			return result;
+			
+		case CheckLimitAndPassFlag:// Checks account limit status and PassFlag
+			if (!CheckPassFlag(lockstatus, account, _TransactionType)) {
+				result.Errors
+						.add(new IllegalArgumentException(
+								String.format(
+										"Account [%d] posting prohibited.\nAccount lock status =[%s]",
+										account.getAccountID(),
+										_TransactionType.getTransactionTypeID(),
+										lockstatus.toString())));
+			}
+
+			if (!CheckLimitFlag(limistatus, AmountAvailableAfterTxn,
+					AmountAvailableOnUncleared)) {
+
+				result.Errors
+						.add(new IllegalArgumentException(
+								String.format(
+										"Account [%d] overdraw prohibited, limit status =[%s]",
+										account.getAccountID(),
+										_TransactionType.getTransactionTypeID(),
+										limistatus.toString()// Enum.GetName(typeof(AccountStatus),
+																// limistatus))
+								)));
+			}
+		}
+		return result;
+	}
+
+	private boolean CheckLimitFlag(AccountLimitStatus limistatus,
+			double AmountAvailableAfterTxn, double AmountAvailableOnUncleared) {
+		if ((limistatus == AccountLimitStatus.PostingOverDrawingProhibited && AmountAvailableAfterTxn < 0)
+				|| (limistatus == AccountLimitStatus.PostingDrawingOnUnclearedEffectsAllowed && AmountAvailableOnUncleared < 0)) {
+		}
+		return true;
+	}
+
+	private boolean CheckPassFlag(PassFlag lockstatus, Account account,
+			TransactionType _TransactionType) {
+		if ((lockstatus == PassFlag.Locked)
+				|| (lockstatus == PassFlag.AllPostingProhibited)
+				|| (lockstatus == PassFlag.CreditPostingProhibited && _TransactionType
+						.getDebitCredit().equals("C"))
+				|| (lockstatus == PassFlag.DebitPostingProhibited && _TransactionType
+						.getDebitCredit().equals("D"))) {
+
+			return false;
+		}
+		return true;
 	}
 
 	private void ValidateLimit(Account account, double amount)
@@ -361,7 +587,7 @@ public class AccountEndpoint {
 		if ((lockstatus == PassFlag.Locked))
 			throw new NotFoundException(
 					String.format(
-							"Cannot mark limit to account [{0}].\nAccount lock status =[{1}]",
+							"Cannot mark limit to account [%d].\nAccount lock status =[%s]",
 							account.getAccountID(), lockstatus));
 
 		// check 2 - Limit status
@@ -370,14 +596,14 @@ public class AccountEndpoint {
 				|| (limistatus == AccountLimitStatus.LimitForAdvanceProhibited && limit < 0))
 			throw new NotFoundException(
 					String.format(
-							"Cannot mark limit to account [{0}].\nMarking limits prohibited, limit status =[{1}]",
+							"Cannot mark limit to account [%d].\nMarking limits prohibited, limit status =[%s]",
 							account.getAccountID(), limistatus));
 
 		if (limistatus == AccountLimitStatus.LimitsAllowed
 				&& AvailableBalanceAfterApplyingLimit < 0)
 			throw new NotFoundException(
 					String.format(
-							"Cannot block funds[{0}] on Acount[{1}]. There are not enough funds to block. Available balance[{2}] is below zero. ",
+							"Cannot block funds [%d] on Acount [%d]. There are not enough funds to block. Available balance[%d] is below zero. ",
 							amount, account.getAccountID(),
 							AvailableBalanceAfterApplyingLimit));
 
@@ -400,6 +626,20 @@ public class AccountEndpoint {
 		// updateAccount( account);
 		updateAccount(account);
 
+	}
+
+	private boolean ZeroProof(List<Transaction> Trans) {
+		boolean isProofed = false;
+
+		double total = 0;
+
+		// loop through all the items in the list
+		for (Transaction t : Trans)
+			total += t.getAmount();
+
+		isProofed = (total == 0);
+
+		return isProofed;
 	}
 
 }

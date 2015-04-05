@@ -13,9 +13,13 @@ import com.googlecode.objectify.cmd.Query;
 
 import static com.sp.fanikiwa.api.OfyService.ofy;
 
+import com.sp.fanikiwa.entity.Account;
+import com.sp.fanikiwa.entity.StatementModel;
 import com.sp.fanikiwa.entity.Transaction;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,6 +42,52 @@ public class TransactionEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 			Query<Transaction> query = ofy().load().type(Transaction.class);
+			return listTransactionByQuery(query, cursorString, count);
+	}
+	public CollectionResponse<Transaction> GetStatement(
+			@Named("sdate") Date sdate,
+			@Named("edate") Date edate,
+			Account account,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+			Query<Transaction> query = ofy().load().type(Transaction.class)
+					.order("postDate")
+					.filter("postDate >=",sdate)
+					.filter("postDate <=",edate)
+					.filter("account",account);
+			return listTransactionByQuery(query, cursorString, count);
+
+	}
+	public CollectionResponse<Transaction> GetTransactionsBeforeDate(
+			@Named("sdate") Date sdate,
+			Account account,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+			Query<Transaction> query = ofy().load().type(Transaction.class)
+					.order("postDate")
+					.filter("postDate >",sdate)
+					.filter("account",account);
+			return listTransactionByQuery(query, cursorString, count);
+
+	}
+	
+	public CollectionResponse<Transaction> GetMiniStatement(
+			Account account,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+			Query<Transaction> query = ofy().load().type(Transaction.class)
+					.order("-postDate")
+					.filter("account",account);
+			return listTransactionByQuery(query, cursorString, count);
+	}
+	
+	private CollectionResponse<Transaction> listTransactionByQuery(
+					Query<Transaction> query,
+					@Nullable @Named("cursor") String cursorString,
+					@Nullable @Named("count") Integer count) {
 			if (count != null)
 				query.limit(count);
 			if (cursorString != null && cursorString != "") {

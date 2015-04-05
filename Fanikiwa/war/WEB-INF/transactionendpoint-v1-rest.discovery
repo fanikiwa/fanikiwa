@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/zFplRwShWWfUcakaW5t9vhCJAiI\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/kRrWELC56QnsNrbUxNqEUQjRS3E\"",
  "discoveryVersion": "v1",
  "id": "transactionendpoint:v1",
  "name": "transactionendpoint",
@@ -295,7 +295,7 @@
    "id": "Organization",
    "type": "object",
    "properties": {
-    "andress": {
+    "address": {
      "type": "string"
     },
     "email": {
@@ -591,6 +591,115 @@
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
+  }
+ },
+ "resources": {
+  "transactionEndpoint": {
+   "methods": {
+    "getMiniStatement": {
+     "id": "transactionendpoint.transactionEndpoint.getMiniStatement",
+     "path": "GetMiniStatement",
+     "httpMethod": "POST",
+     "parameters": {
+      "count": {
+       "type": "integer",
+       "format": "int32",
+       "location": "query"
+      },
+      "cursor": {
+       "type": "string",
+       "location": "query"
+      }
+     },
+     "request": {
+      "$ref": "Account",
+      "parameterName": "resource"
+     },
+     "response": {
+      "$ref": "CollectionResponse_Transaction"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "getStatement": {
+     "id": "transactionendpoint.transactionEndpoint.getStatement",
+     "path": "GetStatement/{sdate}/{edate}",
+     "httpMethod": "POST",
+     "parameters": {
+      "count": {
+       "type": "integer",
+       "format": "int32",
+       "location": "query"
+      },
+      "cursor": {
+       "type": "string",
+       "location": "query"
+      },
+      "edate": {
+       "type": "string",
+       "required": true,
+       "format": "date-time",
+       "location": "path"
+      },
+      "sdate": {
+       "type": "string",
+       "required": true,
+       "format": "date-time",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "sdate",
+      "edate"
+     ],
+     "request": {
+      "$ref": "Account",
+      "parameterName": "resource"
+     },
+     "response": {
+      "$ref": "CollectionResponse_Transaction"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "getTransactionsBeforeDate": {
+     "id": "transactionendpoint.transactionEndpoint.getTransactionsBeforeDate",
+     "path": "GetTransactionsBeforeDate/{sdate}",
+     "httpMethod": "POST",
+     "parameters": {
+      "count": {
+       "type": "integer",
+       "format": "int32",
+       "location": "query"
+      },
+      "cursor": {
+       "type": "string",
+       "location": "query"
+      },
+      "sdate": {
+       "type": "string",
+       "required": true,
+       "format": "date-time",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "sdate"
+     ],
+     "request": {
+      "$ref": "Account",
+      "parameterName": "resource"
+     },
+     "response": {
+      "$ref": "CollectionResponse_Transaction"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
   }
  }
 }

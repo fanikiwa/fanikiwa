@@ -12,13 +12,16 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query;
+import com.sp.fanikiwa.Enums.AccountLimitStatus;
 import com.sp.fanikiwa.entity.Account;
-import com.sp.fanikiwa.entity.AccountLimitStatus;
 import com.sp.fanikiwa.entity.AccountType;
 import com.sp.fanikiwa.entity.Coadet;
 import com.sp.fanikiwa.entity.Customer;
 import com.sp.fanikiwa.entity.Member;
+import com.sp.fanikiwa.entity.MemberDTO;
 import com.sp.fanikiwa.entity.Organization;
+import com.sp.fanikiwa.entity.Userprofile;
+import com.sp.utils.Config;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,14 +31,6 @@ import javax.inject.Named;
 
 @Api(name = "memberendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class MemberEndpoint {
-
-	final Long CURRENT_ACC_COA_ID = 6509108836433920L;
-	final Long CURRENT_ACC_TYPE_ID = 5277655813324800L;
-	final Long LOAN_ACC_COA_ID = 6509108836433920L;
-	final Long LOAN_ACC_TYPE_ID = 5277655813324800L;
-	final Long INVESTMENT_ACC_COA_ID = 6509108836433920L;
-	final Long INVESTMENT_ACC_TYPE_ID = 5277655813324800L;
-	final Long CURRENT_ORG = 5981343255101440L;
 
 	/**
 	 * This method lists all the entities inserted in datastore. It uses HTTP
@@ -159,21 +154,32 @@ public class MemberEndpoint {
 	// Non CRUD
 	@ApiMethod(name = "GetMemberByEmail")
 	public Member GetMemberByEmail(@Named("email") String email) {
-		return ofy().load().type(Member.class).filter("Email", email).first()
+		return ofy().load().type(Member.class)
+				.filter("email", email).first()
 				.now();
 	}
 
 	@ApiMethod(name = "Register")
-	public Member Register(Member member) throws ConflictException,
+	public Member Register(MemberDTO memberDTO) throws ConflictException,
 			NotFoundException {
 
+		// Create the user
+		Userprofile user = new Userprofile();
+		user.setCreateDate(new Date());
+		user.setPwd(memberDTO.getPwd()); // think of encrypting
+		user.setUserId(memberDTO.getEmail());
+		user.setTelephone(memberDTO.getTelephone());
+
+		UserprofileEndpoint upep = new UserprofileEndpoint();
+		upep.insertUserprofile(user);
+  
 		Customer customer = new Customer();
 		// at this point, fill the customer with the details from the UI
-		customer.setName(member.getSurname());
-		customer.setEmail(member.getEmail());
-		customer.setTelephone(member.getTelephone());
+		customer.setName(memberDTO.getSurname());
+		customer.setEmail(memberDTO.getEmail());
+		customer.setTelephone(memberDTO.getTelephone());
 		customer.setCreatedDate(new Date());
-		customer.setOrganization(new Organization(CURRENT_ORG));
+		customer.setOrganization(new Organization(Config.GetLong("CURRENT_ORG")));
 
 		CustomerEndpoint cep = new CustomerEndpoint();
 		Customer customerReturned = cep.insertCustomer(customer);
@@ -183,8 +189,10 @@ public class MemberEndpoint {
 		Account currentAccount = new Account();
 		currentAccount.setAccountName(customerReturned.getName() + " Curr A/c");
 		currentAccount.setCustomer(customerReturned);
-		currentAccount.setCoadet(new Coadet(CURRENT_ACC_COA_ID));
-		currentAccount.setAccounttype(new AccountType(CURRENT_ACC_TYPE_ID));
+		currentAccount.setCoadet(new Coadet(Config
+				.GetLong("CURRENT_ACC_COA_ID")));
+		currentAccount.setAccounttype(new AccountType(Config
+				.GetLong("CURRENT_ACC_TYPE_ID"))); 
 		currentAccount.setBookBalance(0.00);
 		currentAccount.setClearedBalance(0.00);
 		currentAccount.setLimit(0.00);
@@ -197,8 +205,9 @@ public class MemberEndpoint {
 		Account loanaccount = new Account();
 		loanaccount.setAccountName(customerReturned.getName() + " Loan A/c");
 		loanaccount.setCustomer(customerReturned);
-		loanaccount.setCoadet(new Coadet(LOAN_ACC_COA_ID));
-		loanaccount.setAccounttype(new AccountType(LOAN_ACC_COA_ID));
+		loanaccount.setCoadet(new Coadet(Config.GetLong("LOAN_ACC_COA_ID")));
+		loanaccount.setAccounttype(new AccountType(Config
+				.GetLong("LOAN_ACC_COA_ID"))); 
 		loanaccount.setBookBalance(0.00);
 		loanaccount.setClearedBalance(0.00);
 		loanaccount.setLimit(0.00);
@@ -207,11 +216,12 @@ public class MemberEndpoint {
 
 		Account invesmentaccount = new Account();
 		invesmentaccount.setAccountName(customerReturned.getName()
-				+ " Loan A/c");
+				+ " Investment A/c");
 		invesmentaccount.setCustomer(customerReturned);
-		invesmentaccount.setCoadet(new Coadet(INVESTMENT_ACC_COA_ID));
-		invesmentaccount
-				.setAccounttype(new AccountType(INVESTMENT_ACC_TYPE_ID));
+		invesmentaccount.setCoadet(new Coadet(Config
+				.GetLong("INVESTMENT_ACC_COA_ID")));
+		invesmentaccount.setAccounttype(new AccountType(Config
+				.GetLong("INVESTMENT_ACC_TYPE_ID")));
 		invesmentaccount.setBookBalance(0.00);
 		invesmentaccount.setClearedBalance(0.00);
 		invesmentaccount.setLimit(0.00);
@@ -228,6 +238,13 @@ public class MemberEndpoint {
 
 		// Step 4. Update the member account created in step1 with the three
 		// accounts
+		Member member = new Member();
+		member.setEmail(memberDTO.getEmail());
+		member.setPwd(memberDTO.getPwd());
+		member.setTelephone(memberDTO.getTelephone());
+		member.setSurname(memberDTO.getSurname());
+		member.setDateJoined(new Date());
+		member.setStatus("A");
 		member.setCurrentAccount(currentAccountReturned);
 		member.setLoanAccount(loanAccountReturned);
 		member.setInvestmentAccount(investmentAccountReturned);
@@ -247,6 +264,20 @@ public class MemberEndpoint {
 
 	@ApiMethod(name = "DeRegister")
 	public void DeRegister(Member member) {
+	}
+
+	@ApiMethod(name = "getMemberByTelephone")
+	public Member GetMemberByTelephone(@Named("telephone") String telephone) {
+		return ofy().load().type(Member.class)
+				.filter("telephone", telephone).first()
+				.now();
+	}
+
+	@ApiMethod(name = "getMemberByNationalID", path="member/nationalid")
+	public Member getMemberByNationalID(@Named("nationalId") String nationalId) {
+		return ofy().load().type(Member.class)
+				.filter("nationalID", nationalId).first()
+				.now();
 	}
 
 }

@@ -1,15 +1,18 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 
 @Entity
-public class ValueDatedTransaction  {
-	
-	 @Id Long  transactionID;
+public class ValueDatedTransaction {
+
+	@Id
+	Long transactionID;
 
 	private double amount;
 
@@ -19,13 +22,10 @@ public class ValueDatedTransaction  {
 
 	private boolean forcePostFlag;
 
-	
 	private String narrative;
 
-	
 	private Date postDate;
 
-	
 	private Date recordDate;
 
 	private String reference;
@@ -34,12 +34,15 @@ public class ValueDatedTransaction  {
 
 	private String userID;
 
-	
 	private Date valueDate;
 
-	//Foreign keys
-	@Load Ref<Account> account;
-	@Load Ref<TransactionType> transactionType;
+	// Foreign keys
+
+	@Load
+	Ref<Account> account;
+
+	@Load
+	Ref<TransactionType> transactionType;
 
 	public ValueDatedTransaction() {
 	}

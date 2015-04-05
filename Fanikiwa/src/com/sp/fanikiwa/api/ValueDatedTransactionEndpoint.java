@@ -16,6 +16,8 @@ import static com.sp.fanikiwa.api.OfyService.ofy;
 import com.sp.fanikiwa.entity.ValueDatedTransaction;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,6 +40,18 @@ public class ValueDatedTransactionEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 			Query<ValueDatedTransaction> query = ofy().load().type(ValueDatedTransaction.class);
+			return listValueDatedTransactionByQuery(query,cursorString,count);
+	}
+	public Collection<ValueDatedTransaction> SelectByValueDate(@Named("date") Date date) {
+
+			Query<ValueDatedTransaction> query = ofy().load().type(ValueDatedTransaction.class)
+					.filter("ValueDate", date);
+			return listValueDatedTransactionByQuery(query,null,null).getItems();
+	}
+	private CollectionResponse<ValueDatedTransaction> listValueDatedTransactionByQuery(
+					Query<ValueDatedTransaction> query,
+					@Nullable @Named("cursor") String cursorString,
+					@Nullable @Named("count") Integer count) {
 			if (count != null)
 				query.limit(count);
 			if (cursorString != null && cursorString != "") {

@@ -8,16 +8,18 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
-public class Offergroup   {
-	
-	@Id Long id;
+public class Offergroup {
 
+	@Id
+	Long id;
+ 
 	private String description;
-
+ 
 	private String email;
-
+ 
 	private int memberId;
 
 	public Offergroup() {

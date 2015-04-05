@@ -10,11 +10,13 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
 public class Diaryprogramcontrol {
-	
-	@Id Long  id;
+
+	@Id
+	Long id;
  
 	private Date lastRun;
  

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿
+﻿﻿﻿﻿﻿﻿﻿﻿﻿
 <!DOCTYPE html>
 
 <html lang="en">
@@ -30,7 +30,13 @@
 
 
 			<div class="float-right">
-				<section id="login"></section>
+				<section id="login">
+					<text> Welcome To Fanikiwa, <a id="lnkloggedinuser"
+						style="cursor: pointer;" href="#" onclick="ManageProfile()"
+						title="Manage Profile"></a> <a id="lnklogoff"
+						style="cursor: pointer;" href="#" onclick="LogOff()"
+						title="Log Off">Log off</a> </text>
+				</section>
 			</div>
 
 
@@ -391,32 +397,6 @@
 
 		<hr />
 
-		<div class="content-wrapper">
-			<div class="float-left">
-
-				<!--                 @Html.ActionLink("Home", "Index", "Home")| -->
-				<!--                    @Html.ActionLink("About", "About", "Home")| -->
-				<!--                    @Html.ActionLink("Contacts", "Contact", "Home")| -->
-				<!--                    @Html.ActionLink("Contact Us", "ContactUs", "Contact")| -->
-				<!--                    @Html.ActionLink("Help", "Help", "Home")| -->
-
-
-				<!--                   <a href="https://www.facebook.com/SoftwareProvidersLtd" title="Facebook" target="_blank">FaceBook</a>| -->
-				<!--                   <a href="http://twitter.com/" title="Twitter" target="_blank">Twitter</a>| -->
-				<!--                   <a href="https://plus.google.com/" title="Google+" target="_blank">Google+</a>| -->
-				<!--                   <a href="http://www.linkedin.com/" title="LinkedIn" target="_blank">LinkedIn</a>| -->
-				<!--                   <a href="#" title="Blog">Blog</a>| -->
-				<!--                   <a href="#" title="Discussion board">Discussion board</a> | -->
-				<!--                   <a href="#" title="Press">Press</a>| -->
-				<!--                   <a href="#" title="Terms">Terms</a>|                     -->
-				<!--                   <a href="#" title="Jobs">Jobs</a>|                     -->
-				<!--                   <a href="#" title="Privacy policy">Privacy policy</a>| -->
-				<!--                   <a href="#" title="Principles">Principles</a> -->
-
-
-			</div>
-		</div>
-
 
 		<div class="content-wrapper clearboth">
 			<div class="float-left">
@@ -446,22 +426,55 @@
 
 
 	<script type="text/javascript">
-
-      function init() {
-        //Parameters are APIName,APIVersion,CallBack function,API Root 
-       
-        var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api'; 
-        gapi.client.load('offerendpoint', 'v1', null, ROOT);
-          
-        document.getElementById('btnUpdateProfileForm').onclick = function() {
-	    UpdateProfile();
-        	  }
-        }
+ 
+		 // Get loggedin user from the local storage
+		 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
+     
+		// var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
+		  var ROOT ='http://localhost:8888/_ah/api';   
+	     function init() {
+	      
+		    // Parameters are APIName,APIVersion,CallBack function,API Root
+		    gapi.client.load('memberendpoint', 'v1', null, ROOT);
+	         
+		    // wire the submit button
+		    document.getElementById('btnUpdateProfileForm').onclick = function() {
+		    UpdateProfile();
+            }
+            
+            InitializeControls();
+            
+          }
          
-
-        //function that will execute the UpdateProfile call
+         // function that will execute the getMemberByEmail call
+         function  getMemberByEmail(email)
+         {
+     
+        	try {
+			     // make the api call
+			     gapi.client.memberendpoint.getMemberByEmail(email).execute(function(resp) {
+			     if (!resp.code) {       			 
+	       		    return resp;       		
+	       		}       		  
+	       		else {
+	       			console.log(resp.code + " : " + resp.message);
+	       			alert("Error : " + resp.code + ":" + resp.message);
+	       		}
+		       	});
+	       	
+	       	} catch(exception) { 
+	           localStorage.errormessage = exception;
+	           console.log("Error : " + exception);
+	           window.location.href = "/Views/Shared/Error.html"; 
+	      }
+		}	
+		
+        // function that will execute the UpdateProfile call
         function UpdateProfile() {
-        	//Validate the entries
+        
+       	try {
+        
+        	// retrieve the entries
         	var _Email = document.getElementById('txtEmail').value;
         	var _Surname = document.getElementById('txtSurname').value;
         	var _OtherNames = document.getElementById('txtOtherNames').value;
@@ -473,40 +486,82 @@
         	var _Gender = document.getElementById('cboGender').value;
         	var _InformBy = document.getElementById('cboInformBy').value;
         	
-        	//Build the Request Object
-        	var requestData = {};
-        	requestData.email = _Email;
-        	requestData.surname = _Surname;
-        	requestData.otherNames = _OtherNames;
-        	requestData.telephone = _Telephone;
-        	requestData.nationalID = _NationalID;
-        	requestData.dateOfBirth = _DateOfBirth; 
-        	requestData.refferedBy = _RefferedBy;
-        	requestData.maxRecordsToDisplay = _MaxRecordsToDisplay;
-        	requestData.gender = _Gender;
-        	requestData.informBy = _InformBy;
+            
+        	// Build the Request Object
+        	var member = {};
+        	member.email = _Email;
+        	member.surname = _Surname;
+        	member.otherNames = _OtherNames;
+        	member.telephone = _Telephone;
+        	member.nationalID = _NationalID;
+        	member.dateOfBirth = _DateOfBirth; 
+        	member.refferedBy = _RefferedBy;
+        	member.maxRecordsToDisplay = _MaxRecordsToDisplay;
+        	member.gender = _Gender;
+        	member.informBy = _InformBy;
         	
-        	gapi.client.offerendpoint.insertOffer(requestData).execute(function(resp) {
+        	// make the api call
+        	gapi.client.memberendpoint.updateMember(member).execute(function(resp) {
         		 console.log(resp);
         		if (!resp.code) {
-        			//Just logging to console now, you can do your check here/display message
-        			console.log(resp.description + ":" + resp.amount + ":" + resp.interest);
+        		 	 
+        		window.location.href = "/Views/Shared/Successful.html";
         		
-        		window.location.href = "/Views/Offers/ListMyOffers.html";
-        		
-        		}
-        		  
+        		} 
         		else {
         			console.log(resp.code + " : " + resp.message);
         			alert("Error : " + resp.code + ":" + resp.message);
-        		}
-        		
-        		
+        		} 
         	});
+        	
+        	} catch(exception) { 
+	           localStorage.errormessage = exception;
+	           console.log("Error : " + exception);
+	           window.location.href = "/Views/Shared/Error.html"; 
+	      }
         }
         
+        // function that will execute the InitializeControls call
+        function InitializeControls() {
+        
+       	try {
+         
+        	// retrieve email from local storage
+        	var email = localStorage.getItem('loggedinuser')  
+        	// make the api call
+            var member = getMemberByEmail({'email': email});
+        
+             // populate controls
+             document.getElementById('txtEmail').value = member.email;
+        	 document.getElementById('txtSurname').value = member.surname;
+        	 document.getElementById('txtOtherNames').value = member.otherNames;
+        	 document.getElementById('txtTelephone').value = member.telephone;
+        	 document.getElementById('txtNationalID').value = member.nationalID;
+        	 document.getElementById('dtpDateOfBirth').value = member.dateOfBirth; 
+        	 document.getElementById('txtRefferedBy').value = member.refferedBy;
+        	 document.getElementById('txtMaxRecordsToDisplay').value = member.maxRecordsToDisplay;
+             document.getElementById('cboGender').value = member.gender;
+        	 document.getElementById('cboInformBy').value = member.informBy;
+        	
+        	} catch(exception) { 
+	           localStorage.errormessage = exception;
+	           console.log("Error : " + exception);
+	           window.location.href = "/Views/Shared/Error.html"; 
+	      }
+        }
+        
+            function LogOff() { 
+	         	localStorage.removeItem("loggedinuser");
+	            window.location.href = "/Views/Account/Login.html";  
+         	}
+         	
+         	function ManageProfile() { 
+         		window.location.href = "/Views/Account/EditProfile.html";  
+            }
     </script>
 
+
+	<script src="https://apis.google.com/js/client.js?onload=init"></script>
 
 
 

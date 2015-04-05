@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Tv2WbKul-140-FKRk-5HaWBRrws\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/lCUp8Xcy5IU35c81uclMqYyFWu0\"",
  "discoveryVersion": "v1",
  "id": "memberendpoint:v1",
  "name": "memberendpoint",
@@ -363,11 +363,46 @@
     }
    }
   },
+  "MemberDTO": {
+   "id": "MemberDTO",
+   "type": "object",
+   "properties": {
+    "dateActivated": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "dateJoined": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "email": {
+     "type": "string"
+    },
+    "informBy": {
+     "type": "string"
+    },
+    "nationalID": {
+     "type": "string"
+    },
+    "pwd": {
+     "type": "string"
+    },
+    "status": {
+     "type": "string"
+    },
+    "surname": {
+     "type": "string"
+    },
+    "telephone": {
+     "type": "string"
+    }
+   }
+  },
   "Organization": {
    "id": "Organization",
    "type": "object",
    "properties": {
-    "andress": {
+    "address": {
      "type": "string"
     },
     "email": {
@@ -439,6 +474,48 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "getMemberByNationalID": {
+   "id": "memberendpoint.getMemberByNationalID",
+   "path": "member/nationalid",
+   "httpMethod": "GET",
+   "parameters": {
+    "nationalId": {
+     "type": "string",
+     "required": true,
+     "location": "query"
+    }
+   },
+   "parameterOrder": [
+    "nationalId"
+   ],
+   "response": {
+    "$ref": "Member"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "getMemberByTelephone": {
+   "id": "memberendpoint.getMemberByTelephone",
+   "path": "GetMemberByTelephone/{telephone}",
+   "httpMethod": "POST",
+   "parameters": {
+    "telephone": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "telephone"
+   ],
+   "response": {
+    "$ref": "Member"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "listMember": {
    "id": "memberendpoint.listMember",
    "path": "member",
@@ -466,7 +543,7 @@
    "path": "Register",
    "httpMethod": "POST",
    "request": {
-    "$ref": "Member",
+    "$ref": "MemberDTO",
     "parameterName": "resource"
    },
    "response": {

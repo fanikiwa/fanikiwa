@@ -10,24 +10,26 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
-public class Informdb  {
-	
-	@Id Long   id;
+public class Informdb {
 
+	@Id
+	Long id;
+ 
 	private String addressFrom;
-
-	private String addressTo; 
-	
+ 
+	private String addressTo;
+ 
 	private String body;
-
+ 
 	private Date messageDate;
-
+ 
 	private String messageType;
-
+ 
 	private String status;
-
+ 
 	private String subject;
 
 	public Informdb() {

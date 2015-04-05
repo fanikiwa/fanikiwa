@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Fw2DrqG4ZBc0noX_7Ij7JYAFnwo\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/kA8df0vmfhfc9KgSRNLc77TLRM8\"",
  "discoveryVersion": "v1",
  "id": "accountendpoint:v1",
  "name": "accountendpoint",
@@ -169,6 +169,32 @@
     }
    }
   },
+  "AccountLimitStatus": {
+   "id": "AccountLimitStatus",
+   "type": "string",
+   "enum": [
+    "AllLimitsProhibited",
+    "LimitForAdvanceProhibited",
+    "LimitForBlockingProhibited",
+    "LimitsAllowed",
+    "Ok",
+    "PostingDrawingOnUnclearedEffectsAllowed",
+    "PostingNoLimitChecking",
+    "PostingOverDrawingProhibited",
+    "Unknown"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
   "AccountType": {
    "id": "AccountType",
    "type": "object",
@@ -182,6 +208,18 @@
     },
     "shortCode": {
      "type": "string"
+    }
+   }
+  },
+  "BatchSimulateStatus": {
+   "id": "BatchSimulateStatus",
+   "type": "object",
+   "properties": {
+    "SimulateStatus": {
+     "type": "array",
+     "items": {
+      "$ref": "SimulatePostStatus"
+     }
     }
    }
   },
@@ -233,6 +271,21 @@
      "type": "array",
      "items": {
       "$ref": "Account"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
+  "CollectionResponse_StatementModel": {
+   "id": "CollectionResponse_StatementModel",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "StatementModel"
      }
     },
     "nextPageToken": {
@@ -303,6 +356,33 @@
     }
    }
   },
+  "Exception": {
+   "id": "Exception",
+   "type": "object",
+   "properties": {
+    "cause": {
+     "$ref": "Throwable"
+    },
+    "localizedMessage": {
+     "type": "string"
+    },
+    "message": {
+     "type": "string"
+    },
+    "stackTrace": {
+     "type": "array",
+     "items": {
+      "$ref": "StackTraceElement"
+     }
+    },
+    "suppressed": {
+     "type": "array",
+     "items": {
+      "$ref": "Throwable"
+     }
+    }
+   }
+  },
   "MultiEntry": {
    "id": "MultiEntry",
    "type": "object",
@@ -319,7 +399,7 @@
    "id": "Organization",
    "type": "object",
    "properties": {
-    "andress": {
+    "address": {
      "type": "string"
     },
     "email": {
@@ -331,6 +411,156 @@
     "organizationID": {
      "type": "string",
      "format": "int64"
+    }
+   }
+  },
+  "PassFlag": {
+   "id": "PassFlag",
+   "type": "string",
+   "enum": [
+    "AllPostingProhibited",
+    "CreditPostingProhibited",
+    "DebitPostingProhibited",
+    "Locked",
+    "Ok",
+    "Unknown"
+   ],
+   "enumDescriptions": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  "SimulatePostStatus": {
+   "id": "SimulatePostStatus",
+   "type": "object",
+   "properties": {
+    "AccountID": {
+     "type": "string",
+     "format": "int64"
+    },
+    "BlockedStatus": {
+     "$ref": "PassFlag"
+    },
+    "BookBalanceBeforePosting": {
+     "type": "number",
+     "format": "double"
+    },
+    "ClearedBalanceBeforePosting": {
+     "type": "number",
+     "format": "double"
+    },
+    "Errors": {
+     "type": "array",
+     "items": {
+      "$ref": "Exception"
+     }
+    },
+    "Limit": {
+     "type": "number",
+     "format": "double"
+    },
+    "LimitStatus": {
+     "$ref": "AccountLimitStatus"
+    },
+    "TransactionAmount": {
+     "type": "number",
+     "format": "double"
+    },
+    "TransactionTypeId": {
+     "type": "string",
+     "format": "int64"
+    },
+    "canPost": {
+     "type": "boolean"
+    }
+   }
+  },
+  "StackTraceElement": {
+   "id": "StackTraceElement",
+   "type": "object",
+   "properties": {
+    "className": {
+     "type": "string"
+    },
+    "fileName": {
+     "type": "string"
+    },
+    "lineNumber": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "methodName": {
+     "type": "string"
+    },
+    "nativeMethod": {
+     "type": "boolean"
+    }
+   }
+  },
+  "StatementModel": {
+   "id": "StatementModel",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "balance": {
+     "type": "number",
+     "format": "double"
+    },
+    "contraReference": {
+     "type": "string"
+    },
+    "credit": {
+     "type": "number",
+     "format": "double"
+    },
+    "debit": {
+     "type": "number",
+     "format": "double"
+    },
+    "narrative": {
+     "type": "string"
+    },
+    "postDate": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "transactionID": {
+     "type": "string",
+     "format": "int64"
+    }
+   }
+  },
+  "Throwable": {
+   "id": "Throwable",
+   "type": "object",
+   "properties": {
+    "cause": {
+     "$ref": "Throwable"
+    },
+    "localizedMessage": {
+     "type": "string"
+    },
+    "message": {
+     "type": "string"
+    },
+    "stackTrace": {
+     "type": "array",
+     "items": {
+      "$ref": "StackTraceElement"
+     }
+    },
+    "suppressed": {
+     "type": "array",
+     "items": {
+      "$ref": "Throwable"
+     }
     }
    }
   },
@@ -525,8 +755,30 @@
  "methods": {
   "batchPost": {
    "id": "accountendpoint.batchPost",
-   "path": "BatchPost",
+   "path": "BatchPost/{flags}",
    "httpMethod": "POST",
+   "parameters": {
+    "flags": {
+     "type": "string",
+     "required": true,
+     "enum": [
+      "CheckLimitAndPassFlag",
+      "CheckLimitFlagOnly",
+      "CheckPassFlagOnly",
+      "ForcePost"
+     ],
+     "enumDescriptions": [
+      "",
+      "",
+      "",
+      ""
+     ],
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "flags"
+   ],
    "request": {
     "$ref": "MultiEntry",
     "parameterName": "resource"
@@ -595,8 +847,30 @@
   },
   "doubleEntryPost": {
    "id": "accountendpoint.doubleEntryPost",
-   "path": "DoubleEntryPost",
+   "path": "DoubleEntryPost/{flags}",
    "httpMethod": "POST",
+   "parameters": {
+    "flags": {
+     "type": "string",
+     "required": true,
+     "enum": [
+      "CheckLimitAndPassFlag",
+      "CheckLimitFlagOnly",
+      "CheckPassFlagOnly",
+      "ForcePost"
+     ],
+     "enumDescriptions": [
+      "",
+      "",
+      "",
+      ""
+     ],
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "flags"
+   ],
    "request": {
     "$ref": "DoubleEntry",
     "parameterName": "resource"
@@ -666,8 +940,30 @@
   },
   "post": {
    "id": "accountendpoint.post",
-   "path": "Post",
+   "path": "Post/{flags}",
    "httpMethod": "POST",
+   "parameters": {
+    "flags": {
+     "type": "string",
+     "required": true,
+     "enum": [
+      "CheckLimitAndPassFlag",
+      "CheckLimitFlagOnly",
+      "CheckPassFlagOnly",
+      "ForcePost"
+     ],
+     "enumDescriptions": [
+      "",
+      "",
+      "",
+      ""
+     ],
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "flags"
+   ],
    "request": {
     "$ref": "Transaction",
     "parameterName": "resource"
@@ -777,6 +1073,40 @@
     "https://www.googleapis.com/auth/userinfo.email"
    ]
   },
+  "simulatePost": {
+   "id": "accountendpoint.simulatePost",
+   "path": "SimulatePost/{flags}",
+   "httpMethod": "POST",
+   "parameters": {
+    "flags": {
+     "type": "string",
+     "required": true,
+     "enum": [
+      "CheckLimitAndPassFlag",
+      "CheckLimitFlagOnly",
+      "CheckPassFlagOnly",
+      "ForcePost"
+     ],
+     "enumDescriptions": [
+      "",
+      "",
+      "",
+      ""
+     ],
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "flags"
+   ],
+   "request": {
+    "$ref": "MultiEntry",
+    "parameterName": "resource"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "unBlockFunds": {
    "id": "accountendpoint.unBlockFunds",
    "path": "UnBlockFunds/{amount}",
@@ -814,6 +1144,136 @@
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
+  }
+ },
+ "resources": {
+  "accountEndpoint": {
+   "methods": {
+    "clearDaysEffects": {
+     "id": "accountendpoint.accountEndpoint.clearDaysEffects",
+     "path": "ClearDaysEffects/{date}",
+     "httpMethod": "POST",
+     "parameters": {
+      "date": {
+       "type": "string",
+       "required": true,
+       "format": "date-time",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "date"
+     ],
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "getMiniStatement": {
+     "id": "accountendpoint.accountEndpoint.getMiniStatement",
+     "path": "GetMiniStatement",
+     "httpMethod": "POST",
+     "parameters": {
+      "count": {
+       "type": "integer",
+       "format": "int32",
+       "location": "query"
+      },
+      "cursor": {
+       "type": "string",
+       "location": "query"
+      }
+     },
+     "request": {
+      "$ref": "Account",
+      "parameterName": "resource"
+     },
+     "response": {
+      "$ref": "CollectionResponse_StatementModel"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "getStatement": {
+     "id": "accountendpoint.accountEndpoint.getStatement",
+     "path": "GetStatement/{sdate}/{edate}",
+     "httpMethod": "POST",
+     "parameters": {
+      "count": {
+       "type": "integer",
+       "format": "int32",
+       "location": "query"
+      },
+      "cursor": {
+       "type": "string",
+       "location": "query"
+      },
+      "edate": {
+       "type": "string",
+       "required": true,
+       "format": "date-time",
+       "location": "path"
+      },
+      "sdate": {
+       "type": "string",
+       "required": true,
+       "format": "date-time",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "sdate",
+      "edate"
+     ],
+     "request": {
+      "$ref": "Account",
+      "parameterName": "resource"
+     },
+     "response": {
+      "$ref": "CollectionResponse_StatementModel"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "simulate": {
+     "id": "accountendpoint.accountEndpoint.simulate",
+     "path": "Simulate/{flags}",
+     "httpMethod": "POST",
+     "parameters": {
+      "flags": {
+       "type": "string",
+       "required": true,
+       "enum": [
+        "CheckLimitAndPassFlag",
+        "CheckLimitFlagOnly",
+        "CheckPassFlagOnly",
+        "ForcePost"
+       ],
+       "enumDescriptions": [
+        "",
+        "",
+        "",
+        ""
+       ],
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "flags"
+     ],
+     "request": {
+      "$ref": "MultiEntry",
+      "parameterName": "resource"
+     },
+     "response": {
+      "$ref": "BatchSimulateStatus"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
   }
  }
 }

@@ -1,5 +1,5 @@
 package com.sp.fanikiwa.entity;
- 
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -8,75 +8,60 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
-public class Messagestore  {
-	
-	@Id Long id;
+public class Messagestore {
 
-	
+	@Id
+	Long id;
+
+ 
 	private String amPm;
-
-	
+ 
 	private String dateReceived;
-
-	
+ 
 	private String dateSent;
-
-	
+ 
 	private String firstName;
-
+ 
 	private byte isDeleted;
-
-	
+ 
 	private String lastName;
-
-	
+ 
 	private String messageBody;
 
-	
+ 
 	private String messageIndex;
-
-	
+ 
 	private String messageStatus;
-
-	
+ 
 	private String messageType;
-
+ 
 	private double mpesaAmount;
-
+ 
 	private double mpesaBalance;
-
-	
+ 
 	private String originatingAddress;
-
-	
+ 
 	private String originatingAddressType;
-
-	
+ 
 	private String phoneNo;
-
+ 
 	private byte processed;
-
-	
+ 
 	private String SCTimestamp;
-
-	
+ 
 	private String smscAddress;
-
-	
+ 
 	private String smscAddressType;
-
-	
+ 
 	private String status;
-
-	
+ 
 	private String storage;
-
-	
+ 
 	private String timeSent;
-
-	
+ 
 	private String userDataText;
 
 	public Messagestore() {

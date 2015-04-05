@@ -1,28 +1,44 @@
 package com.sp.fanikiwa.entity;
- 
-import java.util.Date;  
+
+import java.util.Date;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
-  
+
 @Entity
-public class Offer  {
-	
-	@Id  Long  id;
+public class Offer {
+
+	@Id
+	Long id;
+
 	private String description;
-	private double amount;	
+
+	private double amount;
+ 
 	private int term;
+ 
 	private double interest;
-	private String publicOffer;
-	private Date createdDate;		
-	private Date expiryDate; 
+ 
+	private boolean publicOffer;
+ 
+	private Date createdDate;
+ 
+	private Date expiryDate;
+ 
 	private String offerees;
+ 
 	private String offerType;
-	private byte partialPay;	
-	private String status;	
-	@Load Ref<Member> member;
+ 
+	private boolean partialPay;
+ 
+	private String status;
+ 
+	@Load
+	Ref<Member> member;
+
 	public Offer() {
 	}
 
@@ -78,7 +94,7 @@ public class Offer  {
 		return this.member.get();
 	}
 
-	public void setMemberId(Member member) {
+	public void setMember(Member member) {
 		this.member = Ref.create(member);
 	}
 
@@ -98,19 +114,19 @@ public class Offer  {
 		this.offerType = offerType;
 	}
 
-	public byte getPartialPay() {
+	public boolean getPartialPay() {
 		return this.partialPay;
 	}
 
-	public void setPartialPay(byte partialPay) {
+	public void setPartialPay(boolean partialPay) {
 		this.partialPay = partialPay;
 	}
 
-	public String getPublicOffer() {
+	public boolean getPublicOffer() {
 		return this.publicOffer;
 	}
 
-	public void setPublicOffer(String publicOffer) {
+	public void setPublicOffer(boolean publicOffer) {
 		this.publicOffer = publicOffer;
 	}
 

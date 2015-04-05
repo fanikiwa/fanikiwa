@@ -26,8 +26,10 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 
+
 import com.sp.utils.CryptoUtil;
-import com.sp.fanikiwa.DiaryComponent;
+import com.sp.fanikiwa.business.DiaryComponent;
+
 //import com.sun.org.apache.xerces.internal.impl.dv.util.Base64; - NOT SUPPORTED ON GAE
 import org.apache.commons.codec.binary.Base64;
 

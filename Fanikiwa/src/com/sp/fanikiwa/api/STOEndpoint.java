@@ -21,6 +21,7 @@ import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.OfferStatus;
 
 import java.util.ArrayList; 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Named;
@@ -42,6 +43,21 @@ public class STOEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<STO> query = ofy().load().type(STO.class);
+		return getSTOByQuery(query,cursorString, count);
+		
+	}
+	@ApiMethod(name = "SelectSTOByDateFrom")
+	public CollectionResponse<STO> SelectSTOByDateFrom(@Named("date") Date date) {
+		Query<STO> query = ofy().load().type(STO.class)
+				.filter("startDate >", date);
+		return getSTOByQuery(query,null, null);
+		
+	}
+	
+		private CollectionResponse<STO> getSTOByQuery(Query<STO> query,
+		@Nullable @Named("cursor") String cursorString,
+		@Nullable @Named("count") Integer count)
+				{
 		if (count != null)
 			query.limit(count);
 		if (cursorString != null && cursorString != "") {
@@ -136,7 +152,7 @@ public class STOEndpoint {
 	 * @throws ConflictException
 	 */
 	@ApiMethod(name = "insertSTO")
-	public STO insertSTO(STO sTO) throws NotFoundException,
+	public STO insertSTO(STO sTO) throws 
 			ConflictException {
 		if (sTO.getId() != null) {
 			if (findRecord(sTO.getId()) != null) {

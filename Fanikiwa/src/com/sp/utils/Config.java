@@ -4,8 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.sp.fanikiwa.api.AccountEndpoint;
 import com.sp.fanikiwa.api.SettingsEndpoint;
+import com.sp.fanikiwa.api.TransactionTypeEndpoint;
+import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.Settings;
+import com.sp.fanikiwa.entity.TransactionType;
 
 public class Config {
 	private final static String DATE_FORMAT = "dd-MMM-yyyy";
@@ -78,5 +82,19 @@ public class Config {
 	}
 	public static Date GetDate(String key) throws ParseException {
 		return GetDate(key, null);
+	}
+	
+	//GL helpers
+	public static TransactionType GetTransactionType(String key)
+	{
+		Long id = GetLong( key);
+		TransactionTypeEndpoint tep = new TransactionTypeEndpoint();
+		return tep.getTransactionType(id);
+	}
+	public static Account GetAccount(String key)
+	{
+		Long id = GetLong( key);
+		AccountEndpoint tep = new AccountEndpoint();
+		return tep.getAccount(id);
 	}
 }

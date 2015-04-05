@@ -1,21 +1,19 @@
 package com.sp.fanikiwa.entity;
-
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
+ 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
- 
-@Entity
-public class Settings   {
 
-	@Id private String property;
-	@Index private String groupName;
+@Entity
+public class Settings {
+
+	@Id
+	private String property;
+ 
+	private String groupName;
+ 
 	private Long parent;
+ 
 	private String Value;
 
 	public Settings() {
@@ -52,7 +50,5 @@ public class Settings   {
 	public void setValue(String value) {
 		Value = value;
 	}
-
-	
 
 }

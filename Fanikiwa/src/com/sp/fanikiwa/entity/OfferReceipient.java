@@ -1,30 +1,31 @@
 package com.sp.fanikiwa.entity;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
+ 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
-@Entity
-public class OfferReceipient   {
-	
-	@Id Long  offerReceipientId;
+import com.googlecode.objectify.annotation.Index;
 
+@Entity
+public class OfferReceipient {
+
+	@Id
+	Long offerReceipientId;
+
+ 
 	private String idType;
 
+ 
 	private String mailingGroup;
 
-	
+ 
 	private String memberEmail;
 
-	private int memberId;
+ 
+	private Long memberId;
 
+ 
 	private String memberTelno;
-
+ 
 	private int offerId;
 
 	public OfferReceipient() {
@@ -62,11 +63,11 @@ public class OfferReceipient   {
 		this.memberEmail = memberEmail;
 	}
 
-	public int getMemberId() {
+	public Long getMemberId() {
 		return this.memberId;
 	}
 
-	public void setMemberId(int memberId) {
+	public void setMemberId(Long memberId) {
 		this.memberId = memberId;
 	}
 

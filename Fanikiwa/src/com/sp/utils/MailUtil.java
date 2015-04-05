@@ -56,6 +56,17 @@ public class MailUtil {
         Transport.send(message);
 	}
 	
+	public static boolean isValidEmailAddress(String email) {
+		   boolean result = true;
+		   try {
+		      InternetAddress emailAddr = new InternetAddress(email);
+		      emailAddr.validate();
+		   } catch (AddressException ex) {
+		      result = false;
+		   }
+		   return result;
+		}
+	
 
 	private static MimeMessage SimpleMailMessage(String from, List<String> toList, String subject, String Body) throws MessagingException{
 		Properties props = new Properties();

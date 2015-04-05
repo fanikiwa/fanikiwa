@@ -1,43 +1,45 @@
 package com.sp.fanikiwa.entity;
 
 import java.util.Date;
-  
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
- 
+
 @Entity
-public class Customer   {
-	
-	 @Id Long customerId;
+public class Customer {
 
+	@Id
+	Long customerId;
+ 
 	private String address;
-
+ 
 	private String billToAddress;
-
+ 
 	private String billToEmail;
-
+ 
 	private String billToName;
-
+ 
 	private String billToTelephone;
-
+ 
 	private String branch;
-	
+ 
 	private Date createdDate;
-
+ 
 	private String customerNo;
-
+ 
 	private String email;
-
+ 
 	private Long memberId;
-
+ 
 	private String name;
-
-
+ 
 	private String telephone;
-
-	@Load Ref<Organization> organization;
+ 
+	@Load
+	Ref<Organization> organization;
 
 	public Customer() {
 	}

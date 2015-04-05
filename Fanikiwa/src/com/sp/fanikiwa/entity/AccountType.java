@@ -1,22 +1,25 @@
 package com.sp.fanikiwa.entity;
- 
+
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id; 
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class AccountType {
 
 	@Id
 	Long id;
-	
+
+	 
 	private String description;
+	 
 	private String shortCode;
 
 	public AccountType() {
 	}
 
 	public AccountType(Long ID) {
-		setId( ID);
+		setId(ID);
 	}
 
 	public Long getId() {

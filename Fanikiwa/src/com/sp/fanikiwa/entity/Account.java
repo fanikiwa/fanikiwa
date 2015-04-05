@@ -1,15 +1,16 @@
 package com.sp.fanikiwa.entity;
 
-
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id; 
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
- 
+
 @Entity
 public class Account {
 
-	 @Id Long accountID;           
+	@Id
+	Long accountID;
 
 	private String accountName;
 
@@ -51,10 +52,15 @@ public class Account {
 
 	private int passFlag;
 
-//Foreign Keys
-	@Load Ref<Customer> customer;
-	@Load Ref<Coadet> coadet;
-	@Load Ref<AccountType> accounttype;
+	// Foreign Keys
+	@Load
+	Ref<Customer> customer;
+
+	@Load
+	Ref<Coadet> coadet;
+
+	@Load
+	Ref<AccountType> accounttype;
 
 	public Account() {
 	}
@@ -226,9 +232,8 @@ public class Account {
 	public void setPassFlag(int i) {
 		this.passFlag = i;
 	}
-	
-	//Foreign Keys
 
+	// Foreign Keys
 
 	public Customer getCustomer() {
 		return this.customer.get();
@@ -237,6 +242,7 @@ public class Account {
 	public void setCustomer(Customer customer) {
 		this.customer = Ref.create(customer);
 	}
+
 	public AccountType getAccounttype() {
 		return this.accounttype.get();
 	}

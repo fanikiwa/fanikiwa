@@ -1,4 +1,4 @@
-﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -29,12 +29,16 @@
             </div>
 
 
-            <div class="float-right">
-                <section id="login">
-                     
-                </section>
-            </div>
- 
+			<div class="float-right">
+				<section id="login">
+			 <text> Welcome To Fanikiwa, 
+				 <a id="lnkloggedinuser" style="cursor: pointer;" href="#" 
+					 onclick="ManageProfile()" title="Manage Profile"></a>
+				 <a id="lnklogoff" style="cursor: pointer;" href="#" 
+					onclick="LogOff()" title="Log Off">Log off</a>
+			  </text> 
+				</section>
+			 </div>
 
 
             <div id="nav">
@@ -283,34 +287,7 @@
     <footer>
 
         <hr />
-
-        <div class="content-wrapper">
-            <div class="float-left">
-
-<!--                 @Html.ActionLink("Home", "Index", "Home")| -->
-<!--                    @Html.ActionLink("About", "About", "Home")| -->
-<!--                    @Html.ActionLink("Contacts", "Contact", "Home")| -->
-<!--                    @Html.ActionLink("Contact Us", "ContactUs", "Contact")| -->
-<!--                    @Html.ActionLink("Help", "Help", "Home")| -->
-                                 
-
-<!--                   <a href="https://www.facebook.com/SoftwareProvidersLtd" title="Facebook" target="_blank">FaceBook</a>| -->
-<!--                   <a href="http://twitter.com/" title="Twitter" target="_blank">Twitter</a>| -->
-<!--                   <a href="https://plus.google.com/" title="Google+" target="_blank">Google+</a>| -->
-<!--                   <a href="http://www.linkedin.com/" title="LinkedIn" target="_blank">LinkedIn</a>| -->
-<!--                   <a href="#" title="Blog">Blog</a>| -->
-<!--                   <a href="#" title="Discussion board">Discussion board</a> | -->
-<!--                   <a href="#" title="Press">Press</a>| -->
-<!--                   <a href="#" title="Terms">Terms</a>|                     -->
-<!--                   <a href="#" title="Jobs">Jobs</a>|                     -->
-<!--                   <a href="#" title="Privacy policy">Privacy policy</a>| -->
-<!--                   <a href="#" title="Principles">Principles</a> -->
-
-
-            </div>
-        </div>
-
-
+ 
         <div class="content-wrapper clearboth">
             <div class="float-left">
                 <p style="font-size: 15px">Copyright &copy; @DateTime.Now.Year - Software Providers Limited. All Rights Reserved.</p>
@@ -338,51 +315,98 @@
 
 	<script type="text/javascript">
 
-        function init() {
+	 // Get loggedin user from the local storage
+	 $('#lnkloggedinuser').text(localStorage.getItem('loggedinuser'));
+	 
+	  // var ROOT ='https://1-dot-fanikiwaweb.appspot.com/_ah/api';
+	  var ROOT ='http://localhost:8888/_ah/api';
+      function init() {
        
-       //Parameters are APIName,APIVersion,CallBack function,API Root 
-       //http://localhost:8888/_ah/api
-         gapi.client.load('offerendpoint', 'v1', null, 'https://1-dot-fanikiwaweb.appspot.com/_ah/api');
-       //gapi.client.load('offerendpoint', 'v1', null, 'http://localhost:8888/_ah/api');
-                 
-        gapi.client.offerendpoint.listOffer().execute(function(resp) {
-        		if (!resp.code) {
-        			resp.items = resp.items || [];
-        			var result = "";
-        			  
-var myTable = '' ;
-myTable +=   '<table id="listMyAccountsTable" cellspacing=0 cellpadding=2 border=1>';
-myTable +=   "<thead>";
-myTable +=   "<tr>"; 
-myTable +=   "<th>PostDate</th>"; 
-myTable +=   "<th>Narrative</th>"; 
-myTable +=   "<th>Debit</th>"; 
-myTable +=   "<th>Credit</th>"; 
-myTable +=   "<th>Balance</th>"; 
-myTable +=   "<th>ContraReference</th>"; 
-myTable +=   "</tr>";
-myTable +=   "</thead>";
-myTable +=   "<tbody>";
+       // Parameters are APIName,APIVersion,CallBack function,API Root
+       gapi.client.load('transactionmodelendpoint', 'v1', null, ROOT);
+                  
+       LoadAccounts();
+        	
+      }
+      
+      // function that will execute the LoadAccounts call
+      function LoadAccounts() {
+       
+        	try {
 
-for (var i=0;i<resp.items.length;i++) {
-    myTable += '<tr>'; 
-    myTable += '<td>resp.items[i].PostDate</td>'; 
-    myTable += '<td>resp.items[i].Narrative</td>'; 
-    myTable += '<td>resp.items[i].Debit</td>'; 
-    myTable += '<td>resp.items[i].Credit</td>'; 
-    myTable += '<td>resp.items[i].Balance</td>'; 
-    myTable += '<td>resp.items[i].ContraReference</td>'; 
-    myTable += "</tr>";
-}
-myTable +=  "</tbody>" ;
-myTable +=  "</table>" ;
- 
-  
-	document.getElementById('listMyAccountsResult').innerHTML = myTable;
-        		}
-        	});
-        	 
+        	  // make the api call
+        		gapi.client.transactionmodelendpoint.listAccount().execute(function(resp) {
+            		if (!resp.code) {
+            			resp.items = resp.items || [];
+            			var result = "";
+            			  
+    var myTable = '' ;
+    myTable +=   '<table id="listMyAccountsTable">';
+    myTable +=   "<thead>";
+    myTable +=   "<tr>"; 
+    myTable +=   "<th>PostDate</th>"; 
+    myTable +=   "<th>Narrative</th>"; 
+    myTable +=   "<th>Debit</th>"; 
+    myTable +=   "<th>Credit</th>"; 
+    myTable +=   "<th>Balance</th>"; 
+    myTable +=   "<th>ContraReference</th>"; 
+    myTable +=   "<th></th>"; 
+    myTable +=   "<th></th>"; 
+    myTable +=   "</tr>";
+    myTable +=   "</thead>";
+    myTable +=   "<tbody>";
+
+    for (var i=0;i<resp.items.length;i++) {
+        myTable += '<tr>'; 
+        myTable += '<td>resp.items[i].PostDate</td>'; 
+        myTable += '<td>resp.items[i].Narrative</td>'; 
+        myTable += '<td>resp.items[i].Debit</td>'; 
+        myTable += '<td>resp.items[i].Credit</td>'; 
+        myTable += '<td>resp.items[i].Balance</td>'; 
+        myTable += '<td>resp.items[i].ContraReference</td>'; 
+        myTable += '<td><a id="btnMiniStatement" href="#" onclick="MiniStatement(' + resp.items[i].id + ')">Mini Statement</a> </td>'; 
+        myTable += '<td><a id="btnStatement" href="#" onclick="Statement(' + resp.items[i].id + ')">Statement</a> </td>';    
+        myTable += "</tr>";
+    }
+    myTable +=  "</tbody>" ;
+    myTable +=  "</table>" ;
+     
+      
+    	document.getElementById('listMyAccountsResult').innerHTML = myTable;
+ 	 
+         	  } 
+         	});
          	
+         	} catch(exception) { 
+             localStorage.errormessage = exception;
+             console.log("Error : " + exception);
+             alert(exception); 
+         } 
+  	}
+          	
+        	    function LogOff() { 
+ 	         	localStorage.removeItem("loggedinuser");
+ 	            window.location.href = "/Views/Account/Login.html";  
+          	}
+          	
+          	function ManageProfile() { 
+          		window.location.href = "/Views/Account/EditProfile.html";  
+             }
+
+ 		    $('#listMyAccountsTable').on('click', 'tr', function (event) { 
+ 		    	$(this).toggleClass('selectedrow');
+ 		    });
+  
+          	function MiniStatement(id) {
+          		localStorage.removeItem("loggedinuser");
+ 	            window.location.href = "/Views/Account/MiniStatement.html"; 
+             }
+          	
+          	function Statement(id) {
+          		localStorage.removeItem("loggedinuser");
+ 	            window.location.href = "/Views/Account/Statement.html"; 
+             }
+          	
     </script>
 
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>

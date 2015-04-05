@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/7gUYvfwy0JowRMNtfrI3q6BKgN0\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/rmwPlxvZkWBcgxkihbBpsROzF0c\"",
  "discoveryVersion": "v1",
  "id": "customerendpoint:v1",
  "name": "customerendpoint",
@@ -142,7 +142,7 @@
    "id": "Organization",
    "type": "object",
    "properties": {
-    "andress": {
+    "address": {
      "type": "string"
     },
     "email": {

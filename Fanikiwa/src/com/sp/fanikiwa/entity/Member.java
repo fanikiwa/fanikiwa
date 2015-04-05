@@ -5,34 +5,57 @@ import java.util.Date;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 
-
 @Entity
-public class Member   {
-	
-	 @Id Long  memberId;
+public class Member {
+
+	@Id
+	Long memberId;
+ 
 	private Date dateActivated;
+ 
 	private Date dateJoined;
+ 
 	private Date dateOfBirth;
+	@Index
 	private String email;
+ 
 	private String gender;
+ 
 	private String informBy;
+
 	private int maxRecordsToDisplay;
+	@Index
 	private String nationalID;
+ 
 	private String otherNames;
+
 	private String photo;
+	@Index
 	private String pwd;
+ 
 	private int refferedBy;
+	@Index
 	private String status;
+ 
 	private String surname;
+	@Index
 	private String telephone;
-	
-	//FK
-	@Load Ref<Account> investmentAccount;
-	@Load Ref<Account> loanAccount;	
-	@Load Ref<Account> currentAccount;
-	@Load Ref<Customer> customer;
+
+	// FK 
+	@Load
+	Ref<Account> investmentAccount;
+ 
+	@Load
+	Ref<Account> loanAccount;
+ 
+	@Load
+	Ref<Account> currentAccount;
+ 
+	@Load
+	Ref<Customer> customer;
 
 	public Member() {
 	}
@@ -164,8 +187,8 @@ public class Member   {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	
-	//FK
+
+	// FK
 	public Account getInvestmentAccount() {
 		return this.investmentAccount.get();
 	}
@@ -181,7 +204,6 @@ public class Member   {
 	public void setLoanAccount(Account loanAccount) {
 		this.loanAccount = Ref.create(loanAccount);
 	}
-
 
 	public Account getCurrentAccount() {
 		return this.currentAccount.get();

@@ -8,20 +8,22 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
-public class Mailinggroupmember  {
-	
-	@Id Long  id;
+public class Mailinggroupmember {
 
+	@Id
+	Long id;
+ 
 	private String email;
-
+ 
 	private int groupId;
-
+ 
 	private String idType;
-
+ 
 	private int member;
-
+ 
 	private String telno;
 
 	public Mailinggroupmember() {

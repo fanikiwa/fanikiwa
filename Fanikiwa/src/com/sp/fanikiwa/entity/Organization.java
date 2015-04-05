@@ -1,17 +1,21 @@
 package com.sp.fanikiwa.entity;
- 
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class Organization  {
-	
-	@Id Long  organizationID;
+public class Organization {
 
-	private String andress;
+	@Id
+	Long organizationID;
+ 
+	private String address;
+ 
 	private String email;
+ 
 	private String name;
-    
+
 	public Organization() {
 	}
 
@@ -27,12 +31,12 @@ public class Organization  {
 		this.organizationID = organizationID;
 	}
 
-	public String getAndress() {
-		return this.andress;
+	public String getAddress() {
+		return this.address;
 	}
 
-	public void setAndress(String andress) {
-		this.andress = andress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getEmail() {

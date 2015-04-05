@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Lk9WNvdL-A17jo_yJXk94Ky8fLc\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/lsQVTueOuLauIbkaH5vE0SwYRgY\"",
  "discoveryVersion": "v1",
  "id": "stoendpoint:v1",
  "name": "stoendpoint",
@@ -102,8 +102,7 @@
      "format": "double"
     },
     "chargeCommFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "boolean"
     },
     "chargeWho": {
      "type": "integer",
@@ -118,40 +117,43 @@
      "format": "int32"
     },
     "commissionAccount": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "commissionAmount": {
      "type": "number",
      "format": "double"
     },
     "commissionPaidFlag": {
-     "type": "integer",
-     "format": "int32"
+     "type": "boolean"
     },
     "crAccount": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "crTxnType": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "createDate": {
      "type": "string",
      "format": "date-time"
     },
     "drAccount": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "drTxnType": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "endDate": {
      "type": "string",
      "format": "date-time"
+    },
+    "feesFlag": {
+     "type": "integer",
+     "format": "int32"
     },
     "id": {
      "type": "string",
@@ -165,8 +167,8 @@
      "format": "int32"
     },
     "loanId": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "nextPayDate": {
      "type": "string",
@@ -185,8 +187,7 @@
      "format": "int32"
     },
     "partialPay": {
-     "type": "integer",
-     "format": "int32"
+     "type": "boolean"
     },
     "payAmount": {
      "type": "number",
@@ -286,6 +287,28 @@
    "parameterOrder": [
     "id"
    ],
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "selectSTOByDateFrom": {
+   "id": "stoendpoint.selectSTOByDateFrom",
+   "path": "SelectSTOByDateFrom/{date}",
+   "httpMethod": "POST",
+   "parameters": {
+    "date": {
+     "type": "string",
+     "required": true,
+     "format": "date-time",
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "date"
+   ],
+   "response": {
+    "$ref": "CollectionResponse_STO"
+   },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]

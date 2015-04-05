@@ -1,25 +1,39 @@
 package com.sp.fanikiwa.entity;
- 
-import java.util.Date; 
+
+import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class OfferModel {
 
-	@Id Long id;
+	@Id
+	Long id;
+ 
 	private Long memberId;
+ 
 	private String description;
+ 
 	private double amount;
+ 
 	private int term;
+ 
 	private double interest;
+ 
 	private String publicOffer;
+ 
 	private Date createdDate;
+ 
 	private Date expiryDate;
+ 
 	private String offerees;
+ 
 	private String offerType;
+ 
 	private byte partialPay;
+ 
 	private String status;
 
 	public OfferModel() {

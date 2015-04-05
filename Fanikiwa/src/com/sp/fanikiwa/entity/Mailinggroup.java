@@ -10,20 +10,22 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
-public class Mailinggroup  {
-	
-	@Id Long   groupId; 
-	
+public class Mailinggroup {
+
+	@Id
+	Long groupId;
+ 
 	private Date createdOn;
-
-	private int creator; 
-	
+ 
+	private int creator;
+ 
 	private Date lastModified;
-
+ 
 	private int parentGroupId;
-
+ 
 	private String shortCode;
 
 	public Mailinggroup() {

@@ -1,15 +1,17 @@
 package com.sp.fanikiwa.entity;
- 
+
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id; 
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class TransactionType  {
-	
-   @Id Long transactionTypeID;
+public class TransactionType {
 
-	private boolean absolute; 
-	
+	@Id
+	Long transactionTypeID;
+
+	private boolean absolute;
+
 	private String amountExpression;
 
 	private boolean canSuspend;
@@ -24,7 +26,6 @@ public class TransactionType  {
 
 	private double commissionAmount;
 
-	
 	private String commissionAmountExpression;
 
 	private String commissionContraNarrative;
@@ -65,7 +66,6 @@ public class TransactionType  {
 
 	private short narrativeFlag;
 
-
 	private String shortCode;
 
 	private String statFlag;
@@ -81,7 +81,6 @@ public class TransactionType  {
 	private short txnTypeView;
 
 	private short valueDateOffset;
-
 
 	public TransactionType() {
 	}
@@ -130,7 +129,8 @@ public class TransactionType  {
 		return this.chargeCommissionToTransaction;
 	}
 
-	public void setChargeCommissionToTransaction(boolean chargeCommissionToTransaction) {
+	public void setChargeCommissionToTransaction(
+			boolean chargeCommissionToTransaction) {
 		this.chargeCommissionToTransaction = chargeCommissionToTransaction;
 	}
 
@@ -381,6 +381,5 @@ public class TransactionType  {
 	public void setValueDateOffset(short valueDateOffset) {
 		this.valueDateOffset = valueDateOffset;
 	}
-
 
 }

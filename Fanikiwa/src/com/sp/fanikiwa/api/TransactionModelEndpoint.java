@@ -12,7 +12,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query; 
-import com.sp.fanikiwa.entity.TransactionModel; 
+import com.sp.fanikiwa.entity.StatementModel; 
 
 import java.util.ArrayList; 
 import java.util.List;
@@ -37,19 +37,19 @@ public class TransactionModelEndpoint {
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@ApiMethod(name = "listTransactionModel")
-	public CollectionResponse<TransactionModel> listTransactionModel(
+	public CollectionResponse<StatementModel> listTransactionModel(
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-			Query<TransactionModel> query = ofy().load().type(TransactionModel.class);
+			Query<StatementModel> query = ofy().load().type(StatementModel.class);
 			if (count != null)
 				query.limit(count);
 			if (cursorString != null && cursorString != "") {
 				query = query.startAt(Cursor.fromWebSafeString(cursorString));
 			}
 
-			List<TransactionModel> records = new ArrayList<TransactionModel>();
-			QueryResultIterator<TransactionModel> iterator = query.iterator();
+			List<StatementModel> records = new ArrayList<StatementModel>();
+			QueryResultIterator<StatementModel> iterator = query.iterator();
 			int num = 0;
 			while (iterator.hasNext()) {
 				records.add(iterator.next());
@@ -67,7 +67,7 @@ public class TransactionModelEndpoint {
 					cursorString = cursor.toWebSafeString();
 				}
 			}
-			return CollectionResponse.<TransactionModel> builder().setItems(records)
+			return CollectionResponse.<StatementModel> builder().setItems(records)
 					.setNextPageToken(cursorString).build();
 		}
 
@@ -78,7 +78,7 @@ public class TransactionModelEndpoint {
 	 * @return The entity with primary key id.
 	 */
 	@ApiMethod(name = "getTransactionModel")
-	public TransactionModel getTransactionModel(@Named("id") Long id) {
+	public StatementModel getTransactionModel(@Named("id") Long id) {
 		return findRecord(id);
 	}
 
@@ -87,13 +87,13 @@ public class TransactionModelEndpoint {
 	 * exists in the datastore, an exception is thrown.
 	 * It uses HTTP POST method.
 	 *
-	 * @param TransactionModel the entity to be inserted.
+	 * @param StatementModel the entity to be inserted.
 	 * @return The inserted entity.
 	 * @throws ConflictException 
 	 */
 	@ApiMethod(name = "insertTransactionModel")
-	public TransactionModel insertTransactionModel(
-			TransactionModel transactionModel) throws ConflictException {
+	public StatementModel insertTransactionModel(
+			StatementModel transactionModel) throws ConflictException {
 		if (transactionModel.getTransactionID() != null) {
 			if (findRecord(transactionModel.getTransactionID()) != null) {
 				throw new ConflictException("Object already exists");
@@ -108,14 +108,14 @@ public class TransactionModelEndpoint {
 	 * exist in the datastore, an exception is thrown.
 	 * It uses HTTP PUT method.
 	 *
-	 * @param TransactionModel the entity to be updated.
+	 * @param StatementModel the entity to be updated.
 	 * @return The updated entity.
 	 * @throws NotFoundException 
 	 */
 	@ApiMethod(name = "updateTransactionModel")
-	public TransactionModel updateTransactionModel(
-			TransactionModel transactionModel) throws NotFoundException {
-		TransactionModel record = findRecord(transactionModel.getTransactionID());
+	public StatementModel updateTransactionModel(
+			StatementModel transactionModel) throws NotFoundException {
+		StatementModel record = findRecord(transactionModel.getTransactionID());
 		if (record == null) {
 			throw new NotFoundException("Record does not exist");
 		}
@@ -132,7 +132,7 @@ public class TransactionModelEndpoint {
 	 */
 	@ApiMethod(name = "removeTransactionModel")
 	public void removeTransactionModel(@Named("id") Long id) throws NotFoundException {
-		TransactionModel record = findRecord(id);
+		StatementModel record = findRecord(id);
 		if (record == null) {
 			throw new NotFoundException("Record does not exist");
 		}
@@ -140,8 +140,8 @@ public class TransactionModelEndpoint {
 	}
 	
 
-	private TransactionModel findRecord(Long id) {
-		return ofy().load().type(TransactionModel.class).id(id).now();
+	private StatementModel findRecord(Long id) {
+		return ofy().load().type(StatementModel.class).id(id).now();
 	}
 
 }

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/r4qYzaO66BsoUtS7Z3OsKPHn55c\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/Bp2ghPFrzfMVqQrSqhM5M14znbc\"",
  "discoveryVersion": "v1",
  "id": "userprofileendpoint:v1",
  "name": "userprofileendpoint",
@@ -93,11 +93,14 @@
    "id": "Userprofile",
    "type": "object",
    "properties": {
-    "userId": {
+    "createDate": {
      "type": "string",
-     "format": "int64"
+     "format": "date-time"
     },
-    "userName": {
+    "pwd": {
+     "type": "string"
+    },
+    "userId": {
      "type": "string"
     }
    }
@@ -221,6 +224,39 @@
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
    ]
+  }
+ },
+ "resources": {
+  "userprofileEndpoint": {
+   "methods": {
+    "authenticatedByPhone": {
+     "id": "userprofileendpoint.userprofileEndpoint.authenticatedByPhone",
+     "path": "AuthenticatedByPhone/{telephone}/{pwd}",
+     "httpMethod": "POST",
+     "parameters": {
+      "pwd": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      },
+      "telephone": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "telephone",
+      "pwd"
+     ],
+     "response": {
+      "$ref": "Userprofile"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
   }
  }
 }

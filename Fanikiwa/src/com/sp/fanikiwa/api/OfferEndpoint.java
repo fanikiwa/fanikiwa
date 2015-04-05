@@ -8,6 +8,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.ConflictException;
+import com.google.api.server.spi.response.ForbiddenException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
@@ -15,9 +16,11 @@ import com.googlecode.objectify.cmd.Query;
 import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.Member;
 import com.sp.fanikiwa.entity.Offer;
+import com.sp.fanikiwa.entity.OfferDTO;
 import com.sp.fanikiwa.entity.OfferModel;
 import com.sp.fanikiwa.entity.OfferReceipient;
 import com.sp.fanikiwa.entity.OfferStatus;
+import com.sp.utils.GLUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +31,12 @@ import javax.inject.Named;
 @Api(name = "offerendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
 public class OfferEndpoint {
 
+
+	private Member SearchMemberByEmail(String email) {
+		MemberEndpoint mep = new MemberEndpoint();
+		Member member = mep.GetMemberByEmail(email);
+		return member;
+	}
 
 	public OfferEndpoint() {
 
@@ -56,24 +65,49 @@ public class OfferEndpoint {
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
-		Member member = ofy().load().type(Member.class).id(MemberId).now();
+		Member member = SearchMember( MemberId);
 		Query<Offer> query = ofy().load().type(Offer.class)
 				.filter("member", member);
 		return GetOffersFromQuery(query, cursorString, count);
 	}
-
-	@ApiMethod(name = "PrivateOffersToMember")
-	public CollectionResponse<Offer> PrivateOffersToMember(
+	@ApiMethod(name = "ListMyLendOffers")
+	public CollectionResponse<Offer> ListMyLendOffers(
 			@Named("memberid") long MemberId,
 			@Nullable @Named("cursor") String cursorString,
 			@Nullable @Named("count") Integer count) {
 
 		Member member = ofy().load().type(Member.class).id(MemberId).now();
 		Query<Offer> query = ofy().load().type(Offer.class)
-				.filter("publicOffer", false).filter("offerrees", member)
-				.filter("status", "Open").filter("expiryDate >", new Date());
+				.filter("offerType", "L")
+				.filter("member", member);
 		return GetOffersFromQuery(query, cursorString, count);
 	}
+	@ApiMethod(name = "ListBorrowOffers")
+	public CollectionResponse<Offer> ListBorrowOffers(
+			@Named("memberid") long MemberId,
+			@Nullable @Named("cursor") String cursorString,
+			@Nullable @Named("count") Integer count) {
+
+		Member member = ofy().load().type(Member.class).id(MemberId).now();
+		Query<Offer> query = ofy().load().type(Offer.class)
+				.filter("offerType", "B")
+				.filter("member", member);
+		return GetOffersFromQuery(query, cursorString, count);
+	}
+	
+	
+//	@ApiMethod(name = "PrivateOffersToMember")
+//	public CollectionResponse<Offer> PrivateOffersToMember(
+//			@Named("memberid") long MemberId,
+//			@Nullable @Named("cursor") String cursorString,
+//			@Nullable @Named("count") Integer count) {
+//
+//		Member member = ofy().load().type(Member.class).id(MemberId).now();
+//		Query<Offer> query = ofy().load().type(Offer.class)
+//				.filter("publicOffer", false).filter("offerrees", member)
+//				.filter("status", "Open").filter("expiryDate >", new Date());
+//		return GetOffersFromQuery(query, cursorString, count);
+//	}
 
 	@ApiMethod(name = "retrievePublicOffers")
 	public CollectionResponse<Offer> retrievePublicOffers(
@@ -81,7 +115,8 @@ public class OfferEndpoint {
 			@Nullable @Named("count") Integer count) {
 
 		Query<Offer> query = ofy().load().type(Offer.class)
-				.filter("publicOffer", true).filter("status", "Open")
+				.filter("publicOffer", true)
+				.filter("status","Open")
 				.filter("expiryDate >", new Date());
 		return GetOffersFromQuery(query, cursorString, count);
 	}
@@ -184,8 +219,8 @@ public class OfferEndpoint {
 	 * @return The inserted entity.
 	 * @throws ConflictException
 	 */
-	@ApiMethod(name = "insertOffer")
-	public Offer insertOffer(Offer offer) throws NotFoundException,
+	//@ApiMethod(name = "insertOffer")
+	private Offer insertOffer(Offer offer) throws NotFoundException,
 			ConflictException {
 		if (offer.getId() != null) {
 			if (findRecord(offer.getId()) != null) {
@@ -196,18 +231,69 @@ public class OfferEndpoint {
 		return offer;
 	}
 
- 
-
-	private Offer MakeOffer(Offer offer) throws NotFoundException,
+	private Offer createOfferDTO(OfferDTO offerDto) throws NotFoundException,
 			ConflictException {
-		return insertOffer(offer);
-
+		Offer o = new Offer();
+		o.setAmount(offerDto.getAmount());
+		o.setCreatedDate(offerDto.getCreatedDate());
+		o.setDescription(offerDto.getDescription());
+		o.setExpiryDate(offerDto.getExpiryDate());
+		o.setInterest(offerDto.getInterest());
+		
+		Member member = SearchMemberByEmail(offerDto.getEmail());
+		
+		o.setMember(member);
+		o.setOfferees(offerDto.getOfferees());
+		o.setOfferType(offerDto.getOfferType());
+		o.setPartialPay(offerDto.isPartialPay());
+		o.setPublicOffer(offerDto.isPublicOffer());
+		o.setStatus(offerDto.getStatus());
+		o.setTerm(offerDto.getTerm());
+		return insertOffer(o);
 	}
+
+	@ApiMethod(name = "MakeOffer")
+	public Offer MakeOffer( OfferDTO offerDto) throws NotFoundException,
+			ConflictException, ForbiddenException {
+		if(offerDto.getOfferType().toUpperCase().equals("L"))
+		{
+			return MakeLendOffer( offerDto);
+		}
+		else
+		{
+			return MakeBorrowOffer( offerDto);
+		}
+	}
+	
+	private Offer MakeBorrowOffer(OfferDTO offerModel) throws NotFoundException, ConflictException
+    {
+		return  createOfferDTO(offerModel);
+    }
+	private Offer MakeLendOffer(OfferDTO offerModel) throws ForbiddenException, NotFoundException, ConflictException
+    {
+        // Step 1 - Block funds.
+        Member member = SearchMemberByEmail(offerModel.getEmail());
+
+        // calls GLs funds block service.
+        AccountEndpoint sPostingClient = new AccountEndpoint();
+        if (GLUtil.GetAvailableBalance(member.getCurrentAccount()) < offerModel.getAmount())
+            throw new ForbiddenException("Insufficient funds");
+
+        //BlockFunds function checks all account status before the actual block
+        sPostingClient.BlockFunds(member.getCurrentAccount(), offerModel.getAmount());
+
+
+        // Step 2 - Calling Create on Offer.
+
+        return  createOfferDTO(offerModel);
+    }
+	
 
 	private Member SearchMember(Long MemberId) {
 		MemberEndpoint mep = new MemberEndpoint();
 		Member member = mep.getMemberByID(MemberId);
 		return member;
 	}
+
 
 }

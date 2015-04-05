@@ -1,30 +1,31 @@
 package com.sp.fanikiwa.entity;
- 
-import java.util.Date;  
+
+import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
- 
- 
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
-public class Loan   {
-	
-	@Id Long  id;
+public class Loan {
 
+	@Id
+	Long id;
+ 
 	private double amount;
-	
+ 
 	private Date createdDate;
-
+ 
 	private double interest;
-	
+ 
 	private Date maturityDate;
-
-	private int memberId;
-
-	private int offerId;
-
-	private byte partialPay;
-
+ 
+	private Long memberId;
+ 
+	private Long offerId;
+ 
+	private boolean partialPay;
+ 
 	private int term;
 
 	public Loan() {
@@ -70,27 +71,27 @@ public class Loan   {
 		this.maturityDate = maturityDate;
 	}
 
-	public int getMemberId() {
+	public Long getMemberId() {
 		return this.memberId;
 	}
 
-	public void setMemberId(int memberId) {
+	public void setMemberId(Long memberId) {
 		this.memberId = memberId;
 	}
 
-	public int getOfferId() {
+	public Long getOfferId() {
 		return this.offerId;
 	}
 
-	public void setOfferId(int offerId) {
+	public void setOfferId(Long offerId) {
 		this.offerId = offerId;
 	}
 
-	public byte getPartialPay() {
+	public boolean getPartialPay() {
 		return this.partialPay;
 	}
 
-	public void setPartialPay(byte partialPay) {
+	public void setPartialPay(boolean partialPay) {
 		this.partialPay = partialPay;
 	}
 

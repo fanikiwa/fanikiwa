@@ -1,31 +1,32 @@
 package com.sp.fanikiwa.entity;
-  
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id; 
- 
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+
 @Entity
 public class Coadet {
-	
-	 @Id Long  id;
+
+	@Id
+	Long id;
  
 	private int COALevel;
-
+ 
 	private String description;
-  
+ 
 	private int rorder;
-
+ 
 	private String shortCode;
-
+ 
 	private Ref<Coa> coa;
-	
+
 	public Coadet() {
 	}
-	
+
 	public Coadet(Long Id) {
 		setId(Id);
 	}
-
 
 	public Long getId() {
 		return this.id;
@@ -50,7 +51,7 @@ public class Coadet {
 	public void setDescription(String description) {
 		this.description = description;
 	}
- 
+
 	public int getRorder() {
 		return this.rorder;
 	}

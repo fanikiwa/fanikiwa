@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/8t8Ur0rV8D0aat8nV0q-rVwx10U\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/NchdEydpjNuP3EVcaoUqXByul5A\"",
  "discoveryVersion": "v1",
  "id": "loanendpoint:v1",
  "name": "loanendpoint",
@@ -114,16 +114,15 @@
      "format": "date-time"
     },
     "memberId": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "offerId": {
-     "type": "integer",
-     "format": "int32"
+     "type": "string",
+     "format": "int64"
     },
     "partialPay": {
-     "type": "integer",
-     "format": "int32"
+     "type": "boolean"
     },
     "term": {
      "type": "integer",

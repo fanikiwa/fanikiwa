@@ -1,6 +1,7 @@
 package com.sp.fanikiwa.api;
 
 import static com.sp.fanikiwa.api.OfyService.ofy; 
+
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -11,9 +12,12 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.cmd.Query;
+import com.sp.fanikiwa.entity.Account;
 import com.sp.fanikiwa.entity.Userprofile; 
+
 import java.util.ArrayList;
 import java.util.List; 
+
 import javax.inject.Named;
 
 @Api(name = "userprofileendpoint", namespace = @ApiNamespace(ownerDomain = "sp.com", ownerName = "sp.com", packagePath = "fanikiwa.entity"))
@@ -93,7 +97,7 @@ public class UserprofileEndpoint {
 	@ApiMethod(name = "updateUserprofile")
 	public Userprofile updateUserprofile(Userprofile Userprofile)
 			throws NotFoundException {
-		Userprofile record = findRecord(Userprofile.getUserId().toString());
+		Userprofile record = findRecord(Userprofile.getUserId());
 		if (record == null) {
 			throw new NotFoundException("Record does not exist");
 		}
@@ -133,7 +137,7 @@ public class UserprofileEndpoint {
 	public Userprofile insertUserprofile(Userprofile userprofile)
 			throws NotFoundException, ConflictException {
 		if (userprofile.getUserId() != null) {
-			if (findRecord(userprofile.getUserId().toString()) != null) {
+			if (findRecord(userprofile.getUserId()) != null) {
 				throw new ConflictException("Object already exists");
 			}
 		}
@@ -147,10 +151,10 @@ public class UserprofileEndpoint {
 		user = findRecord( userId);
 		if(user != null)
 		{
-//			if (user.getPassword().equals(pwd) )
-//			{
-//				return user;
-//			}
+			if (user.getPwd().equals(pwd) )
+			{
+				return user;
+			}
 		}
 		return null; 
 	}
@@ -158,5 +162,16 @@ public class UserprofileEndpoint {
 	private Userprofile findRecord(String id) {
 		return ofy().load().type(Userprofile.class).id(id).now();
 	}
+
+	public Userprofile AuthenticatedByPhone(@Named("telephone") String telephone,@Named("pwd") String pwd) {
+		// TODO Auto-generated method stub
+		Userprofile user = ofy().load().type(Userprofile.class)
+				.filter("telephone","telephone").first().now();
+		
+	return user;
+
+	}
+	
+	
 
 }
